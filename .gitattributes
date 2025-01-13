@@ -1,3 +1,53 @@
+# Gradlew 관련
 /gradlew text eol=lf
 *.bat text eol=crlf
 *.jar binary
+
+# Java 소스 및 클래스 파일
+*.java text eol=lf
+*.class binary
+
+# 스프링 설정 파일
+*.properties text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Gradle 관련 파일
+*.gradle text eol=lf
+
+# 문서 파일
+*.md text eol=lf
+*.txt text eol=lf
+
+# XML 파일
+*.xml text eol=lf
+
+# Git 관련 파일
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# 기타 설정 파일
+*.json text eol=lf
+*.sql text eol=lf
+
+# 셸 스크립트
+*.sh text eol=lf
+
+# 이미지 파일
+*.png binary
+*.jpg binary
+*.gif binary
+
+# 미디어 파일
+*.mp4 binary
+*.mov binary
+
+# 압축 파일
+*.zip binary
+*.tar binary
+*.gz binary
+
+# IDE 관련 파일
+*.iml text eol=lf
+.classpath text eol=lf
+.project text eol=lf
