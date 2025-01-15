@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: solved-pick
+
+  profiles:
+    active: ${SPRING_ENV:local}
