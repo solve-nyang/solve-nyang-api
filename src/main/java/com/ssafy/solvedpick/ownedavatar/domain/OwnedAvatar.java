@@ -1,5 +1,6 @@
-package com.ssafy.solvedpick.avatars.domain;
+package com.ssafy.solvedpick.ownedavatar.domain;
 
+import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.members.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,12 +10,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "owned_avatars")
 @Getter
+@Builder
+@Table(name = "owned_avatars")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@EntityListeners(AuditingEntityListener.class)
 public class OwnedAvatar {
 
     @Id
@@ -30,11 +31,11 @@ public class OwnedAvatar {
     @JoinColumn(name = "avatar_id", nullable = false, columnDefinition = "INT UNSIGNED")
     private Avatar avatar;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean visible = false;
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime acquiredAt;
-
 }

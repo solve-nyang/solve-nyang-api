@@ -2,10 +2,10 @@ package com.ssafy.solvedpick.gacha.service;
 
 import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.avatars.domain.Grade;
-import com.ssafy.solvedpick.avatars.domain.OwnedAvatar;
+import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.avatars.dto.DrawAvatarDto;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
-import com.ssafy.solvedpick.avatars.repository.OwnedAvatarRepository;
+import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.gacha.dto.DrawResponse;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
@@ -19,6 +19,7 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class GachaService {
+
 //    임시 코스트
     private static final int DRAW_COST = 1000;
 

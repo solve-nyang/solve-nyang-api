@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.avatars.domain;
 
+import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "avatars")
 @Getter
+@Builder
+@Table(name = "avatars")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
