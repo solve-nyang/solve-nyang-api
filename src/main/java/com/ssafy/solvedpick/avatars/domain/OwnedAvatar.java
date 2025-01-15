@@ -19,15 +19,15 @@ public class OwnedAvatar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "owned_avatar_id")
+    @Column(name = "owned_avatar_id", columnDefinition = "INT UNSIGNED")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "INT UNSIGNED")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "avatar_id", nullable = false)
+    @JoinColumn(name = "avatar_id", nullable = false, columnDefinition = "INT UNSIGNED")
     private Avatar avatar;
 
     @Column(nullable = false)

@@ -21,7 +21,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_id", columnDefinition = "INT UNSIGNED")
     private Long id;
 
     @Column(unique = true, nullable = false, length = 30)

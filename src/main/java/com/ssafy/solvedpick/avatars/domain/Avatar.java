@@ -15,7 +15,7 @@ import java.util.List;
 public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "avatar_id")
+    @Column(name = "avatar_id", columnDefinition = "INT UNSIGNED")
     private Long id;
 
     @Column(unique = true, nullable = false, length = 50)
