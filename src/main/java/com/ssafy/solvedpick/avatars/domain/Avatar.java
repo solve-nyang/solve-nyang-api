@@ -24,6 +24,6 @@ public class Avatar {
     @Column(nullable = false)
     private int grade;
 
-    @OneToMany(mappedBy = "avatar")
+    @OneToMany(mappedBy = "avatar", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedAvatar> avatars = new ArrayList<>();
 }
