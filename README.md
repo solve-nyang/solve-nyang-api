@@ -5,6 +5,40 @@
 
 **main branch에 push 하지말 것!**
 
+## Branch Convention
+
+  - feature/
+    - 새로운 기능 개발
+    예: feature/login, feature/payment
+
+  - fix/ 또는 bugfix/
+    - 일반적인 버그 수정
+    예: fix/login-error, bugfix/typo
+
+  - hotfix/
+    - 운영 중인 버전에서 발생한 긴급한 버그 수정
+    예: hotfix/security-issue
+
+  - chore/
+    - 소스 코드를 제외한 빌드 스크립트, 개발 환경 설정 등의 변경
+    예: chore/update-dependencies
+
+  - refactor/
+    - 코드 리팩토링
+    예: refactor/auth-logic
+
+  - test/
+    - 테스트 코드 추가/수정
+    예: test/user-service
+
+  - docs/
+    - 문서 작업
+    예: docs/api-guide
+
+  - style/
+    - 코드 포맷팅, 세미콜론 등 스타일 관련 수정
+    예: style/indent-fix
+  
 ## 🚩 Commit Convention
 
 ---
