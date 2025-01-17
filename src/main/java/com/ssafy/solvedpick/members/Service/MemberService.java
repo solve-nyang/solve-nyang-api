@@ -5,8 +5,6 @@ import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.members.dto.UserInfoResponse;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,9 +20,9 @@ public class MemberService {
     private String membername;
 
     public UserInfoResponse getUserInfo(Long memberId) {
-        String membername = memberRepository.findById(memberId)
-                .orElseThrow(EntityNotFoundException::new)
-                .getUsername();
+//        String membername = memberRepository.findById(memberId)
+//                .orElseThrow(EntityNotFoundException::new)
+//                .getUsername();
 
         UserInfoApiResponse apiResponse = apiService.getUserInfo(membername);
         UserData userData = apiResponse.getItems().get(0);
