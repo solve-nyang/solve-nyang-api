@@ -7,4 +7,5 @@ import java.util.List;
 public interface OwnedAvatarService {
 
     List<OwnedAvatarDTO> getOwnedAvatars(Long memberId);
+    void updateAvatarVisibility(Long memberId, Long avatarId);
 }

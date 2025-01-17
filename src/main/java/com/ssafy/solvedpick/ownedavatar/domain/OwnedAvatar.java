@@ -38,4 +38,9 @@ public class OwnedAvatar {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime acquiredAt;
+
+    public void updateVisibility() {
+        this.visible = !this.visible;
+    }
+
 }

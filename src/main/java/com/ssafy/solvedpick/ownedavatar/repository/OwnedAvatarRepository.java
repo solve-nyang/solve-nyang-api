@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> {
 
@@ -15,4 +16,6 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
             "LEFT JOIN FETCH a.avatar " +
             "WHERE m.id = :memberId")
     List<OwnedAvatar> findAllByMemberId(@Param("memberId") Long memberId);
+
+    Optional<OwnedAvatar> findById(@Param("ownedAvatarId") Long ownedAvatarId);
 }
