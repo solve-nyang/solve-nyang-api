@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.members.dto;
+package com.ssafy.solvedpick.accounts.dto;
 
 import lombok.*;
 

@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.ownedavatar.service.impl;
 
+import com.ssafy.solvedpick.accounts.domain.Member;
 import com.ssafy.solvedpick.avatars.domain.Grade;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.dto.OwnedAvatarDTO;

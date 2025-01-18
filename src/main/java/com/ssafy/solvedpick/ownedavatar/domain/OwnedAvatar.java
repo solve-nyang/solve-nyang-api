@@ -1,7 +1,8 @@
 package com.ssafy.solvedpick.ownedavatar.domain;
 
+
+import com.ssafy.solvedpick.accounts.domain.Member;
 import com.ssafy.solvedpick.avatars.domain.Avatar;
-import com.ssafy.solvedpick.members.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
