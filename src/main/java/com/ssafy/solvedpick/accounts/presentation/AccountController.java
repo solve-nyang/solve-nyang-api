@@ -46,16 +46,16 @@ public class AccountController {
 
         ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", tokenResponse.getAccessToken())
         	       .httpOnly(true)
-        	       .secure(false)  // HTTPS 사용시. 원래 true지만 개발환경에서는 false로 설정
-        	       .sameSite("Strict") 
+        	       .secure(true)  // HTTPS 사용시.
+        	       .sameSite("None") // 추후 포트 맞출 필요 있음
         	       .maxAge(Duration.ofMinutes(30))
         	       .path("/")
         	       .build();
         	       
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
         	       .httpOnly(true)
-        	       .secure(false)  // HTTPS 사용시. 원래 true지만 개발환경에서는 false로 설정
-        	       .sameSite("Strict")
+        	       .secure(true)  // HTTPS 사용시.
+        	       .sameSite("None")  // 추후 포트 맞출 필요 있음
         	       .maxAge(Duration.ofMinutes(120))
         	       .path("/")
         	       .build();
