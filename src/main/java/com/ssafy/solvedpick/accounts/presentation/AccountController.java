@@ -2,8 +2,11 @@ package com.ssafy.solvedpick.accounts.presentation;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.Duration;
 import java.util.Map;
 
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,10 +43,27 @@ public class AccountController {
     @PostMapping("/signin")
     public ResponseEntity<?> signin(SignInFormDTO signInFormDTO) {
         TokenResponse tokenResponse = signinService.signIn(signInFormDTO);
+
+        ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", tokenResponse.getAccessToken())
+        	       .httpOnly(true)
+        	       .secure(false)  // HTTPS 사용시. 원래 true지만 개발환경에서는 false로 설정
+        	       .sameSite("Strict") 
+        	       .maxAge(Duration.ofMinutes(30))
+        	       .path("/")
+        	       .build();
+        	       
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
+        	       .httpOnly(true)
+        	       .secure(false)  // HTTPS 사용시. 원래 true지만 개발환경에서는 false로 설정
+        	       .sameSite("Strict")
+        	       .maxAge(Duration.ofMinutes(120))
+        	       .path("/")
+        	       .build();
+        
         return ResponseEntity.ok()
             .body(Map.of(
-                "accessToken", tokenResponse.getAccessToken(),
-                "refreshToken", tokenResponse.getRefreshToken()
+                "accessToken", accessTokenCookie,
+                "refreshToken", refreshTokenCookie
             ));
     }
 
