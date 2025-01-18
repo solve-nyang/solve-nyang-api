@@ -11,12 +11,17 @@ import java.util.Date;
 @Component
 public class JwtUtil {
     private final Key key;
-    private final long accessTokenExpiration = 1000 * 60 * 15; // 30분
-    private final long refreshTokenExpiration = 1000 * 60 * 60 * 2; // 2시간
+    private final long accessTokenExpiration;
+    private final long refreshTokenExpiration;
 
-    public JwtUtil(@Value("${jwt.secret}") String secretKey) {
+    public JwtUtil(
+    		@Value("${jwt.secret}") String secretKey,
+            @Value("${jwt.access-token-expiration}") long accessTokenExpiration,
+            @Value("${jwt.refresh-token-expiration}") long refreshTokenExpiration) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+		this.accessTokenExpiration = accessTokenExpiration;
+        this.refreshTokenExpiration = refreshTokenExpiration;
     }
     
     public String generateAccessToken(String username) {

@@ -14,10 +14,10 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:database.properties")
 public class JwtConfig {
-	private String secretKey;
+	private final String secretKey;
     
     public JwtConfig(@Value("${jwt.secret}") String secretKey) {
-        this.secretKey = secretKey;
+    	this.secretKey = secretKey;
     }
     @Bean
     public Key key() {

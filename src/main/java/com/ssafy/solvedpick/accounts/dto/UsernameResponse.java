@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SolvedACResponse {
+public class UsernameResponse {
     private String name;
 }

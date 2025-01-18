@@ -26,25 +26,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            String authorizationHeader = request.getHeader("Authorization");
-
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-                String token = authorizationHeader.substring(7);
-                String username = jwtUtil.validateToken(token);
-
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    JwtAuthenticationToken authentication = new JwtAuthenticationToken(username, null, null);
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                } else {
-                    handleAuthenticationError(response, "Invalid token or user not found");
-                    return;
-                }
+            String token = extractJwtFromRequest(request);
+            if (token != null) {
+                processToken(token, request);
             }
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             handleAuthenticationError(response, e.getMessage());
         }
+    }
+    
+    private String extractJwtFromRequest(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        return null;
+    }
+
+    private void processToken(String token, HttpServletRequest request) {
+        String username = jwtUtil.validateToken(token);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            createAndSetAuthentication(username, request);
+        }
+    }
+
+    private void createAndSetAuthentication(String username, HttpServletRequest request) {
+        JwtAuthenticationToken authentication = new JwtAuthenticationToken(username, null, null);
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private void handleAuthenticationError(HttpServletResponse response, String message) throws IOException {
