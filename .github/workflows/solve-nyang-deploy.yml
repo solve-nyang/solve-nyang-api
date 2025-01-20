@@ -1,8 +1,6 @@
 name: solve-nyang-deploy.yml
 on:
   push:
-    branches:
-      - main
 
 jobs:
   deploy:
@@ -55,9 +53,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "./build/libs/*.jar"
+          source: "build/libs/*.jar"
           target: "/home/ubuntu/solve-nyang"
-          strip_components: 3
 
       - name: Execute deploy script
         uses: appleboy/ssh-action@master
