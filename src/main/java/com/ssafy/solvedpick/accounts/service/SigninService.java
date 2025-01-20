@@ -21,18 +21,16 @@ public class SigninService {
 
     public TokenResponse signIn(SignInFormDTO signInFormDTO) {
     	Member member = memberRepository.findByUsername(signInFormDTO.getUsername())
-                .orElseThrow(() -> new UserInfoErrorException("Username Error"));
+                .orElseThrow(() -> new UserInfoErrorException("Login Error"));
         
         if (!passwordEncoder.matches(signInFormDTO.getPassword(), member.getPassword())) {
-            throw new UserInfoErrorException("Password Error");
+            throw new UserInfoErrorException("Login Error");
         }
 
         String accessToken = jwtUtil.generateAccessToken(signInFormDTO.getUsername());
-//        String refreshToken = jwtUtil.generateRefreshToken(signInFormDTO.getUsername());
-        
+
         TokenResponse tokenResponse = TokenResponse.builder()
         				.accessToken(accessToken)
-//        				.refreshToken(refreshToken)
         				.build();
         return tokenResponse;
     }

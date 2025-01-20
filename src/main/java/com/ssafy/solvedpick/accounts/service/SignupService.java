@@ -16,7 +16,6 @@ public class SignupService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    
     public Member create(SignupFormDTO signupFormDTO) {
     	Member user = Member.builder()
         		.username(signupFormDTO.getUsername())
@@ -26,6 +25,7 @@ public class SignupService {
     	if(memberRepository.existsByUsername(signupFormDTO.getUsername())){
     		return user;
     	}
+
     	this.memberRepository.save(user);
     	return user;
 	}

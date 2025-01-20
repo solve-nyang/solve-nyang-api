@@ -3,21 +3,23 @@ package com.ssafy.solvedpick.accounts.service;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ssafy.solvedpick.accounts.domain.VerificationKey;
 import com.ssafy.solvedpick.accounts.dto.SignupFormDTO;
 import com.ssafy.solvedpick.accounts.dto.UsernameResponse;
 import com.ssafy.solvedpick.accounts.repository.VerificationKeyRepository;
-import com.ssafy.solvedpick.global.error.exception.ApiResponseException;
 import com.ssafy.solvedpick.global.error.exception.VerificationNotFoundException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class VerificationService {
@@ -56,30 +58,33 @@ public class VerificationService {
 	
 	public boolean checkUser(String username) {
         try {
-            ResponseEntity<UsernameResponse> response = 
-                restTemplate.getForEntity(url + username, UsernameResponse.class);
+			log.debug("check user");
+            restTemplate.getForEntity(url + username, UsernameResponse.class);
             return true;
         } catch (Exception e) {
-        	throw new ApiResponseException("Failed to check user");
+			log.error("{}", e.getMessage());
+			return false;
         }
 	}
 
     public boolean verifyUser(SignupFormDTO signupFormDTO) {
     	String username = signupFormDTO.getUsername();
+
         try {
         	VerificationKey verificationKey = verificationKeyRepository.findByUsername(username)
                     .orElseThrow(() -> new VerificationNotFoundException("Verification key not found for username: " + username));
-        	System.out.println(verificationKey);
-        	ResponseEntity<UsernameResponse> response = 
-                    restTemplate.getForEntity(url + username, UsernameResponse.class);
+			log.debug("code: {}", verificationKey.getVerificationCode());
 
-            if (response.getBody() == null) {
-                throw new ApiResponseException("User not found");
-            }
+        	ResponseEntity<UsernameResponse> response =
+					restTemplate.getForEntity(url + username, UsernameResponse.class);
 
-            return verificationKey.getVerificationCode().equals(response.getBody().getName());
-                
-        } catch (Exception e) {
+            return response.getBody() != null
+					&& verificationKey.getVerificationCode().equals(response.getBody().getName());
+        } catch(HttpClientErrorException.NotFound e) {
+			log.error("user not found");
+			return false;
+		} catch (Exception e) {
+			log.error("{}", e.getMessage());
             throw new RuntimeException("Failed to verify user");
         }
     }

@@ -2,6 +2,10 @@ server:
   port: 8080
 
 spring:
+  devtools:
+    restart:
+      enabled: true
+
   config:
     import:
       - database.properties
@@ -16,10 +20,14 @@ spring:
     driver-class-name: ${DB.DRIVER}
   jpa:
     hibernate:
-      ddl-auto: ${HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${HIBERNATE_DDL_AUTO:none}
     database-platform: ${DB.DIALECT}
     properties:
       hibernate:
         show_sql: true
         format_sql: true
         physical_naming_strategy: ${DB.NAMING_STRATEGY}
+
+logging:
+  level:
+    com.ssafy.solvedpick: ${LOG_LEVEL:DEBUG}
