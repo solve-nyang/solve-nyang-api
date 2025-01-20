@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.members.Service;
+package com.ssafy.solvedpick.members.service;
 
 import com.ssafy.solvedpick.api.dto.UserData;
 import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
