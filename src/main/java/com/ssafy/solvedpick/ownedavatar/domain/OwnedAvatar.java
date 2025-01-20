@@ -22,7 +22,6 @@ public class OwnedAvatar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "owned_avatar_id", columnDefinition = "INT UNSIGNED")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,9 +36,13 @@ public class OwnedAvatar {
     @Column(nullable = false)
     private boolean visible = false;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean sold = false;
+
     @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime acquiredAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     public void updateVisibility() {
         this.visible = !this.visible;

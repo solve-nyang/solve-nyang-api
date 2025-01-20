@@ -37,11 +37,10 @@ public class VerificationKey {
 	
 	@Column(nullable = false, length = 12)
 	private String verificationCode;
-	
-	@Builder.Default
+
 	@CreatedDate
 	@Column(nullable = false)
-	private LocalDateTime createdAt = LocalDateTime.now();
+	private LocalDateTime createdAt;
 	
 	public void updateVerificationCode(String newCode) {
 		this.verificationCode = newCode;
