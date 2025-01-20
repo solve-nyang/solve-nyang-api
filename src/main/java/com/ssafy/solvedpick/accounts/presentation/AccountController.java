@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,7 @@ public class AccountController {
     private final VerificationService verificationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(SignupFormDTO signupFormDTO) {
+    public ResponseEntity<?> signup(@RequestBody SignupFormDTO signupFormDTO) {
     	boolean verified = verificationService.verifyUser(signupFormDTO);
     	if (verified) {
     		signupService.create(signupFormDTO);
@@ -40,9 +41,9 @@ public class AccountController {
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "failed"));
     }
     
-    	
+    
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(SignInFormDTO signInFormDTO) {
+    public ResponseEntity<?> signin(@RequestBody SignInFormDTO signInFormDTO) {
         TokenResponse tokenResponse = signinService.signIn(signInFormDTO);
         final String accessToken = tokenResponse.getAccessToken();
 //        final String refreshToken = tokenResponse.getRefreshToken();
@@ -71,7 +72,7 @@ public class AccountController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> getVerificationCode(MembernameDTO membernameDTO) {
+    public ResponseEntity<?> getVerificationCode(@RequestBody MembernameDTO membernameDTO) {
     	String username = membernameDTO.getUsername();
     	boolean check = verificationService.checkUser(username);
     	if (check) {

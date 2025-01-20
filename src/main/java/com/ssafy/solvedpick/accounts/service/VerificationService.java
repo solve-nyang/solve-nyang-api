@@ -12,6 +12,8 @@ import com.ssafy.solvedpick.accounts.domain.VerificationKey;
 import com.ssafy.solvedpick.accounts.dto.SignupFormDTO;
 import com.ssafy.solvedpick.accounts.dto.UsernameResponse;
 import com.ssafy.solvedpick.accounts.repository.VerificationKeyRepository;
+import com.ssafy.solvedpick.global.error.exception.ApiResponseException;
+import com.ssafy.solvedpick.global.error.exception.VerificationNotFoundException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -56,27 +58,32 @@ public class VerificationService {
         try {
             ResponseEntity<UsernameResponse> response = 
                 restTemplate.getForEntity(url + username, UsernameResponse.class);
+            System.out.println(response.getBody().getName());
+            if (response.getBody().getName() == null) {
+                throw new ApiResponseException("User not found: " + username);
+            }
             
-            return response.getBody() != null;
+            return true;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to check user");
+        	throw new ApiResponseException("Failed to check user");
         }
 	}
 
     public boolean verifyUser(SignupFormDTO signupFormDTO) {
     	String username = signupFormDTO.getUsername();
-        String url = "${URL.USER_INFO}";
         try {
-            ResponseEntity<UsernameResponse> response = 
-                restTemplate.getForEntity(url, UsernameResponse.class);
+        	VerificationKey verificationKey = verificationKeyRepository.findByUsername(username)
+                    .orElseThrow(() -> new VerificationNotFoundException("Verification key not found for username: " + username));
+        	System.out.println(verificationKey);
+        	ResponseEntity<UsernameResponse> response = 
+                    restTemplate.getForEntity(url + username, UsernameResponse.class);
 
-            String code = verificationKeyRepository.findByUsername(username).getVerificationCode();
-            
-            if (response.getBody() != null && 
-            		code.equals(response.getBody().getName())) {
-                return true;
+            if (response.getBody() == null) {
+                throw new ApiResponseException("User not found");
             }
-            return false;
+
+            return verificationKey.getVerificationCode().equals(response.getBody().getName());
+                
         } catch (Exception e) {
             throw new RuntimeException("Failed to verify user");
         }
