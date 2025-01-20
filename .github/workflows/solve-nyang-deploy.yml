@@ -1,0 +1,68 @@
+name: solve-nyang-deploy.yml
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create database-stage.properties
+        run: |
+          echo '${{ secrets.DATABASE_PROPERTIES }}' > ./src/main/resources/database.properties
+
+      - name: Create jwt.properties
+        run: |
+          echo '${{ secrets.JWT_PROPERTIES }}' > ./src/main/resources/jwt.properties
+
+      - name: Create api.properties
+        run: |
+          echo '${{ secrets.API_PROPERTIES }}' > ./src/main/resources/api.properties
+
+      - name: Create application-prod.yml
+        run: |
+          echo '${{ secrets.APPLICATION_PROD_PROPERTIES }}' > ./src/main/resources/application-prod.yml
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'liberica'
+
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+
+      - name: Deploy to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: "build/libs/*.jar"
+          target: "/home/ubuntu/solve-nyang"
+          strip_components: 3
+
+      - name: Execute deploy script
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            export SPRING_ENV=prod
+            cd solve-nyang/
+            ./deploy.sh
