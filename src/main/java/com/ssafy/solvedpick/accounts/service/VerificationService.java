@@ -32,18 +32,19 @@ public class VerificationService {
 	        code.append(characters.charAt(secureRandom.nextInt(characters.length())));
 	    }
 	    String verificationCode = code.toString();
-
-	    VerificationKey verificationKey = verificationKeyRepository.findByUsername(username);
-	    if (verificationKey != null) {
-	        verificationKey.updateVerificationCode(verificationCode);
-	    } else {
-	        VerificationKey key = VerificationKey.builder()
-	            .username(username)
-	            .verificationCode(verificationCode)
-	            .createdAt(LocalDateTime.now())
-	            .build();
-	        this.verificationKeyRepository.save(key);
-	    }
+	    
+	    verificationKeyRepository.findByUsername(username)
+        .ifPresentOrElse(
+            key -> key.updateVerificationCode(verificationCode),
+            () -> {
+                VerificationKey newKey = VerificationKey.builder()
+                    .username(username)
+                    .verificationCode(verificationCode)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+                verificationKeyRepository.save(newKey);
+            }
+        );
 
 	    return verificationCode;
 	}
