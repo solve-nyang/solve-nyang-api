@@ -18,20 +18,15 @@ public class AvatarDto {
     private double dropRate; //뽑힐 확률
 
     //Entity를 DTO로 변환하는 메서드
-    public static AvatarDto toDto(Avatar avatar, Map<Integer, Long> countByGrade) {
+    public static AvatarDto from(Avatar avatar, GradeStatistics statistics) {
         Grade grade = Grade.fromValue(avatar.getGrade());
-        // 해당 등급의 전체 캐릭터 수를 가져옴
-        long charactersInGrade = countByGrade.get(avatar.getGrade());
-
-        //개별 캐릭터의 확률을 계산
-        double individualDropRate = grade.getProbability() / charactersInGrade;
 
         //Entity와 Enum의 정보들을 바탕으로 DTO로 변환
         return AvatarDto.builder()
                 .id(String.valueOf(avatar.getId()))
                 .name(avatar.getTitle())
                 .rarity(grade.name())
-                .dropRate(individualDropRate)
+                .dropRate(statistics.getIndividualProbability())
                 .build();
     }
 }

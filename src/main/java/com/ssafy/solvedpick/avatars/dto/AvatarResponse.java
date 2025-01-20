@@ -11,7 +11,7 @@ public class AvatarResponse {
     private final List<AvatarDto> avatars;
 
 
-    public AvatarResponse(List<AvatarDto> avatars) {
+    private AvatarResponse(List<AvatarDto> avatars) {
         this.avatars = avatars;
     }
     //response 생성
