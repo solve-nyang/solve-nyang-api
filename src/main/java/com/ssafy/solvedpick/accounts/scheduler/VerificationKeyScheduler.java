@@ -19,4 +19,4 @@ public class VerificationKeyScheduler {
 	LocalDateTime tenMinutesAgo = LocalDateTime.now().minusMinutes(10);
 	verificationKeyRepository.deleteByCreatedAtBefore(tenMinutesAgo);
 	}
-}	
+}

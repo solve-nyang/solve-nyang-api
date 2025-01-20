@@ -10,6 +10,6 @@ public interface VerificationKeyRepository extends JpaRepository<VerificationKey
 
 	String findByVerificationCode(String username);
 	VerificationKey findByUsername(String username);
-    void deleteByCreatedAtBefore(LocalDateTime dateTime);
+	void deleteByCreatedAtBefore(LocalDateTime dateTime);
 
 }
