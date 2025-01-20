@@ -28,12 +28,13 @@ import lombok.Builder;
 @Entity
 @Getter
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "members")
 public class Member {
-	@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "Integer unsigned")
     private Long id;
@@ -45,16 +46,14 @@ public class Member {
     private String password;
     
     @Builder.Default
-    @Column(columnDefinition = "boolean default false")
     private boolean verified = false;
     
     @Builder.Default
-    @Column(columnDefinition = "Integer unsigned default 0")
-    private Integer point = 0;
+    private int point = 0;
     
-    @Builder.Default
+    @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
