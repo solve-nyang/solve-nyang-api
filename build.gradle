@@ -34,8 +34,6 @@ dependencies {
 
     // JUnit
     testImplementation 'org.junit.jupiter:junit-jupiter'
-	// MySQL
-	// testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
     // Spring Security 기본 의존성
     implementation 'org.springframework.boot:spring-boot-starter-security'
     // JWT 관련 의존성
@@ -46,4 +44,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs += ["-parameters"]
 }

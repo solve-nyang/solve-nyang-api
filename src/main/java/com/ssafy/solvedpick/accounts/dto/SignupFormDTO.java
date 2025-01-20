@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignupFormDTO {
     private String username;

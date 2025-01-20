@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignInFormDTO {
     private String username;

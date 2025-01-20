@@ -53,7 +53,6 @@ public class Member {
     private Integer point = 0;
     
     @Builder.Default
-    @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 public class VerificationKeyScheduler {
 	private final VerificationKeyRepository verificationKeyRepository;
 	    
-	@Scheduled(fixedRate = 60000) // 1분마다 실행
+	@Scheduled(cron = "0 0 4 * * *")
 	public void removeExpiredKeys() {
 	LocalDateTime tenMinutesAgo = LocalDateTime.now().minusMinutes(10);
 	verificationKeyRepository.deleteByCreatedAtBefore(tenMinutesAgo);
 	}
-}
+}	

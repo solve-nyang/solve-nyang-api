@@ -20,7 +20,7 @@ public class SigninService {
     private final JwtUtil jwtUtil;
 
     public TokenResponse signIn(SignInFormDTO signInFormDTO) {
-        Member member = Optional.ofNullable(memberRepository.findByUsername(signInFormDTO.getUsername()))
+    	Member member = memberRepository.findByUsername(signInFormDTO.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
         
         if (!passwordEncoder.matches(signInFormDTO.getPassword(), member.getPassword())) {
@@ -28,8 +28,12 @@ public class SigninService {
         }
 
         String accessToken = jwtUtil.generateAccessToken(signInFormDTO.getUsername());
-        String refreshToken = jwtUtil.generateRefreshToken(signInFormDTO.getUsername());
-
-        return new TokenResponse(accessToken, refreshToken);
+//        String refreshToken = jwtUtil.generateRefreshToken(signInFormDTO.getUsername());
+        
+        TokenResponse tokenResponse = TokenResponse.builder()
+        									.accessToken(accessToken)
+//        								    .refreshToken(refreshToken)
+        								    .build();
+        return tokenResponse;
     }
 }

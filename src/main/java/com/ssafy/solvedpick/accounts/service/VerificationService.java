@@ -1,7 +1,9 @@
 package com.ssafy.solvedpick.accounts.service;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -38,6 +40,7 @@ public class VerificationService {
 	        VerificationKey key = VerificationKey.builder()
 	            .username(username)
 	            .verificationCode(verificationCode)
+	            .createdAt(LocalDateTime.now())
 	            .build();
 	        this.verificationKeyRepository.save(key);
 	    }
@@ -45,15 +48,17 @@ public class VerificationService {
 	    return verificationCode;
 	}
 	
+	@Value("${URL.USER_INFO}")
+	private String url;
+	
 	public boolean checkUser(String username) {
-		String url = "${URL.USER_INFO}";
         try {
             ResponseEntity<UsernameResponse> response = 
-                restTemplate.getForEntity(url, UsernameResponse.class);
+                restTemplate.getForEntity(url + username, UsernameResponse.class);
             
             return response.getBody() != null;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to check user with Solved.AC");
+            throw new RuntimeException("Failed to check user");
         }
 	}
 
@@ -63,9 +68,8 @@ public class VerificationService {
         try {
             ResponseEntity<UsernameResponse> response = 
                 restTemplate.getForEntity(url, UsernameResponse.class);
-            System.out.println("res : " + response.getBody().getName());
+
             String code = verificationKeyRepository.findByUsername(username).getVerificationCode();
-            System.out.println(code);
             
             if (response.getBody() != null && 
             		code.equals(response.getBody().getName())) {
@@ -73,7 +77,7 @@ public class VerificationService {
             }
             return false;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to verify user with Solved.AC");
+            throw new RuntimeException("Failed to verify user");
         }
     }
 }

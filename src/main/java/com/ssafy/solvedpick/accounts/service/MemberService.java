@@ -23,13 +23,11 @@ public class MemberService {
     private final ApiService apiService;
 
     public Member create(SignupFormDTO signupFormDTO) {
-        // DTO로부터 데이터 추출 및 변환
     	Member user = Member.builder()
         		.username(signupFormDTO.getUsername())
         		.password(passwordEncoder.encode(signupFormDTO.getPassword()))
         		.build();
         
-        // 저장
     	if(memberRepository.existsByUsername(signupFormDTO.getUsername())){
     		return user;
     	}

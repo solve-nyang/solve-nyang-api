@@ -34,12 +34,12 @@ public class VerificationKey {
 	@Column(nullable = false, unique = true, length = 30)
     private String username;
 	
-	@Column(nullable = false, length = 30)
+	@Column(nullable = false, length = 12)
     private String verificationCode;
 	
 	@Builder.Default
 	@CreatedDate
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	private LocalDateTime createdAt = LocalDateTime.now();
 	
 	public void updateVerificationCode(String newCode) {

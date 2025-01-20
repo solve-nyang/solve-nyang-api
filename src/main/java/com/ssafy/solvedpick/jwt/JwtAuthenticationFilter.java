@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
-
+    
     private void processToken(String token, HttpServletRequest request) {
         String username = jwtUtil.validateToken(token);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

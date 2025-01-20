@@ -19,11 +19,6 @@ import com.ssafy.solvedpick.jwt.JwtUtil;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     
-//    @Bean
-//    public RestTemplate restTemplate() {
-//        return new RestTemplate();
-//    }
-    
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -36,10 +31,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/account/verify", "/account/signin", "account/signup").permitAll()
-                .anyRequest().permitAll()
-//                authenticated()
+        	.authorizeHttpRequests(auth -> auth
+            	.requestMatchers("/account/verify", "/account/signin", "account/signup").permitAll()
+                .anyRequest().authenticated()
             )
             .formLogin().disable() // 기본 로그인 비활성화
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
