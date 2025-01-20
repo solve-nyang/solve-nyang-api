@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
