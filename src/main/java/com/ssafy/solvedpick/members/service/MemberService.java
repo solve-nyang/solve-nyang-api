@@ -6,7 +6,6 @@ import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.members.dto.UserInfoResponse;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,20 +14,18 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ApiService apiService;
-    //        더미아이디이름
-    @Value("${API.ID}")
-    private String membername;
-
+    
+    // TODO: 전체 수정하기
     public UserInfoResponse getUserInfo(Long memberId) {
-//        String membername = memberRepository.findById(memberId)
-//                .orElseThrow(EntityNotFoundException::new)
-//                .getUsername();
+        String memberName = memberRepository.findById(memberId)
+                .orElseThrow(RuntimeException::new)
+                .getUsername();
 
-        UserInfoApiResponse apiResponse = apiService.getUserInfo(membername);
+        UserInfoApiResponse apiResponse = apiService.getUserInfo(memberName);
         UserData userData = apiResponse.getItems().get(0);
 
         return UserInfoResponse.builder()
-                .nickname(membername)
+                .nickname(memberName)
 //                더미 데이터
                 .point(123456)
                 .solvedacTier(userData.getTier())
