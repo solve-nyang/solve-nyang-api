@@ -27,15 +27,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "verification_keys")
 public class VerificationKey {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "Integer unsigned")
-    private Long id;
+	private Long id;
 	
 	@Column(nullable = false, unique = true, length = 30)
-    private String username;
+	private String username;
 	
 	@Column(nullable = false, length = 12)
-    private String verificationCode;
+	private String verificationCode;
 	
 	@Builder.Default
 	@CreatedDate
@@ -43,7 +43,7 @@ public class VerificationKey {
 	private LocalDateTime createdAt = LocalDateTime.now();
 	
 	public void updateVerificationCode(String newCode) {
-        this.verificationCode = newCode;
-        this.createdAt = LocalDateTime.now();
-    }
+		this.verificationCode = newCode;
+		this.createdAt = LocalDateTime.now();
+	}
 }
