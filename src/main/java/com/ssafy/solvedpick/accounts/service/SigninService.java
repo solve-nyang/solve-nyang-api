@@ -1,9 +1,9 @@
 package com.ssafy.solvedpick.accounts.service;
 
-import com.ssafy.solvedpick.accounts.domain.Member;
 import com.ssafy.solvedpick.accounts.dto.SignInFormDTO;
-import com.ssafy.solvedpick.accounts.repository.MemberRepository;
 import com.ssafy.solvedpick.jwt.JwtUtil;
+import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.accounts.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 

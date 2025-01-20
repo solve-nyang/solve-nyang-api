@@ -1,7 +1,5 @@
 package com.ssafy.solvedpick.gacha.service;
 
-import com.ssafy.solvedpick.accounts.repository.MemberRepository;
-import com.ssafy.solvedpick.accounts.domain.Member;
 import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.avatars.domain.Grade;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
@@ -9,7 +7,8 @@ import com.ssafy.solvedpick.avatars.dto.DrawAvatarDto;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.gacha.dto.DrawResponse;
-
+import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.members.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

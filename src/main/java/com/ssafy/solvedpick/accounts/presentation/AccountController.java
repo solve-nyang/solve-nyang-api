@@ -18,7 +18,7 @@ import com.ssafy.solvedpick.accounts.dto.SignupFormDTO;
 import com.ssafy.solvedpick.accounts.dto.SignInFormDTO;
 import com.ssafy.solvedpick.accounts.dto.TokenResponse;
 import com.ssafy.solvedpick.accounts.dto.MembernameDTO;
-import com.ssafy.solvedpick.accounts.service.MemberService;
+import com.ssafy.solvedpick.accounts.service.SignupService;
 import com.ssafy.solvedpick.accounts.service.SigninService;
 import com.ssafy.solvedpick.accounts.service.VerificationService;
 
@@ -26,7 +26,7 @@ import com.ssafy.solvedpick.accounts.service.VerificationService;
 @RequestMapping("/account")
 @RequiredArgsConstructor
 public class AccountController {
-    private final MemberService memberService;
+    private final SignupService signupService;
     private final SigninService signinService;
     private final VerificationService verificationService;
 
@@ -34,7 +34,7 @@ public class AccountController {
     public ResponseEntity<?> signup(SignupFormDTO signupFormDTO) {
     	boolean verified = verificationService.verifyUser(signupFormDTO);
     	if (verified) {
-    		memberService.create(signupFormDTO);
+    		signupService.create(signupFormDTO);
     		return ResponseEntity.ok().body(Map.of("message", "success"));
     	}
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "failed"));
@@ -70,7 +70,7 @@ public class AccountController {
             ));
     }
 
-    @GetMapping("/verify")
+    @PostMapping("/verify")
     public ResponseEntity<?> getVerificationCode(MembernameDTO membernameDTO) {
     	String username = membernameDTO.getUsername();
     	boolean check = verificationService.checkUser(username);

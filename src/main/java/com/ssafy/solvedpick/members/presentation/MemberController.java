@@ -1,8 +1,8 @@
-package com.ssafy.solvedpick.accounts.presentation;
+package com.ssafy.solvedpick.members.presentation;
 
 import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
-import com.ssafy.solvedpick.accounts.service.MemberService;
-import com.ssafy.solvedpick.accounts.dto.UserInfoResponse;
+import com.ssafy.solvedpick.members.service.MemberService;
+import com.ssafy.solvedpick.members.dto.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +19,7 @@ public class MemberController {
 
     @GetMapping()
     public ResponseEntity<UserInfoResponse> getUSerInfo(@RequestHeader(value="Authorization") Long memberId){
+
         UserInfoResponse result = memberService.getUserInfo(memberId);
         return ResponseEntity.ok(result);
     }

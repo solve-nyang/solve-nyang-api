@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.accounts.domain;
+package com.ssafy.solvedpick.members.domain;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -56,6 +56,7 @@ public class Member {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedAvatar> avatars = new ArrayList<>();
 }
