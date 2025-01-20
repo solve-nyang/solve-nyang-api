@@ -1,6 +1,8 @@
 name: solve-nyang-deploy.yml
 on:
   push:
+    branches:
+      - main
 
 jobs:
   deploy:
