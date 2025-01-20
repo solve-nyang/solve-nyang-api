@@ -6,6 +6,7 @@ spring:
     import:
       - database.properties
       - api.properties
+      - jwt.properties
 
   datasource:
     url: ${DB.URL}

@@ -1,7 +1,7 @@
 package com.ssafy.solvedpick.gacha.service;
 
 import com.ssafy.solvedpick.avatars.domain.Avatar;
-import com.ssafy.solvedpick.avatars.domain.Grade;
+import com.ssafy.solvedpick.common.grade.Grade;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.avatars.dto.DrawAvatarDto;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
