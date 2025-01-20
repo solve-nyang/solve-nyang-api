@@ -1,6 +1,5 @@
 package com.ssafy.solvedpick.members.presentation;
 
-import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
 import com.ssafy.solvedpick.members.service.MemberService;
 import com.ssafy.solvedpick.members.dto.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
