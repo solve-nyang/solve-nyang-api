@@ -58,11 +58,6 @@ public class VerificationService {
         try {
             ResponseEntity<UsernameResponse> response = 
                 restTemplate.getForEntity(url + username, UsernameResponse.class);
-            System.out.println(response.getBody().getName());
-            if (response.getBody().getName() == null) {
-                throw new ApiResponseException("User not found: " + username);
-            }
-            
             return true;
         } catch (Exception e) {
         	throw new ApiResponseException("Failed to check user");
