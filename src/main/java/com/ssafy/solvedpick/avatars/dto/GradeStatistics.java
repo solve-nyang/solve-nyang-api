@@ -1,6 +1,6 @@
 package com.ssafy.solvedpick.avatars.dto;
 
-import com.ssafy.solvedpick.avatars.domain.Grade;
+
 import lombok.Getter;
 
 @Getter

@@ -1,11 +1,12 @@
 package com.ssafy.solvedpick.avatars.service;
 
 import com.ssafy.solvedpick.avatars.domain.Avatar;
-import com.ssafy.solvedpick.avatars.domain.Grade;
+
 import com.ssafy.solvedpick.avatars.dto.AvatarDto;
 import com.ssafy.solvedpick.avatars.dto.AvatarResponse;
 import com.ssafy.solvedpick.avatars.dto.GradeStatistics;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
+import com.ssafy.solvedpick.common.grade.Grade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
