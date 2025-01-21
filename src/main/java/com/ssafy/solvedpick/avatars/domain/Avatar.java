@@ -38,6 +38,7 @@ public class Avatar {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "avatar", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedAvatar> avatars = new ArrayList<>();
 }
