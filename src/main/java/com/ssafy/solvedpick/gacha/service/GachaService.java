@@ -56,7 +56,7 @@ public class GachaService {
             results.add(DrawAvatarDto.builder()
                     .ownedAvatarId(ownedAvatar.getId())
                     .avatarId(selectedAvatar.getId())
-                    .name(selectedAvatar.getTitle())
+                    .name(selectedAvatar.getName())
                     .rarity(Grade.fromValue(selectedAvatar.getGrade()).name())
                     .dropRate(Grade.fromValue(selectedAvatar.getGrade()).getProbability())
                     .build());

@@ -27,7 +27,7 @@ public class Avatar {
     private Long id;
 
     @Column(unique = true, nullable = false, length = 50)
-    private String title;
+    private String name;
 
     @Min(1)
     @Max(5)

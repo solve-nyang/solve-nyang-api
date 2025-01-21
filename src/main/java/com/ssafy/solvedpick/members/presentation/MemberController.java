@@ -17,9 +17,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping()
-    public ResponseEntity<UserInfoResponse> getUSerInfo(@RequestHeader(value="Authorization") Long memberId){
-
-        UserInfoResponse result = memberService.getUserInfo(memberId);
+    public ResponseEntity<UserInfoResponse> getUSerInfo(){
+        UserInfoResponse result = memberService.getUserInfo();
         return ResponseEntity.ok(result);
     }
 }
