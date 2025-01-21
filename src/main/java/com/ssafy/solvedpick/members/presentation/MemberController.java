@@ -1,8 +1,12 @@
 package com.ssafy.solvedpick.members.presentation;
 
 import com.ssafy.solvedpick.members.service.MemberService;
+import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.members.dto.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,5 +24,11 @@ public class MemberController {
     public ResponseEntity<UserInfoResponse> getUSerInfo(){
         UserInfoResponse result = memberService.getUserInfo();
         return ResponseEntity.ok(result);
+    }
+    
+    @GetMapping("/problem")
+    public ResponseEntity<SolvedProblemsApiResponse> getProblems(){
+        
+        return ResponseEntity.ok(memberService.getUserProblems());
     }
 }
