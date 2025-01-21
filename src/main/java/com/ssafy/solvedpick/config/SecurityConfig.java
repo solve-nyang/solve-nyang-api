@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.RestTemplate;
 
 import com.ssafy.solvedpick.jwt.JwtAuthenticationFilter;
 import com.ssafy.solvedpick.jwt.JwtUtil;
@@ -28,15 +27,16 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtil);
     }
 
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-        	.authorizeHttpRequests(auth -> auth
-            	.requestMatchers("/account/verify", "/account/signin", "account/signup").permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin().disable() // 기본 로그인 비활성화
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .cors(cors -> cors.configure(http))
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/account/verify", "/account/signin", "/account/signup").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(login -> login.disable())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
