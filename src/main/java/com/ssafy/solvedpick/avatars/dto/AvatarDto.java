@@ -7,8 +7,6 @@ import com.ssafy.solvedpick.common.grade.Grade;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Map;
-
 @Getter
 @Builder
 public class AvatarDto {
@@ -25,7 +23,7 @@ public class AvatarDto {
         //Entity와 Enum의 정보들을 바탕으로 DTO로 변환
         return AvatarDto.builder()
                 .id(String.valueOf(avatar.getId()))
-                .name(avatar.getTitle())
+                .name(avatar.getName())
                 .rarity(grade.name())
                 .dropRate(statistics.getIndividualProbability())
                 .build();
