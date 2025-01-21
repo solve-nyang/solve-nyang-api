@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.gacha.service;
 
+import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.common.grade.Grade;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
@@ -29,10 +30,11 @@ public class GachaService {
     private final AvatarRepository avatarRepository;
     private final OwnedAvatarRepository ownedAvatarRepository;
     private final Random random = new Random();
+    private final AuthService authService;
 
     public DrawResponse drawAvatars(int count){
 //        더미 유저
-        Member member = memberRepository.findById(1L);
+        Member member = authService.getCurrentMember();
 
         List<DrawAvatarDto> results = new ArrayList<>();
 

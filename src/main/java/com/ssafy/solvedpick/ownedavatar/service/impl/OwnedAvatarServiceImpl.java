@@ -1,6 +1,8 @@
 package com.ssafy.solvedpick.ownedavatar.service.impl;
 
+import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.common.grade.Grade;
+import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.dto.OwnedAvatarDTO;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
@@ -18,6 +20,7 @@ import java.util.List;
 public class OwnedAvatarServiceImpl implements OwnedAvatarService {
 
     private final OwnedAvatarRepository ownedAvatarRepository;
+    private final AuthService authService;
 
     @Override
     public List<OwnedAvatarDTO> getOwnedAvatars(Long memberId) {
@@ -35,11 +38,13 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
 
 //    Todo: member정보 확인
     @Override
-    public void updateAvatarVisibility(Long memberId, Long avatarId) {
+    public void updateAvatarVisibility(Long avatarId) {
+        Member member = authService.getCurrentMember();
+
         OwnedAvatar ownedAvatar = ownedAvatarRepository.findById(avatarId)
                 .orElseThrow(() -> new EntityNotFoundException("No avatar"));
 
-        if (!ownedAvatar.getMember().getId().equals(memberId)) {
+        if (!ownedAvatar.getMember().getId().equals(member.getId())) {
             throw new IllegalArgumentException("Not authorized to update this avatar");
         }
         ownedAvatar.updateVisibility();

@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.ownedavatar.presentation;
 
+import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.ownedavatar.dto.MemberAvatarResponseDTO;
 import com.ssafy.solvedpick.ownedavatar.dto.OwnedAvatarDTO;
 import com.ssafy.solvedpick.ownedavatar.service.OwnedAvatarService;
@@ -15,10 +16,12 @@ import java.util.List;
 public class OwnedAvatarController {
 
     private final OwnedAvatarService ownedAvatarService;
+    private final AuthService authService;
 
     // TODO: JWT 기능의 부재로 현재는 Authorization header
     @GetMapping("/avatar")
-    public ResponseEntity<?> getMemberAvatar(@RequestHeader(value = "Authorization") Long memberId) {
+    public ResponseEntity<?> getMemberAvatar() {
+        Long memberId = authService.getCurrentMember().getId();
         List<OwnedAvatarDTO> avatars = ownedAvatarService.getOwnedAvatars(memberId);
         MemberAvatarResponseDTO result = MemberAvatarResponseDTO.builder()
                 .avatars(avatars)
@@ -29,10 +32,9 @@ public class OwnedAvatarController {
 
     @PatchMapping("/avatar/{ownedAvatarId}")
     public ResponseEntity<?> updateAvatarVisibility(
-            @RequestHeader(value = "Authorization") Long memberId,
             @PathVariable Long ownedAvatarId
     ) {
-        ownedAvatarService.updateAvatarVisibility(memberId, ownedAvatarId);
+        ownedAvatarService.updateAvatarVisibility(ownedAvatarId);
         return ResponseEntity.noContent().build();
     }
 }
