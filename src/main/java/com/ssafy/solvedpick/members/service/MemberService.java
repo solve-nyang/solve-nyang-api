@@ -28,8 +28,7 @@ public class MemberService {
 
         return UserInfoResponse.builder()
                 .nickname(member.getUsername())
-//                더미 데이터
-                .point(123456)
+                .point(member.getPoint())
                 .solvedacTier(userData.getTier())
                 .solvedCount(userData.getSolvedCount())
                 .solvedacStrick(userData.getMaxStreak())
