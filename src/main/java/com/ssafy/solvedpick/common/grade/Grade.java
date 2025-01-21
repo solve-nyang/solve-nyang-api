@@ -10,9 +10,9 @@ import java.util.Arrays;
 public enum Grade {
     S(5, 1.0),
     A(4, 4.0),
-    B(3, 15.0),
-    C(2, 30.0),
-    D(1, 50.0);
+    B(3, 30.0),
+    C(2, 45.0),
+    D(1, 20.0);
 
     private final int value;
     private final double probability;
