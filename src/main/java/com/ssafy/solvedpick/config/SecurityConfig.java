@@ -27,6 +27,7 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtil);
     }
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configure(http))
