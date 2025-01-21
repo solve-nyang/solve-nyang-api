@@ -28,15 +28,16 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtil);
     }
 
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-        	.authorizeHttpRequests(auth -> auth
-            	.requestMatchers("/account/verify", "/account/signin", "account/signup").permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin().disable() // 기본 로그인 비활성화
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .cors(cors -> cors.configure(http))
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/account/verify", "/account/signin", "/account/signup").permitAll()  // 경로 앞에 / 추가
+                        .anyRequest().authenticated()
+                )
+                .formLogin(login -> login.disable())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
