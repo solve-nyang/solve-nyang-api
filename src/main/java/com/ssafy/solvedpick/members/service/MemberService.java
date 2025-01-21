@@ -3,6 +3,8 @@ package com.ssafy.solvedpick.members.service;
 import com.ssafy.solvedpick.api.dto.UserData;
 import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
+import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.dto.UserInfoResponse;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,20 +16,19 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ApiService apiService;
-    
-    // TODO: 전체 수정하기
-    public UserInfoResponse getUserInfo(Long memberId) {
-        String memberName = memberRepository.findById(memberId)
-                .orElseThrow(RuntimeException::new)
-                .getUsername();
+    private final AuthService authService;
 
-        UserInfoApiResponse apiResponse = apiService.getUserInfo(memberName);
+    // TODO: 전체 수정하기
+    // TODO: point 로직 추가
+    public UserInfoResponse getUserInfo() {
+        Member member = authService.getCurrentMember();
+
+        UserInfoApiResponse apiResponse = apiService.getUserInfo(member.getUsername());
         UserData userData = apiResponse.getItems().get(0);
 
         return UserInfoResponse.builder()
-                .nickname(memberName)
-//                더미 데이터
-                .point(123456)
+                .nickname(member.getUsername())
+                .point(member.getPoint())
                 .solvedacTier(userData.getTier())
                 .solvedCount(userData.getSolvedCount())
                 .solvedacStrick(userData.getMaxStreak())

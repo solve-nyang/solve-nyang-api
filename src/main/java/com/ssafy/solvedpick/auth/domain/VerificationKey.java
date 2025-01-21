@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.accounts.domain;
+package com.ssafy.solvedpick.auth.domain;
 
 import java.time.LocalDateTime;
 

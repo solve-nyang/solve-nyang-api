@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.accounts.dto;
+package com.ssafy.solvedpick.auth.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

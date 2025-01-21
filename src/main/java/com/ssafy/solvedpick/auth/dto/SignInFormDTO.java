@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.accounts.dto;
+package com.ssafy.solvedpick.auth.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class TokenResponse {
+public class SignInFormDTO {
+    private String username;
+    private String password;
 
-    private String accessToken;
 }

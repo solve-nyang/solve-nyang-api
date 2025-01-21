@@ -26,7 +26,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
                 .map(ownedAvatar -> OwnedAvatarDTO.builder()
                         .visible(ownedAvatar.isVisible())
                         .ownedAvatarId(ownedAvatar.getId())
-                        .name(ownedAvatar.getAvatar().getTitle())
+                        .name(ownedAvatar.getAvatar().getName())
                         .rarity(Grade.fromValue(ownedAvatar.getAvatar().getGrade()).name())
                         .dropRate(Grade.fromValue(ownedAvatar.getAvatar().getGrade()).getProbability())
                         .build())

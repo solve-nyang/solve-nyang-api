@@ -1,11 +1,11 @@
-package com.ssafy.solvedpick.accounts.scheduler;
+package com.ssafy.solvedpick.auth.scheduler;
 
 import java.time.LocalDateTime;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.ssafy.solvedpick.accounts.repository.VerificationKeyRepository;
+import com.ssafy.solvedpick.auth.repository.VerificationKeyRepository;
 
 import lombok.RequiredArgsConstructor;
 
