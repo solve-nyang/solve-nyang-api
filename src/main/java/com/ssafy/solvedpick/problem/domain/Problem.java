@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ssafy.solvedpick.api.dto.ProblemData;
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
+import com.ssafy.solvedpick.common.point.Point;
 import com.ssafy.solvedpick.members.domain.Member;
 
 import jakarta.persistence.Column;
@@ -131,106 +132,199 @@ public class Problem {
     @JoinColumn(name = "user_id", unique = true)
     private Member member;
 	
-	public void updateSolvedProblems(SolvedProblemsApiResponse  newProblems) {
+	public void updateSolvedProblems(SolvedProblemsApiResponse newProblems) {
+		Long plusPoint = 0L; 
 	    for (ProblemData  problem : newProblems) {
 	    	int level = problem.getLevel();
 	        int solved = problem.getSolved();
-	        
+
 	        switch (level) {
 	            case 0:
 	                if (this.unrated_solved != solved) this.unrated_solved = (long) solved;
 	                break;
 	            case 1:
-	                if (this.bronze5_solved != solved) this.bronze5_solved = (long) solved;
+	                if (this.bronze5_solved != solved) {
+	                	plusPoint += (solved - this.bronze5_solved) * Point.getPointFromTier(level);
+	                	this.bronze5_solved = (long) solved;
+	                }
 	                break;
 	            case 2:
-	                if (this.bronze4_solved != solved) this.bronze4_solved = (long) solved;
+	                if (this.bronze4_solved != solved) {
+	                	plusPoint += (solved - this.bronze4_solved) * Point.getPointFromTier(level);
+	                	this.bronze4_solved = (long) solved;
+	                }
 	                break;
 	            case 3:
-	                if (this.bronze3_solved != solved) this.bronze3_solved = (long) solved;
+	                if (this.bronze3_solved != solved) {
+	                	plusPoint += (solved - this.bronze3_solved) * Point.getPointFromTier(level);
+						this.bronze3_solved = (long) solved;
+					}						
 	                break;
 	            case 4:
-	                if (this.bronze2_solved != solved) this.bronze2_solved = (long) solved;
+	                if (this.bronze2_solved != solved) {
+	                	plusPoint += (solved - this.bronze2_solved) * Point.getPointFromTier(level);
+						this.bronze2_solved = (long) solved;
+					}						
 	                break;
 	            case 5:
-	                if (this.bronze1_solved != solved) this.bronze1_solved = (long) solved;
+	                if (this.bronze1_solved != solved) {
+	                	plusPoint += (solved - this.bronze1_solved) * Point.getPointFromTier(level);
+						this.bronze1_solved = (long) solved;
+					}						
 	                break;
 	            case 6:
-	                if (this.silver5_solved != solved) this.silver5_solved = (long) solved;
+	                if (this.silver5_solved != solved) {
+	                	plusPoint += (solved - this.silver5_solved) * Point.getPointFromTier(level);
+						this.silver5_solved = (long) solved;
+					}						
 	                break;
 	            case 7:
-	                if (this.silver4_solved != solved) this.silver4_solved = (long) solved;
+	                if (this.silver4_solved != solved) {
+	                	plusPoint += (solved - this.silver4_solved) * Point.getPointFromTier(level);
+						this.silver4_solved = (long) solved;
+					}						
 	                break;
 	            case 8:
-	                if (this.silver3_solved != solved) this.silver3_solved = (long) solved;
+	                if (this.silver3_solved != solved) {
+	                	plusPoint += (solved - this.silver3_solved) * Point.getPointFromTier(level);
+						this.silver3_solved = (long) solved;
+					}						
 	                break;
 	            case 9:
-	                if (this.silver2_solved != solved) this.silver2_solved = (long) solved;
+	                if (this.silver2_solved != solved) {
+	                	plusPoint += (solved - this.silver2_solved) * Point.getPointFromTier(level);
+						this.silver2_solved = (long) solved;
+					}						
 	                break;
 	            case 10:
-	                if (this.silver1_solved != solved) this.silver1_solved = (long) solved;
+	                if (this.silver1_solved != solved) {
+	                	plusPoint += (solved - this.silver1_solved) * Point.getPointFromTier(level);
+						this.silver1_solved = (long) solved;
+					}						
 	                break;
 	            case 11:
-	                if (this.gold5_solved != solved) this.gold5_solved = (long) solved;
+	                if (this.gold5_solved != solved) {
+	                	plusPoint += (solved - this.gold5_solved) * Point.getPointFromTier(level);
+						this.gold5_solved = (long) solved;
+					}						
 	                break;
 	            case 12:
-	                if (this.gold4_solved != solved) this.gold4_solved = (long) solved;
+	                if (this.gold4_solved != solved) {
+	                	plusPoint += (solved - this.gold4_solved) * Point.getPointFromTier(level);
+						this.gold4_solved = (long) solved;
+					}						
 	                break;
 	            case 13:
-	                if (this.gold3_solved != solved) this.gold3_solved = (long) solved;
+	                if (this.gold3_solved != solved) {
+	                	plusPoint += (solved - this.gold3_solved) * Point.getPointFromTier(level);
+						this.gold3_solved = (long) solved;
+					}						
 	                break;
 	            case 14:
-	                if (this.gold2_solved != solved) this.gold2_solved = (long) solved;
+	                if (this.gold2_solved != solved) {
+	                	plusPoint += (solved - this.gold2_solved) * Point.getPointFromTier(level);
+						this.gold2_solved = (long) solved;
+					}						
 	                break;
 	            case 15:
-	                if (this.gold1_solved != solved) this.gold1_solved = (long) solved;
+	                if (this.gold1_solved != solved) {
+	                	plusPoint += (solved - this.gold1_solved) * Point.getPointFromTier(level);
+						this.gold1_solved = (long) solved;
+					}						
 	                break;
 	            case 16:
-	                if (this.platinum5_solved != solved) this.platinum5_solved = (long) solved;
+	                if (this.platinum5_solved != solved) {
+	                	plusPoint += (solved - this.platinum5_solved) * Point.getPointFromTier(level);
+						this.platinum5_solved = (long) solved;
+					}						
 	                break;
 	            case 17:
-	                if (this.platinum4_solved != solved) this.platinum4_solved = (long) solved;
+	                if (this.platinum4_solved != solved) {
+	                	plusPoint += (solved - this.platinum4_solved) * Point.getPointFromTier(level);
+						this.platinum4_solved = (long) solved;
+					}						
 	                break;
 	            case 18:
-	                if (this.platinum3_solved != solved) this.platinum3_solved = (long) solved;
+	                if (this.platinum3_solved != solved) {
+	                	plusPoint += (solved - this.platinum3_solved) * Point.getPointFromTier(level);
+						this.platinum3_solved = (long) solved;
+					}						
 	                break;
 	            case 19:
-	                if (this.platinum2_solved != solved) this.platinum2_solved = (long) solved;
+	                if (this.platinum2_solved != solved) {
+	                	plusPoint += (solved - this.platinum2_solved) * Point.getPointFromTier(level);
+						this.platinum2_solved = (long) solved;
+					}						
 	                break;
 	            case 20:
-	                if (this.platinum1_solved != solved) this.platinum1_solved = (long) solved;
+	                if (this.platinum1_solved != solved) {
+	                	plusPoint += (solved - this.platinum1_solved) * Point.getPointFromTier(level);
+						this.platinum1_solved = (long) solved;
+					}						
 	                break;
 	            case 21:
-	                if (this.diamond5_solved != solved) this.diamond5_solved = (long) solved;
+	                if (this.diamond5_solved != solved) {
+	                	plusPoint += (solved - this.diamond5_solved) * Point.getPointFromTier(level);
+						this.diamond5_solved = (long) solved;
+					}						
 	                break;
 	            case 22:
-	                if (this.diamond4_solved != solved) this.diamond4_solved = (long) solved;
+	                if (this.diamond4_solved != solved) {
+	                	plusPoint += (solved - this.diamond4_solved) * Point.getPointFromTier(level);
+						this.diamond4_solved = (long) solved;
+					}						
 	                break;
 	            case 23:
-	                if (this.diamond3_solved != solved) this.diamond3_solved = (long) solved;
+	                if (this.diamond3_solved != solved) {
+	                	plusPoint += (solved - this.diamond3_solved) * Point.getPointFromTier(level);
+						this.diamond3_solved = (long) solved;
+					}						
 	                break;
 	            case 24:
-	                if (this.diamond2_solved != solved) this.diamond2_solved = (long) solved;
+	                if (this.diamond2_solved != solved) {
+	                	plusPoint += (solved - this.diamond2_solved) * Point.getPointFromTier(level);
+						this.diamond2_solved = (long) solved;
+					}						
 	                break;
 	            case 25:
-	                if (this.diamond1_solved != solved) this.diamond1_solved = (long) solved;
+	                if (this.diamond1_solved != solved) {
+	                	plusPoint += (solved - this.diamond1_solved) * Point.getPointFromTier(level);
+						this.diamond1_solved = (long) solved;
+					}						
 	                break;
 	            case 26:
-	                if (this.ruby5_solved != solved) this.ruby5_solved = (long) solved;
+	                if (this.ruby5_solved != solved) {
+	                	plusPoint += (solved - this.ruby5_solved) * Point.getPointFromTier(level);
+						this.ruby5_solved = (long) solved;
+					}						
 	                break;
 	            case 27:
-	                if (this.ruby4_solved != solved) this.ruby4_solved = (long) solved;
+	                if (this.ruby4_solved != solved) {
+	                	plusPoint += (solved - this.ruby4_solved) * Point.getPointFromTier(level);
+						this.ruby4_solved = (long) solved;
+					}						
 	                break;
 	            case 28:
-	                if (this.ruby3_solved != solved) this.ruby3_solved = (long) solved;
+	                if (this.ruby3_solved != solved) {
+	                	plusPoint += (solved - this.ruby3_solved) * Point.getPointFromTier(level);
+						this.ruby3_solved = (long) solved;
+					}						
 	                break;
 	            case 29:
-	                if (this.ruby2_solved != solved) this.ruby2_solved = (long) solved;
+	                if (this.ruby2_solved != solved) {
+	                	plusPoint += (solved - this.ruby2_solved) * Point.getPointFromTier(level);
+						this.ruby2_solved = (long) solved;
+					}						
 	                break;
 	            case 30:
-	                if (this.ruby1_solved != solved) this.ruby1_solved = (long) solved;
+	                if (this.ruby1_solved != solved) {
+	                	plusPoint += (solved - this.ruby1_solved) * Point.getPointFromTier(level);
+						this.ruby1_solved = (long) solved;
+					}						
 	                break;
 	        }
 	    }
+		this.member.updatePoint(plusPoint.intValue());
+		System.out.println("point : " + plusPoint);
 	}
 }

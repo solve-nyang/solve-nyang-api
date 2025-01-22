@@ -56,10 +56,22 @@ public class Member {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
-    @OneToOne(mappedBy = "member")
-    private Problem solvedProblems;
+    @Builder.Default
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private Problem solvedProblems = null;
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedAvatar> avatars = new ArrayList<>();
+    
+    public void initSolvedProblems() {
+    	this.solvedProblems = Problem.builder()
+    			.member(this)
+    			.build();
+    }
+
+    public void updatePoint(int newPoint) {
+        this.point += newPoint;
+    }
+    
 }

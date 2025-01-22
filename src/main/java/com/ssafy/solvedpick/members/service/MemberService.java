@@ -35,7 +35,7 @@ public class MemberService {
     	Problem problem = member.getSolvedProblems();
 
     	problem.updateSolvedProblems(newProblems);
-
+    	this.memberRepository.save(member);
         return UserInfoResponse.builder()
                 .username(member.getUsername())
                 .point(member.getPoint())
