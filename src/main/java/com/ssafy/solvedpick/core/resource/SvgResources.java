@@ -96,8 +96,8 @@ public class SvgResources {
     public SvgResources(ResourceLoader resourceLoader) throws IOException {
         log.debug("Initializing SVG resources");
 
-        this.baseField = loadSvg(resourceLoader, "static/backgrounds/baseField.svg");
-        this.spaceField = loadSvg(resourceLoader, "static/backgrounds/spaceField.svg");
+        this.baseField = loadSvg(resourceLoader, "static/backgrounds/BaseField.svg");
+        this.spaceField = loadSvg(resourceLoader, "static/backgrounds/SpaceField.svg");
 
         this.codingCat = loadSvg(resourceLoader, "static/avatars/CodingCat.svg");
         this.yarnBallCat = loadSvg(resourceLoader, "static/avatars/YarnBallCat.svg");
