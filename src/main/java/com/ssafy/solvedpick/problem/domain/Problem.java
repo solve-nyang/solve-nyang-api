@@ -1,8 +1,5 @@
 package com.ssafy.solvedpick.problem.domain;
 
-import java.util.List;
-import java.util.Map;
-
 import com.ssafy.solvedpick.api.dto.ProblemData;
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.common.point.Point;
@@ -32,105 +29,105 @@ public class Problem {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "Integer unsigned")
-    private Long id;
+	private Long id;
 	
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
 	private Long bronze5_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long bronze4_solved = 0L;
+	private Long bronze4_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long bronze3_solved = 0L;
+	private Long bronze3_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long bronze2_solved = 0L;
+	private Long bronze2_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long bronze1_solved = 0L;
+	private Long bronze1_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long silver5_solved = 0L;
+	private Long silver5_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long silver4_solved = 0L;
+	private Long silver4_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long silver3_solved = 0L;
+	private Long silver3_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long silver2_solved = 0L;
+	private Long silver2_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long silver1_solved = 0L;
+	private Long silver1_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long gold5_solved = 0L;
+	private Long gold5_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long gold4_solved = 0L;
+	private Long gold4_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long gold3_solved = 0L;
+	private Long gold3_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long gold2_solved = 0L;
+	private Long gold2_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long gold1_solved = 0L;
+	private Long gold1_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long platinum5_solved = 0L;
+	private Long platinum5_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long platinum4_solved = 0L;
+	private Long platinum4_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long platinum3_solved = 0L;
+	private Long platinum3_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long platinum2_solved = 0L;
+	private Long platinum2_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long platinum1_solved = 0L;
+	private Long platinum1_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long diamond5_solved = 0L;
+	private Long diamond5_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long diamond4_solved = 0L;
+	private Long diamond4_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long diamond3_solved = 0L;
+	private Long diamond3_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long diamond2_solved = 0L;
+	private Long diamond2_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long diamond1_solved = 0L;
+	private Long diamond1_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long ruby5_solved = 0L;
+	private Long ruby5_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long ruby4_solved = 0L;
+	private Long ruby4_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long ruby3_solved = 0L;
+	private Long ruby3_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long ruby2_solved = 0L;
+	private Long ruby2_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long ruby1_solved = 0L;
+	private Long ruby1_solved = 0L;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-    private Long unrated_solved = 0L;
+	private Long unrated_solved = 0L;
 	
 	@OneToOne
-    @JoinColumn(name = "user_id", unique = true)
-    private Member member;
+	@JoinColumn(name = "user_id", unique = true)
+	private Member member;
 	
 	public void updateSolvedProblems(SolvedProblemsApiResponse newProblems) {
 		Long plusPoint = 0L; 

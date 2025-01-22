@@ -11,6 +11,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProblemData {
-	private Integer level;
+    private Integer level;
     private Integer solved;
 }
