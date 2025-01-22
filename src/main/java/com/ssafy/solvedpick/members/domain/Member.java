@@ -55,7 +55,7 @@ public class Member {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
+
     @Builder.Default
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private Problem solvedProblems = null;
@@ -63,7 +63,14 @@ public class Member {
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedAvatar> avatars = new ArrayList<>();
-    
+
+    public void addPoint(int amount) {
+        if (amount <0) {
+            throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
+        }
+        this.point += amount;
+    }
+
     public void initSolvedProblems() {
     	this.solvedProblems = Problem.builder()
     			.member(this)
@@ -72,10 +79,6 @@ public class Member {
 
     public void updatePoint(int newPoint) {
         this.point += newPoint;
-    }
-    
-    public void usePoint(int point) {
-    	this.point -= point;
     }
     
 }
