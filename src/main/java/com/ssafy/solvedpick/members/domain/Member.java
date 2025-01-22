@@ -55,7 +55,7 @@ public class Member {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
+    
     @Builder.Default
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private Problem solvedProblems = null;
@@ -79,6 +79,10 @@ public class Member {
 
     public void updatePoint(int newPoint) {
         this.point += newPoint;
+    }
+    
+    public void usePoint(int point) {
+    	this.point -= point;
     }
     
 }
