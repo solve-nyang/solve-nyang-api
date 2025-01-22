@@ -24,7 +24,7 @@ import java.util.Random;
 public class GachaService {
 
 //    임시 코스트
-    private static final int DRAW_COST = 1000;
+    private static final int DRAW_COST = 100;
 
     private final MemberRepository memberRepository;
     private final AvatarRepository avatarRepository;
@@ -63,7 +63,8 @@ public class GachaService {
                     .dropRate(Grade.fromValue(selectedAvatar.getGrade()).getProbability())
                     .build());
         }
-
+        member.usePoint(count * DRAW_COST);
+        this.memberRepository.save(member);
         return DrawResponse.builder()
                 .avatars(results)
                 .build();
