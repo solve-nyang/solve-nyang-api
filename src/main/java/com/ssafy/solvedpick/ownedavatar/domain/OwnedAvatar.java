@@ -48,4 +48,10 @@ public class OwnedAvatar {
         this.visible = !this.visible;
     }
 
+    public void updateSold() {
+        if(this.sold) {
+            throw new IllegalArgumentException("이미 판매된 아바타입니다");
+        }
+        this.sold = true;
+    }
 }

@@ -63,7 +63,14 @@ public class Member {
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedAvatar> avatars = new ArrayList<>();
-    
+
+    public void addPoint(int amount) {
+        if (amount <0) {
+            throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
+        }
+        this.point += amount;
+    }
+
     public void initSolvedProblems() {
     	this.solvedProblems = Problem.builder()
     			.member(this)
