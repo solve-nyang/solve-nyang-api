@@ -30,7 +30,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
 
     @Override
     public List<OwnedAvatarDTO> getOwnedAvatars(Long memberId) {
-        return ownedAvatarRepository.findAllByMemberId(memberId)
+        return ownedAvatarRepository.findAllByMemberIdAndSoldFalse(memberId)
                 .stream()
                 .map(ownedAvatar -> OwnedAvatarDTO.builder()
                         .visible(ownedAvatar.isVisible())

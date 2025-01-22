@@ -18,4 +18,6 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
     List<OwnedAvatar> findAllByMemberId(@Param("memberId") Long memberId);
 
     Optional<OwnedAvatar> findById(@Param("ownedAvatarId") Long ownedAvatarId);
+
+    List<OwnedAvatar> findAllByMemberIdAndSoldFalse(Long memberId);
 }
