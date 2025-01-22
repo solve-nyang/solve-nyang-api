@@ -38,7 +38,8 @@ public class SecurityConfig {
                                 "/account/signin",
                                 "/account/signup",
                                 "/avatar",
-                                "/compose/**"
+                                "/compose/**",
+                                "/favicon.ico"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
