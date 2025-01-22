@@ -21,13 +21,8 @@ public class CompositionService {
 
     public String generateCompositeImage(Member member) {
         BackgroundType background = getBackgroundType(member);
-//        List<AvatarType> avatars = getAvatarTypes(member);
-        List<AvatarType> avatars = Arrays.asList(
-                AvatarType.CODING_CAT,
-                AvatarType.ANONYMOUS_CAT,
-                AvatarType.BANANA,
-                AvatarType.APRICOT
-        );
+        List<AvatarType> avatars = getAvatarTypes(member);
+
         return avatarRenderer.renderAvatars(background, avatars);
     }
 
@@ -39,7 +34,6 @@ public class CompositionService {
 
     private List<AvatarType> getAvatarTypes(Member member) {
         return ownedAvatarRepository.findAllByMemberAndVisibleTrue(member)
-                .orElseThrow(() -> new RuntimeException("No visible avatars found"))
                 .stream()
                 .map(avatar -> AvatarType.valueOf(avatar.getAvatar().getName()))
                 .toList();
