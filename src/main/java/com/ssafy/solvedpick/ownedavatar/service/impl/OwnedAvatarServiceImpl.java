@@ -3,6 +3,7 @@ package com.ssafy.solvedpick.ownedavatar.service.impl;
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.common.grade.Grade;
 import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.dto.AvatarSaleRequestDto;
 import com.ssafy.solvedpick.ownedavatar.dto.AvatarSaleResponseDto;
@@ -25,6 +26,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     private final OwnedAvatarRepository ownedAvatarRepository;
     private final AuthService authService;
     private static final int SALE_POINT_PER_AVATAR = 30;
+    private final MemberRepository memberRepository;
 
     @Override
     public List<OwnedAvatarDTO> getOwnedAvatars(Long memberId) {
@@ -79,6 +81,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
 
         if (totalPoints > 0) {
             currentMember.addPoint(totalPoints);
+            memberRepository.save(currentMember);
         }
 
         return AvatarSaleResponseDto.of(successCount, totalPoints);
