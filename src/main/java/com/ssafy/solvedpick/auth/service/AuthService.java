@@ -60,7 +60,7 @@ public class AuthService {
                 .username(signupFormDTO.getUsername())
                 .password(passwordEncoder.encode(signupFormDTO.getPassword()))
                 .build();
-
+        user.initSolvedProblems();
         if (memberRepository.existsByUsername(signupFormDTO.getUsername())) {
             return user;
         }
