@@ -77,7 +77,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
             }
         }
 
-        if (totalPoints > 0) { //addPoint 고민
+        if (totalPoints > 0) {
             currentMember.addPoint(totalPoints);
         }
 
