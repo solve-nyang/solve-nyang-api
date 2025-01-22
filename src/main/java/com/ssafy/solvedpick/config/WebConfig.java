@@ -14,16 +14,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
 
         registry.addMapping("/**")
-                .allowedOrigins(
-                        "http://localhost:5173",
-                        "https://github.com",
-                        "https://raw.githubusercontent.com",
-                        "https://user-images.githubusercontent.com",
-                        "https://camo.githubusercontent.com",
-                        FRONT_URL
-                )
+                .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowCredentials(false);
     }
 }
