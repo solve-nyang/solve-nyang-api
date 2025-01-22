@@ -1,6 +1,5 @@
 package com.ssafy.solvedpick.ownedavatar.repository;
 
-import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,5 +19,5 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
 
     Optional<OwnedAvatar> findById(@Param("ownedAvatarId") Long ownedAvatarId);
 
-    Optional<List<OwnedAvatar>> findAllByMemberAndVisibleTrue(Member member);
+    List<OwnedAvatar> findAllByMemberIdAndSoldFalse(Long memberId);
 }
