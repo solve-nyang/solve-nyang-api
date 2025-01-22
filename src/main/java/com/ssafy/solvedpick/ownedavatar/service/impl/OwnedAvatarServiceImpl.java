@@ -95,6 +95,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
         }
 
         ownedAvatar.updateSold();
+        ownedAvatarRepository.save(ownedAvatar);
         return true;
     }
 
