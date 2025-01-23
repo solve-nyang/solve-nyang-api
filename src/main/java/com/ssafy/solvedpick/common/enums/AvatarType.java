@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum AvatarType {
@@ -165,4 +167,13 @@ public enum AvatarType {
             case FLIPPED_CAT -> svgResources.getFlippedCat();
         };
     }
+
+    public static AvatarType fromValue(String value) {
+        return Arrays.stream(values())
+                .filter(type -> type.getName().equalsIgnoreCase(value))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid AvatarType: " + value));
+    }
+
+
 }

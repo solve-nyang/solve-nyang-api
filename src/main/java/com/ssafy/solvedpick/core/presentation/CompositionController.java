@@ -23,6 +23,7 @@ public class CompositionController {
                 .orElseThrow(() -> new RuntimeException("Member not found: "+username));
 
         String svgImage = compositionService.generateCompositeImage(member);
+        log.debug("imageimage = {}", svgImage);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("image/svg+xml"))
                 .body(svgImage);

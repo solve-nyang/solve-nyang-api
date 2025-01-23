@@ -7,10 +7,12 @@ import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CompositionService {
@@ -35,7 +37,14 @@ public class CompositionService {
     private List<AvatarType> getAvatarTypes(Member member) {
         return ownedAvatarRepository.findAllByMemberAndVisibleTrue(member)
                 .stream()
-                .map(avatar -> AvatarType.valueOf(avatar.getAvatar().getName()))
+                .map(avatar -> {
+                    // avatar.getAvatar().getName() 값을 출력하여 확인
+                    String avatarName = avatar.getAvatar().getName();
+                    log.debug("Avatar Name: " + avatarName);  // 출력
+
+                    // AvatarType 변환
+                    return AvatarType.fromValue(avatarName);
+                })
                 .toList();
     }
 }
