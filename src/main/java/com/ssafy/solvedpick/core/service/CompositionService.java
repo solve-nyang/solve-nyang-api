@@ -35,7 +35,7 @@ public class CompositionService {
     }
 
     private List<AvatarType> getAvatarTypes(Member member) {
-        return ownedAvatarRepository.findAllByMemberAndVisibleTrue(member)
+        return ownedAvatarRepository.findAllByMemberAndVisibleTrueAndSoldFalse(member)
                 .stream()
                 .map(avatar -> {
                     // avatar.getAvatar().getName() 값을 출력하여 확인
