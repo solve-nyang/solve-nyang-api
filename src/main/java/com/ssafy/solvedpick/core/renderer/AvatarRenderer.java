@@ -5,11 +5,13 @@ import com.ssafy.solvedpick.common.enums.BackgroundType;
 import com.ssafy.solvedpick.core.resource.SvgResources;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AvatarRenderer {
@@ -49,7 +51,7 @@ public class AvatarRenderer {
     }
 
     private void appendAvatar(StringBuilder content, AvatarType avatar, Point position) {
-        System.out.println("avatar="+avatar);
+        log.debug("avatar = {}", avatar);
         content.append(String.format(
                 "<g transform=\"translate(%d, %d) scale(0.3)\">",
                 position.x, position.y
