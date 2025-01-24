@@ -10,4 +10,8 @@ import java.util.List;
 public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
     List<Avatar> findAllByGrade(int grade);
+
+    List<Avatar> findAllByGradeBetween(int grade1, int grade2);
+
+    Avatar findByName(String name);
 }

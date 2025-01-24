@@ -30,7 +30,7 @@ public class Avatar {
     private String name;
 
     @Min(1)
-    @Max(5)
+    @Max(6)
     @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private int grade;
 
