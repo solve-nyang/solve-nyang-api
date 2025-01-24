@@ -63,14 +63,12 @@ public class AuthService {
     }
 
     public Member create(SignupFormDTO signupFormDTO) {
+
         Member user = Member.builder()
                 .username(signupFormDTO.getUsername())
                 .password(passwordEncoder.encode(signupFormDTO.getPassword()))
                 .build();
         user.initSolvedProblems();
-        if (memberRepository.existsByUsername(signupFormDTO.getUsername())) {
-            return user;
-        }
 
         this.memberRepository.save(user);
         addDefaultAvatar(user);

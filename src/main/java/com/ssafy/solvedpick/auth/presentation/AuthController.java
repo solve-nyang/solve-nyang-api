@@ -4,6 +4,7 @@ import com.ssafy.solvedpick.auth.dto.*;
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
 import com.ssafy.solvedpick.global.error.dto.ErrorResponse;
+import com.ssafy.solvedpick.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -18,12 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
-
+    private final MemberRepository memberRepository;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupFormDTO signupFormDTO) {
     	boolean verified = authService.verifyUser(signupFormDTO);
-
+        if(memberRepository.existsByUsername(signupFormDTO.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMessageDTO.builder()
+                    .message("failed")
+                    .build());
+        }
     	if (verified) {
     		authService.create(signupFormDTO);
     		return ResponseEntity.ok()
