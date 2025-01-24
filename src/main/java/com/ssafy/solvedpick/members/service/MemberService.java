@@ -26,20 +26,20 @@ public class MemberService {
     public UserInfoResponse getUserInfo() {
         Member member = authService.getCurrentMember();
 
-        UserInfoApiResponse apiResponse = apiService.getUserInfo(member.getUsername());
-        UserData userData = apiResponse.getItems().get(0);
-        
-    	SolvedProblemsApiResponse newProblems = apiService.getSolvedProblems(member.getUsername());
-    	Problem problem = member.getSolvedProblems();
+//        UserInfoApiResponse apiResponse = apiService.getUserInfo(member.getUsername());
+//        UserData userData = apiResponse.getItems().get(0);
+//
+//    	SolvedProblemsApiResponse newProblems = apiService.getSolvedProblems(member.getUsername());
+//    	Problem problem = member.getSolvedProblems();
 
-    	problem.updateSolvedProblems(newProblems);
-    	this.memberRepository.save(member);
+//    	problem.updateSolvedProblems(newProblems);
+//    	this.memberRepository.save(member);
         return UserInfoResponse.builder()
                 .username(member.getUsername())
                 .point(member.getPoint())
-                .solvedacTier(userData.getTier())
-                .solvedCount(userData.getSolvedCount())
-                .solvedacStrick(userData.getMaxStreak())
+                .solvedacTier(0)
+                .solvedCount(0)
+                .solvedacStrick(0)
                 .build();
     }
 }
