@@ -1,5 +1,9 @@
 package com.ssafy.solvedpick.auth.service;
 
+import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
+import com.ssafy.solvedpick.api.dto.UserData;
+import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
+import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.auth.domain.VerificationKey;
 import com.ssafy.solvedpick.auth.dto.SignInFormDTO;
 import com.ssafy.solvedpick.auth.dto.SignupFormDTO;
@@ -16,6 +20,7 @@ import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
+import com.ssafy.solvedpick.problem.domain.Problem;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +47,7 @@ public class AuthService {
     private final VerificationKeyRepository verificationKeyRepository;
     private final AvatarRepository avatarRepository;
     private final OwnedAvatarRepository ownedAvatarRepository;
+    private final ApiService apiService;
 
     @Value("${URL.USER_INFO}")
     private String url;
@@ -69,6 +75,14 @@ public class AuthService {
                 .password(passwordEncoder.encode(signupFormDTO.getPassword()))
                 .build();
         user.initSolvedProblems();
+
+//        UserInfoApiResponse apiResponse = apiService.getUserInfo(user.getUsername());
+//        UserData userData = apiResponse.getItems().get(0);
+
+        SolvedProblemsApiResponse newProblems = apiService.getSolvedProblems(user.getUsername());
+        Problem problem = user.getSolvedProblems();
+
+        problem.updateSolvedProblems(newProblems);
 
         this.memberRepository.save(user);
         addDefaultAvatar(user);
