@@ -26,9 +26,10 @@ public class AuthController {
     	boolean verified = authService.verifyUser(signupFormDTO);
         if(memberRepository.existsByUsername(signupFormDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMessageDTO.builder()
-                    .message("failed")
+                    .message("이미 가입된 회원입니다.")
                     .build());
         }
+
     	if (verified) {
     		authService.create(signupFormDTO);
     		return ResponseEntity.ok()
@@ -38,7 +39,7 @@ public class AuthController {
     	}
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ResponseMessageDTO.builder()
-                        .message("failed")
+                        .message("solved.ac 인증을 확인하세요")
                         .build());
     }
     
