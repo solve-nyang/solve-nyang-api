@@ -20,6 +20,7 @@ public class SvgResources {
     private final String codingCat;
     private final String yarnBallCat;
     private final String ufoCat;
+
     private final String fishbowlCat;
     private final String eatingCat;
     private final String flexCat;
@@ -31,6 +32,8 @@ public class SvgResources {
     private final String invisibleCat;
     private final String anonymousCat;
     private final String comfortableCat;
+    private final String SSAFY;
+
     private final String springCat;
     private final String pythonCat;
     private final String tsCat;
@@ -41,6 +44,7 @@ public class SvgResources {
     private final String cssCat;
     private final String jsCat;
     private final String htmlCat;
+
     private final String pumpkin;
     private final String nero;
     private final String graybao;
@@ -72,6 +76,7 @@ public class SvgResources {
     private final String blackie;
     private final String choco;
     private final String cream;
+
     private final String squashedCat;
     private final String whirlwindCat;
     private final String meltingCat;
@@ -102,6 +107,7 @@ public class SvgResources {
         this.codingCat = loadSvg(resourceLoader, "static/avatars/CodingCat.svg");
         this.yarnBallCat = loadSvg(resourceLoader, "static/avatars/YarnBallCat.svg");
         this.ufoCat = loadSvg(resourceLoader, "static/avatars/UFOCat.svg");
+
         this.fishbowlCat = loadSvg(resourceLoader, "static/avatars/FishbowlCat.svg");
         this.eatingCat = loadSvg(resourceLoader, "static/avatars/EatingCat.svg");
         this.flexCat = loadSvg(resourceLoader, "static/avatars/FlexCat.svg");
@@ -113,6 +119,8 @@ public class SvgResources {
         this.invisibleCat = loadSvg(resourceLoader, "static/avatars/InvisibleCat.svg");
         this.anonymousCat = loadSvg(resourceLoader, "static/avatars/AnonymousCat.svg");
         this.comfortableCat = loadSvg(resourceLoader, "static/avatars/ComfortableCat.svg");
+        this.SSAFY = loadSvg(resourceLoader, "static/avatars/SSAFY.svg");
+
         this.springCat = loadSvg(resourceLoader, "static/avatars/SpringCat.svg");
         this.pythonCat = loadSvg(resourceLoader, "static/avatars/PythonCat.svg");
         this.tsCat = loadSvg(resourceLoader, "static/avatars/TSCat.svg");
@@ -123,6 +131,7 @@ public class SvgResources {
         this.cssCat = loadSvg(resourceLoader, "static/avatars/CSSCat.svg");
         this.jsCat = loadSvg(resourceLoader, "static/avatars/JSCat.svg");
         this.htmlCat = loadSvg(resourceLoader, "static/avatars/HTMLCat.svg");
+
         this.pumpkin = loadSvg(resourceLoader, "static/avatars/Pumpkin.svg");
         this.nero = loadSvg(resourceLoader, "static/avatars/Nero.svg");
         this.graybao = loadSvg(resourceLoader, "static/avatars/Graybao.svg");
@@ -154,6 +163,7 @@ public class SvgResources {
         this.blackie = loadSvg(resourceLoader, "static/avatars/Blackie.svg");
         this.choco = loadSvg(resourceLoader, "static/avatars/Choco.svg");
         this.cream = loadSvg(resourceLoader, "static/avatars/Cream.svg");
+
         this.squashedCat = loadSvg(resourceLoader, "static/avatars/SquashedCat.svg");
         this.whirlwindCat = loadSvg(resourceLoader, "static/avatars/WhirlwindCat.svg");
         this.meltingCat = loadSvg(resourceLoader, "static/avatars/MeltingCat.svg");

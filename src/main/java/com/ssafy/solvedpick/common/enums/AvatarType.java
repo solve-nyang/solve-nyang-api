@@ -13,6 +13,7 @@ public enum AvatarType {
     CODING_CAT("CodingCat"),
     YARN_BALL_CAT("YarnBallCat"),
     UFO_CAT("UFOCat"),
+
     FISHBOWL_CAT("FishbowlCat"),
     EATING_CAT("EatingCat"),
     FLEX_CAT("FlexCat"),
@@ -24,6 +25,8 @@ public enum AvatarType {
     INVISIBLE_CAT("InvisibleCat"),
     ANONYMOUS_CAT("AnonymousCat"),
     COMFORTABLE_CAT("ComfortableCat"),
+    SSAFY("SSAFY"),
+
     SPRING_CAT("SpringCat"),
     PYTHON_CAT("PythonCat"),
     TS_CAT("TSCat"),
@@ -34,6 +37,7 @@ public enum AvatarType {
     CSS_CAT("CSSCat"),
     JS_CAT("JSCat"),
     HTML_CAT("HTMLCat"),
+
     PUMPKIN("Pumpkin"),
     NERO("Nero"),
     GRAYBAO("Graybao"),
@@ -65,6 +69,7 @@ public enum AvatarType {
     BLACKIE("Blackie"),
     CHOCO("Choco"),
     CREAM("Cream"),
+
     SQUASHED_CAT("SquashedCat"),
     WHIRLWIND_CAT("WhirlwindCat"),
     MELTING_CAT("MeltingCat"),
@@ -93,6 +98,7 @@ public enum AvatarType {
             case CODING_CAT -> svgResources.getCodingCat();
             case YARN_BALL_CAT -> svgResources.getYarnBallCat();
             case UFO_CAT -> svgResources.getUfoCat();
+
             case FISHBOWL_CAT -> svgResources.getFishbowlCat();
             case EATING_CAT -> svgResources.getEatingCat();
             case FLEX_CAT -> svgResources.getFlexCat();
@@ -104,6 +110,8 @@ public enum AvatarType {
             case INVISIBLE_CAT -> svgResources.getInvisibleCat();
             case ANONYMOUS_CAT -> svgResources.getAnonymousCat();
             case COMFORTABLE_CAT -> svgResources.getComfortableCat();
+            case SSAFY -> svgResources.getSSAFY();
+
             case SPRING_CAT -> svgResources.getSpringCat();
             case PYTHON_CAT -> svgResources.getPythonCat();
             case TS_CAT -> svgResources.getTsCat();
@@ -114,6 +122,7 @@ public enum AvatarType {
             case CSS_CAT -> svgResources.getCssCat();
             case JS_CAT -> svgResources.getJsCat();
             case HTML_CAT -> svgResources.getHtmlCat();
+
             case PUMPKIN -> svgResources.getPumpkin();
             case NERO -> svgResources.getNero();
             case GRAYBAO -> svgResources.getGraybao();
@@ -145,6 +154,7 @@ public enum AvatarType {
             case BLACKIE -> svgResources.getBlackie();
             case CHOCO -> svgResources.getChoco();
             case CREAM -> svgResources.getCream();
+
             case SQUASHED_CAT -> svgResources.getSquashedCat();
             case WHIRLWIND_CAT -> svgResources.getWhirlwindCat();
             case MELTING_CAT -> svgResources.getMeltingCat();
