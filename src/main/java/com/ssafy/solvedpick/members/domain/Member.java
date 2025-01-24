@@ -50,7 +50,7 @@ public class Member {
     private boolean verified = false;
     
     @Builder.Default
-    private int point = 0;
+    private int point = 3000;
     
     @CreatedDate
     @Column(nullable = false, updatable = false)
