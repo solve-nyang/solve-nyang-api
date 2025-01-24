@@ -21,11 +21,11 @@ public class AvatarService {
     private final AvatarRepository avatarRepository;
 
     public AvatarResponse findAllAvatars() {
-        // 1. 모든 아바타를 가져옵니다.
-        List<Avatar> avatars = avatarRepository.findAll();
-        //2. 등급별 통계를 계산합니다.
+
+        List<Avatar> avatars = avatarRepository.findAllByGradeBetween(1, 5);
+
         List<GradeStatistics> gradeStats = calculateGradeStatistics(avatars);
-        //3. 각 캐릭터를 DTO로 변환하면서 해당 등급의 통계 정보를 함께 전달합니다.
+
         List<AvatarDto> avatarDtos = avatars.stream()
                 .map(avatar -> AvatarDto.from(avatar,
                         findStatisticsByGrade(gradeStats, avatar.getGrade())

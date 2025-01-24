@@ -10,6 +10,8 @@ import java.util.Arrays;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum AvatarType {
+    SSAFY("SSAFY"),
+
     CODING_CAT("CodingCat"),
     YARN_BALL_CAT("YarnBallCat"),
     UFO_CAT("UFOCat"),
@@ -25,7 +27,7 @@ public enum AvatarType {
     INVISIBLE_CAT("InvisibleCat"),
     ANONYMOUS_CAT("AnonymousCat"),
     COMFORTABLE_CAT("ComfortableCat"),
-    SSAFY("SSAFY"),
+
 
     SPRING_CAT("SpringCat"),
     PYTHON_CAT("PythonCat"),

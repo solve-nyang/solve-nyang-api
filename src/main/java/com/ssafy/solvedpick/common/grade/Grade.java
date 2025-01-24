@@ -8,6 +8,7 @@ import java.util.Arrays;
 @Getter
 @AllArgsConstructor
 public enum Grade {
+    H(6, 0.0),
     S(5, 1.0),
     A(4, 4.0),
     B(3, 30.0),

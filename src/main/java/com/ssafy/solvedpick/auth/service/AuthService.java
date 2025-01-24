@@ -6,11 +6,16 @@ import com.ssafy.solvedpick.auth.dto.SignupFormDTO;
 import com.ssafy.solvedpick.auth.dto.TokenResponse;
 import com.ssafy.solvedpick.auth.dto.UsernameResponse;
 import com.ssafy.solvedpick.auth.repository.VerificationKeyRepository;
+import com.ssafy.solvedpick.avatars.domain.Avatar;
+import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
+import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.global.error.exception.UserInfoErrorException;
 import com.ssafy.solvedpick.global.error.exception.VerificationNotFoundException;
 import com.ssafy.solvedpick.jwt.JwtUtil;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
+import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
+import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +40,8 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final RestTemplate restTemplate;
     private final VerificationKeyRepository verificationKeyRepository;
+    private final AvatarRepository avatarRepository;
+    private final OwnedAvatarRepository ownedAvatarRepository;
 
     @Value("${URL.USER_INFO}")
     private String url;
@@ -66,7 +73,20 @@ public class AuthService {
         }
 
         this.memberRepository.save(user);
+        addDefaultAvatar(user);
         return user;
+    }
+
+    private void addDefaultAvatar(Member member) {
+        Avatar defaultAvatar = avatarRepository.findByName("SSAFY");
+
+        OwnedAvatar ownedAvatar = OwnedAvatar.builder()
+                .member(member)
+                .avatar(defaultAvatar)
+                .visible(false)
+                .build();
+
+        ownedAvatarRepository.save(ownedAvatar);
     }
 
     @Transactional
