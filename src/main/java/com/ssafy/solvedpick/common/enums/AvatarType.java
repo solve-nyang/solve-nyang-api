@@ -97,6 +97,8 @@ public enum AvatarType {
 
     public String getSvgContent(SvgResources svgResources){
         return switch (this) {
+            case SSAFY -> svgResources.getSSAFY();
+
             case CODING_CAT -> svgResources.getCodingCat();
             case YARN_BALL_CAT -> svgResources.getYarnBallCat();
             case UFO_CAT -> svgResources.getUfoCat();
@@ -112,7 +114,6 @@ public enum AvatarType {
             case INVISIBLE_CAT -> svgResources.getInvisibleCat();
             case ANONYMOUS_CAT -> svgResources.getAnonymousCat();
             case COMFORTABLE_CAT -> svgResources.getComfortableCat();
-            case SSAFY -> svgResources.getSSAFY();
 
             case SPRING_CAT -> svgResources.getSpringCat();
             case PYTHON_CAT -> svgResources.getPythonCat();
