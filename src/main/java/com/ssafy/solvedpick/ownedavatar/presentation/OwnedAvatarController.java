@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.ownedavatar.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.ownedavatar.dto.ExtensionAvatarResponseDTO;
 import com.ssafy.solvedpick.ownedavatar.dto.MemberAvatarResponseDTO;
 import com.ssafy.solvedpick.ownedavatar.dto.OwnedAvatarDTO;
 import com.ssafy.solvedpick.ownedavatar.service.OwnedAvatarService;
@@ -39,8 +40,9 @@ public class OwnedAvatarController {
     }
 
     @GetMapping("/extension")
-    public ResponseEntity<?> getExtension(@RequestParam("userid") String userId) {
+    public ResponseEntity<?> getExtension(@RequestParam("username") String username) {
+        ExtensionAvatarResponseDTO result = ownedAvatarService.getExtensionAvatars(username);
 
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(result);
     }
 }
