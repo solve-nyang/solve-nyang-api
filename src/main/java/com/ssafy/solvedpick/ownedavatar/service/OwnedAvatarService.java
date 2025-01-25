@@ -10,6 +10,5 @@ public interface OwnedAvatarService {
 
     List<OwnedAvatarDTO> getOwnedAvatars(Long memberId);
     void updateAvatarVisibility(Long avatarId);
-
     AvatarSaleResponseDto sellAvatars(AvatarSaleRequestDto request);
 }

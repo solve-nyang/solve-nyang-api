@@ -1,8 +1,6 @@
 package com.ssafy.solvedpick.auth.service;
 
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
-import com.ssafy.solvedpick.api.dto.UserData;
-import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.auth.domain.VerificationKey;
 import com.ssafy.solvedpick.auth.dto.SignInFormDTO;
@@ -12,9 +10,8 @@ import com.ssafy.solvedpick.auth.dto.UsernameResponse;
 import com.ssafy.solvedpick.auth.repository.VerificationKeyRepository;
 import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
-import com.ssafy.solvedpick.common.enums.AvatarType;
-import com.ssafy.solvedpick.global.error.exception.UserInfoErrorException;
-import com.ssafy.solvedpick.global.error.exception.VerificationNotFoundException;
+import com.ssafy.solvedpick.common.error.exception.UserInfoErrorException;
+import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
 import com.ssafy.solvedpick.jwt.JwtUtil;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
@@ -62,10 +59,9 @@ public class AuthService {
 
         String accessToken = jwtUtil.generateAccessToken(signInFormDTO.getUsername());
 
-        TokenResponse tokenResponse = TokenResponse.builder()
+        return TokenResponse.builder()
                 .accessToken(accessToken)
                 .build();
-        return tokenResponse;
     }
 
     public Member create(SignupFormDTO signupFormDTO) {

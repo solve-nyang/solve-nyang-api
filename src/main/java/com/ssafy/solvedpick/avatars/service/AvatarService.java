@@ -6,13 +6,12 @@ import com.ssafy.solvedpick.avatars.dto.AvatarDto;
 import com.ssafy.solvedpick.avatars.dto.AvatarResponse;
 import com.ssafy.solvedpick.avatars.dto.GradeStatistics;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
-import com.ssafy.solvedpick.common.grade.Grade;
+import com.ssafy.solvedpick.common.utils.grade.Grade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

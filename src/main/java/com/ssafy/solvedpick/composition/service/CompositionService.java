@@ -1,15 +1,15 @@
-package com.ssafy.solvedpick.core.service;
+package com.ssafy.solvedpick.composition.service;
 
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
-import com.ssafy.solvedpick.core.renderer.AvatarRenderer;
+import com.ssafy.solvedpick.composition.renderer.AvatarRenderer;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.Arrays;
+
 import java.util.List;
 
 @Slf4j

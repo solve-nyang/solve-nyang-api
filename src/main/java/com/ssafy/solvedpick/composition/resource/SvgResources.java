@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.core.resource;
+package com.ssafy.solvedpick.composition.resource;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

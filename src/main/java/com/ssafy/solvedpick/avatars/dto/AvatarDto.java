@@ -3,7 +3,7 @@ package com.ssafy.solvedpick.avatars.dto;
 
 import com.ssafy.solvedpick.avatars.domain.Avatar;
 
-import com.ssafy.solvedpick.common.grade.Grade;
+import com.ssafy.solvedpick.common.utils.grade.Grade;
 import lombok.Builder;
 import lombok.Getter;
 

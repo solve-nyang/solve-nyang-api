@@ -1,15 +1,15 @@
-package com.ssafy.solvedpick.global.error.handler;
+package com.ssafy.solvedpick.common.error.handler;
 
+import com.ssafy.solvedpick.common.error.exception.UserInfoErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.ssafy.solvedpick.global.error.exception.ApiResponseException;
-import com.ssafy.solvedpick.global.error.exception.UserInfoErrorException;
-import com.ssafy.solvedpick.global.error.exception.VerificationNotFoundException;
-import com.ssafy.solvedpick.global.error.dto.ErrorResponse;
+import com.ssafy.solvedpick.common.error.exception.ApiResponseException;
+import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
+import com.ssafy.solvedpick.common.error.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

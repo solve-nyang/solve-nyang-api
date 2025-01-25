@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.global.error.exception;
+package com.ssafy.solvedpick.common.error.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

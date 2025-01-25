@@ -37,4 +37,10 @@ public class OwnedAvatarController {
         ownedAvatarService.updateAvatarVisibility(ownedAvatarId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/extension")
+    public ResponseEntity<?> getExtension(@RequestParam("userid") String userId) {
+
+        return ResponseEntity.ok().body(null);
+    }
 }
