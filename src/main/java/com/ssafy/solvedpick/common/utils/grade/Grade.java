@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.common.grade;
+package com.ssafy.solvedpick.common.utils.grade;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

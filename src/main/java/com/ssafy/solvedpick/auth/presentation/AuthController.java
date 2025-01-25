@@ -3,7 +3,7 @@ package com.ssafy.solvedpick.auth.presentation;
 import com.ssafy.solvedpick.auth.dto.*;
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
-import com.ssafy.solvedpick.global.error.dto.ErrorResponse;
+import com.ssafy.solvedpick.common.error.dto.ErrorResponse;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 

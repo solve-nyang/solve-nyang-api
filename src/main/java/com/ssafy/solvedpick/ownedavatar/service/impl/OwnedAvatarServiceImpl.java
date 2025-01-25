@@ -1,7 +1,7 @@
 package com.ssafy.solvedpick.ownedavatar.service.impl;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
-import com.ssafy.solvedpick.common.grade.Grade;
+import com.ssafy.solvedpick.common.utils.grade.Grade;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
@@ -33,7 +33,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
         return ownedAvatarRepository.findAllByMemberIdAndSoldFalse(memberId)
                 .stream()
                 .map(ownedAvatar -> OwnedAvatarDTO.builder()
-                        .visible(ownedAvatar.isVisible())
+                        .visible(ownedAvatar.getVisible())
                         .ownedAvatarId(ownedAvatar.getId())
                         .name(ownedAvatar.getAvatar().getName())
                         .rarity(Grade.fromValue(ownedAvatar.getAvatar().getGrade()).name())
@@ -103,7 +103,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     private boolean isValidForSale(OwnedAvatar ownedAvatar, Member currentMember) {
-        if (ownedAvatar.isSold()) {
+        if (ownedAvatar.getSold()) {
             return false;
         }
 

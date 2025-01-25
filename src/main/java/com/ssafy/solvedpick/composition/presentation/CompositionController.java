@@ -1,6 +1,6 @@
-package com.ssafy.solvedpick.core.presentation;
+package com.ssafy.solvedpick.composition.presentation;
 
-import com.ssafy.solvedpick.core.service.CompositionService;
+import com.ssafy.solvedpick.composition.service.CompositionService;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

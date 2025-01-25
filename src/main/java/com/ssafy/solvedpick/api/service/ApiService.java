@@ -21,26 +21,26 @@ public class ApiService {
 
     public UserInfoApiResponse getUserInfo(String username) {
         String url = baseUrl + "/search/user?query=" + username;
-        log.info("Calling API: {}", url);
+        log.debug("Calling API: {}", url);
 
         ResponseEntity<String> rawResponse = restTemplate.getForEntity(url, String.class);
-        log.info("Raw API Response: {}", rawResponse.getBody());  // 실제 JSON 응답을 확인
+        log.debug("Raw API Response: {}", rawResponse.getBody());  // 실제 JSON 응답을 확인
         
         UserInfoApiResponse response = restTemplate.getForObject(url, UserInfoApiResponse.class);
-        log.info("Parsed Response: {}", response);
+        log.debug("Parsed Response: {}", response);
         return response;
     }
     
     
     public SolvedProblemsApiResponse getSolvedProblems(String username) {
     	String url = baseUrl + "/user/problem_stats?handle=" + username;
-    	log.info("Calling API: {}", url);
+    	log.debug("Calling API: {}", url);
     	
     	ResponseEntity<String> rawResponse = restTemplate.getForEntity(url, String.class);
-        log.info("Raw API Response: {}", rawResponse.getBody());  // 실제 JSON 응답을 확인
+        log.debug("Raw API Response: {}", rawResponse.getBody());  // 실제 JSON 응답을 확인
         
         SolvedProblemsApiResponse response = restTemplate.getForObject(url, SolvedProblemsApiResponse.class);
-        log.info("Parsed Response: {}", response);
+        log.debug("Parsed Response: {}", response);
         return response;
     }
 }

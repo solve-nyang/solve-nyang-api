@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.global.error.dto;
+package com.ssafy.solvedpick.common.error.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

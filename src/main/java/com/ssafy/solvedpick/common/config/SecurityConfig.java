@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.config;
+package com.ssafy.solvedpick.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

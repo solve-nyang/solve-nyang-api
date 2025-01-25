@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.common.point;
+package com.ssafy.solvedpick.common.utils.point;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

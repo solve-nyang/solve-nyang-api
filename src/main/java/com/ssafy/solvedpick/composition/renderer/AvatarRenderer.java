@@ -1,8 +1,8 @@
-package com.ssafy.solvedpick.core.renderer;
+package com.ssafy.solvedpick.composition.renderer;
 
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
-import com.ssafy.solvedpick.core.resource.SvgResources;
+import com.ssafy.solvedpick.composition.resource.SvgResources;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;

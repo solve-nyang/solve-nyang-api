@@ -1,6 +1,6 @@
 package com.ssafy.solvedpick.common.enums;
 
-import com.ssafy.solvedpick.core.resource.SvgResources;
+import com.ssafy.solvedpick.composition.resource.SvgResources;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

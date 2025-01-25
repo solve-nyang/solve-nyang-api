@@ -34,11 +34,15 @@ public class OwnedAvatar {
 
     @Builder.Default
     @Column(nullable = false)
-    private boolean visible = false;
+    private Boolean visible = false;
 
     @Builder.Default
     @Column(nullable = false)
-    private boolean sold = false;
+    private Boolean sold = false;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean visibleExtension = false;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -52,6 +56,7 @@ public class OwnedAvatar {
         if(this.sold) {
             throw new IllegalArgumentException("이미 판매된 아바타입니다");
         }
+
         this.sold = true;
     }
 }
