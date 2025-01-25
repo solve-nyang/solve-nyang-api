@@ -23,4 +23,6 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
     List<OwnedAvatar> findAllByMemberIdAndSoldFalse(Long memberId);
 
     List<OwnedAvatar> findAllByMemberAndVisibleTrueAndSoldFalse(Member member);
+
+    List<OwnedAvatar> findAllByMemberAndVisibleExtensionTrueAndSoldFalse(Member member);
 }

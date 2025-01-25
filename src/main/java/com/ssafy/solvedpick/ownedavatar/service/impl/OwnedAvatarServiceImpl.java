@@ -5,17 +5,16 @@ import com.ssafy.solvedpick.common.utils.grade.Grade;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
-import com.ssafy.solvedpick.ownedavatar.dto.AvatarSaleRequestDto;
-import com.ssafy.solvedpick.ownedavatar.dto.AvatarSaleResponseDto;
-import com.ssafy.solvedpick.ownedavatar.dto.OwnedAvatarDTO;
-import com.ssafy.solvedpick.ownedavatar.dto.SoldAvatarDto;
+import com.ssafy.solvedpick.ownedavatar.dto.*;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedavatar.service.OwnedAvatarService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,6 +53,28 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
             throw new IllegalArgumentException("Not authorized to update this avatar");
         }
         ownedAvatar.updateVisibility();
+    }
+
+    @Override
+    public ExtensionAvatarResponseDTO getExtensionAvatars(String username) {
+        try {
+            Member member = memberRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException(""));
+
+            List<String> avatars = ownedAvatarRepository.findAllByMemberAndVisibleExtensionTrueAndSoldFalse(member)
+                    .stream()
+                    .map(ownedAvatar -> ownedAvatar.getAvatar()
+                            .getName())
+                    .toList();
+
+            return ExtensionAvatarResponseDTO.builder()
+                    .avatars(avatars)
+                    .build();
+        } catch (Exception e) {
+            return ExtensionAvatarResponseDTO.builder()
+                    .avatars(new ArrayList<>())
+                    .build();
+        }
     }
 
     @Override

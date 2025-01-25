@@ -20,6 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://raw.githubusercontent.com",
                         "https://user-images.githubusercontent.com",
                         "https://camo.githubusercontent.com",
+                        "https://www.acmicpc.net/",
                         FRONT_URL
                 )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
