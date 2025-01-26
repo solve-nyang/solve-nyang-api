@@ -20,7 +20,7 @@ spring:
     driver-class-name: ${DB.DRIVER}
   jpa:
     hibernate:
-      ddl-auto: ${HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${HIBERNATE_DDL_AUTO:none}
     database-platform: ${DB.DIALECT}
     properties:
       hibernate:
