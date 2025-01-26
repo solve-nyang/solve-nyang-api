@@ -1,7 +1,7 @@
 
     <g clip-path="url(#clip0_137_313)">
-        <rect width="600" height="300" fill="white"/>
-        <rect width="600" height="300" fill="url(#pattern0_137_313)"/>
+        <rect width="600" height="300" fill="white" rx="20" ry="20"/>
+        <rect width="600" height="300" fill="url(#pattern0_137_313)" rx="20" ry="20"/>
     </g>
     <defs>
         <pattern id="pattern0_137_313" patternContentUnits="objectBoundingBox" width="1" height="1">
