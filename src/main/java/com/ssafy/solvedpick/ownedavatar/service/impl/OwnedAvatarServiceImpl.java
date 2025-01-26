@@ -22,9 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OwnedAvatarServiceImpl implements OwnedAvatarService {
 
+    private static final int SALE_POINT_PER_AVATAR = 30;
+
     private final OwnedAvatarRepository ownedAvatarRepository;
     private final AuthService authService;
-    private static final int SALE_POINT_PER_AVATAR = 30;
     private final MemberRepository memberRepository;
 
     @Override
@@ -41,7 +42,6 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
                 .toList();
     }
 
-    //    Todo: member정보 확인
     @Override
     public void updateAvatarVisibility(Long avatarId) {
         Member member = authService.getCurrentMember();
@@ -78,60 +78,46 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
-    public AvatarSaleResponseDto sellAvatars(AvatarSaleRequestDto request) {
+    public void setAllVisibilityFalse() {
+        Member member = authService.getCurrentMember();
+        ownedAvatarRepository.findAllByMemberAndVisibleTrueAndSoldFalse(member)
+                .forEach(OwnedAvatar::updateVisibility);
+    }
+
+    @Override
+    public AvatarCollectionResponseDTO getAvatarCollection() {
+        Member member = authService.getCurrentMember();
+        List<AvatarCollectionDTO> result = ownedAvatarRepository.findDistinctByMemberAndAvatar(member)
+                .stream()
+                .map(ownedAvatar -> AvatarCollectionDTO.builder()
+                        .name(ownedAvatar.getName())
+                        .rarity(Grade.fromValue(ownedAvatar.getGrade()).name())
+                        .build())
+                .toList();
+
+        return AvatarCollectionResponseDTO.builder()
+                .collections(result)
+                .build();
+    }
+
+    @Override
+    public AvatarSaleResponseDTO sellAvatars(AvatarSaleRequestDTO request) {
         Member currentMember = authService.getCurrentMember();
+        List<Long> idList = request.getSoldAvatars()
+                .stream()
+                .map(SoldAvatarDTO::getOwnedAvatarId)
+                .toList();
 
-        int successCount = 0;
-        int totalPoints = 0;
+        List<OwnedAvatar> result = ownedAvatarRepository.findAllByIdInAndMemberAndSoldFalse(idList, currentMember);
+        result.forEach(OwnedAvatar::updateSold);
 
-        for (SoldAvatarDto soldAvatar : request.getSoldAvatars()) {
-            try {
-                boolean salesSuccess = processSingleAvatarSale(
-                        soldAvatar.getOwnedAvatarId(),
-                        currentMember
-                );
-
-                if (salesSuccess) {
-                    successCount++;
-                    totalPoints += SALE_POINT_PER_AVATAR;
-                }
-            } catch (Exception e) {
-                continue;
-            }
-        }
+        int successCount = result.size();
+        int totalPoints = successCount * SALE_POINT_PER_AVATAR;
 
         if (totalPoints > 0) {
             currentMember.addPoint(totalPoints);
-            memberRepository.save(currentMember);
         }
 
-        return AvatarSaleResponseDto.of(successCount, totalPoints);
-
-
-    }
-
-    private boolean processSingleAvatarSale(Long ownedAvatarId, Member currentMember) {
-        OwnedAvatar ownedAvatar = ownedAvatarRepository.findById(ownedAvatarId)
-                .orElseThrow(() -> new EntityNotFoundException("아바타를 찾을 수 없습니다: " + ownedAvatarId));
-
-        if (!isValidForSale(ownedAvatar, currentMember)) {
-            return false;
-        }
-
-        ownedAvatar.updateSold();
-        ownedAvatarRepository.save(ownedAvatar);
-        return true;
-    }
-
-    private boolean isValidForSale(OwnedAvatar ownedAvatar, Member currentMember) {
-        if (ownedAvatar.getSold()) {
-            return false;
-        }
-
-        if (!ownedAvatar.getMember().getId().equals(currentMember.getId())) {
-            return false;
-        }
-
-        return true;
+        return AvatarSaleResponseDTO.of(successCount, totalPoints);
     }
 }
