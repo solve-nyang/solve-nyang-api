@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.jwt;
+package com.ssafy.solvedpick.common.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
