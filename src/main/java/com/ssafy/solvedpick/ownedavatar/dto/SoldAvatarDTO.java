@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SoldAvatarDto {
+public class SoldAvatarDTO {
+
     private Long ownedAvatarId;
 }
