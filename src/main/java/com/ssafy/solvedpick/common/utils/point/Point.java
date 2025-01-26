@@ -37,13 +37,13 @@ public enum Point {
     RUBY2(29, 1000),
     RUBY1(30, 1000);
 
-    private final int tier;
+    private final int level;
     private final int point;
 
-    public static int getPointFromTier(int tier) {
-        if (tier < 1 || tier > 30) {
+    public static int getPointFromLevel(int level) {
+        if (level < 1 || level > 30) {
             return BRONZE5.point;
         }
-        return values()[tier - 1].point;
+        return values()[level - 1].point;
     }
 }
