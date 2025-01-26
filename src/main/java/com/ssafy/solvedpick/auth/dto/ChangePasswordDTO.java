@@ -6,13 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class SignupFormDTO {
-    private String username;
-    private String password;
-
+public class ChangePasswordDTO {
+	private String currentPassword;
+	private String newPassword;
 }

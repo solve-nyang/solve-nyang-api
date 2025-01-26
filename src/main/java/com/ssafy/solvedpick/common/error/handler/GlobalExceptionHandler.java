@@ -7,8 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.ssafy.solvedpick.common.error.exception.ApiResponseException;
-import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
+import com.ssafy.solvedpick.common.error.exception.*;
 import com.ssafy.solvedpick.common.error.dto.ErrorResponse;
 
 @RestControllerAdvice
@@ -31,7 +30,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
         UserInfoErrorException.class,
         VerificationNotFoundException.class,
-        ApiResponseException.class
+        ApiResponseException.class,
+        InvalidPasswordException.class
     })
     public ResponseEntity<ErrorResponse> handleBadRequestExceptions(RuntimeException ex) {
         
