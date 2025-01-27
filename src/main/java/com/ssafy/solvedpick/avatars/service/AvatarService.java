@@ -7,6 +7,8 @@ import com.ssafy.solvedpick.avatars.dto.AvatarResponse;
 import com.ssafy.solvedpick.avatars.dto.GradeStatistics;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
 import com.ssafy.solvedpick.common.utils.grade.Grade;
+import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.ownedavatar.dto.AvatarCollectionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,10 @@ public class AvatarService {
                 )).collect(Collectors.toList());
 
         return AvatarResponse.of(avatarDtos);
+    }
+
+    public List<AvatarCollectionDTO> getAllAvatars(Member member) {
+        return avatarRepository.getAvatarCollections(member.getId());
     }
 
     private List<GradeStatistics> calculateGradeStatistics(List<Avatar> avatars) {
