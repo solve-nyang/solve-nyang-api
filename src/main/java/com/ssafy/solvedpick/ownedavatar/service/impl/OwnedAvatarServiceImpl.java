@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.ownedavatar.service.impl;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.avatars.service.AvatarService;
 import com.ssafy.solvedpick.common.utils.grade.Grade;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
@@ -24,9 +25,10 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
 
     private static final int SALE_POINT_PER_AVATAR = 30;
 
-    private final OwnedAvatarRepository ownedAvatarRepository;
     private final AuthService authService;
     private final MemberRepository memberRepository;
+    private final AvatarService avatarService;
+    private final OwnedAvatarRepository ownedAvatarRepository;
 
     @Override
     public List<OwnedAvatarDTO> getOwnedAvatars(Long memberId) {
@@ -87,16 +89,11 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     @Override
     public AvatarCollectionResponseDTO getAvatarCollection() {
         Member member = authService.getCurrentMember();
-        List<AvatarCollectionDTO> result = ownedAvatarRepository.findDistinctByMemberAndAvatar(member)
-                .stream()
-                .map(ownedAvatar -> AvatarCollectionDTO.builder()
-                        .name(ownedAvatar.getName())
-                        .rarity(Grade.fromValue(ownedAvatar.getGrade()).name())
-                        .build())
-                .toList();
+
+        List<AvatarCollectionDTO> avatars = avatarService.getAllAvatars(member);
 
         return AvatarCollectionResponseDTO.builder()
-                .collections(result)
+                .collections(avatars)
                 .build();
     }
 
