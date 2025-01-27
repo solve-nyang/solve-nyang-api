@@ -22,16 +22,16 @@ public class AuthController {
     private final MemberRepository memberRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupFormDTO signupFormDTO) {
-    	boolean verified = authService.verifyUser(signupFormDTO);
-        if(memberRepository.existsByUsername(signupFormDTO.getUsername())) {
+    public ResponseEntity<?> signup(@RequestBody UserDataDTO userDataDTO) {
+    	boolean verified = authService.verifyUser(userDataDTO);
+        if(memberRepository.existsByUsername(userDataDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMessageDTO.builder()
                     .message("이미 가입된 회원입니다.")
                     .build());
         }
 
     	if (verified) {
-    		authService.create(signupFormDTO);
+    		authService.create(userDataDTO);
     		return ResponseEntity.ok()
                     .body(ResponseMessageDTO.builder()
                             .message("success")
@@ -45,8 +45,8 @@ public class AuthController {
     
     
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody SignInFormDTO signInFormDTO) {
-        TokenResponse tokenResponse = authService.signIn(signInFormDTO);
+    public ResponseEntity<?> signin(@RequestBody UserDataDTO userDataDTO) {
+        TokenResponse tokenResponse = authService.signIn(userDataDTO);
 
         return ResponseEntity.ok()
             .body(tokenResponse);
@@ -69,4 +69,23 @@ public class AuthController {
                         .message("Invalid user"));
     }
     
+    @PostMapping("/password/change")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        authService.changePassword(changePasswordDTO);
+
+        return ResponseEntity.ok()
+                .body(ResponseMessageDTO.builder()
+                .message("success")
+                .build());
+    }
+
+    @PostMapping("password/find")
+    public ResponseEntity<?> findPassword(@RequestBody UserDataDTO userDataDTO) {
+        authService.findPassword(userDataDTO);
+
+        return ResponseEntity.ok()
+                .body(ResponseMessageDTO.builder()
+                .message("success")
+                .build());
+    }
 }
