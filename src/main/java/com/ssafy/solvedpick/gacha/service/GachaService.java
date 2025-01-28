@@ -13,6 +13,7 @@ import com.ssafy.solvedpick.members.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +32,22 @@ public class GachaService {
     private final Random random = new Random();
     private final AuthService authService;
 
+    @Transactional
     public DrawResponse drawAvatars(int count){
-//        더미 유저
+
         Member member = authService.getCurrentMember();
 
+        if (count != 1 && count != 10) {
+            throw new IllegalArgumentException("가챠는 1회 또는 10회만 가능합니다.");
+        }
+
+        int totalCost = count * DRAW_COST;
+        if (member.getPoint() < totalCost) {
+            throw new IllegalArgumentException("포인트가 부족합니다. 필요 포인트: " + totalCost + ", 보유 포인트: " + member.getPoint());
+        }
+
+        member.usePoint(totalCost);
+        this.memberRepository.save(member);
         List<DrawAvatarDto> results = new ArrayList<>();
 
         for(int i=0; i<count; i++){
@@ -62,8 +75,7 @@ public class GachaService {
                     .dropRate(Grade.fromValue(selectedAvatar.getGrade()).getProbability())
                     .build());
         }
-        member.usePoint(count * DRAW_COST);
-        this.memberRepository.save(member);
+
         return DrawResponse.builder()
                 .avatars(results)
                 .build();
