@@ -39,7 +39,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
                         .ownedAvatarId(ownedAvatar.getId())
                         .name(ownedAvatar.getAvatar().getName())
                         .rarity(Grade.fromValue(ownedAvatar.getAvatar().getGrade()).name())
-                        .extensionVisible(ownedAvatar.getVisibleExtension())
+                        .visibleExtension(ownedAvatar.getVisibleExtension())
                         .build())
                 .toList();
     }

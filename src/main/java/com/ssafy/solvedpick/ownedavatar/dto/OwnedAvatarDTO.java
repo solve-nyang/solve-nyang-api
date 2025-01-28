@@ -12,5 +12,5 @@ public class OwnedAvatarDTO {
     private String name;
     private String rarity;
     private boolean visible;
-    private boolean extensionVisible;
+    private boolean visibleExtension;
 }
