@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("user/me")
+@RequestMapping("/user/me")
 public class OwnedAvatarController {
 
     private final OwnedAvatarService ownedAvatarService;
