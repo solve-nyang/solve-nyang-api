@@ -10,7 +10,8 @@ import lombok.Getter;
 public enum BackgroundType {
 
     BASE_FIELD("BaseField"),
-    SPACE_FIELD("SpaceField"),;
+    SPACE_FIELD("SpaceField"),
+    STAR_FIELD("StarField");
 
     private final String name;
 
@@ -18,6 +19,7 @@ public enum BackgroundType {
         return switch (this) {
             case BASE_FIELD -> svgResources.getBaseField();
             case SPACE_FIELD -> svgResources.getSpaceField();
+            case STAR_FIELD -> svgResources.getStarField();
         };
     }
 }

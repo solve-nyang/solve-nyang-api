@@ -6,17 +6,22 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum AnimationType {
-    SPACE_FLOAT("""
-    <animateMotion path=\"M %d %d C %d %d %d %d %d %d L %d %d\" 
-    dur=\"%ds\" repeatCount=\"indefinite\" keyPoints=\"0;1;0\" keyTimes=\"0;0.5;1\" calcMode=\"linear\"/>
-    """),
-    SPACE_ROTATE("<animateTransform attributeName=\"transform\" type=\"rotate\" dur=\"%ds\" values=\"0 %d %d; 360 %d %d\" additive=\"sum\" repeatCount=\"indefinite\" />"),
 
-    BASE_BOUNCE("""
-        <animateTransform attributeName=\"transform\" 
-        type=\"translate\" dur=\"%ds\" values=\"%d,%d; %d,%d; %d,%d\" 
-        additive=\"sum\" repeatCount=\"indefinite\" />
-    """);
+    FLOAT("""
+        <animateTransform 
+            attributeName="transform" 
+            type="translate"
+            values="%d,%d; %d,%d; %d,%d; %d,%d; %d,%d; %d,%d; %d,%d"
+            calcMode="linear"
+            dur="%ds" 
+            repeatCount="indefinite" />
+    """),;
+
+    // 점프
+//    JUMP(/* 점프하는 움직임의 keyframe values 설정 */),
+//
+//    // 회전하며 움직이기
+//    ROTATE_MOVE(/* 회전하며 움직이는 애니메이션 설정 */);
 
     private final String animation;
 
