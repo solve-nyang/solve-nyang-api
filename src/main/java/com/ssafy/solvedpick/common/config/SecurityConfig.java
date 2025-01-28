@@ -10,8 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.ssafy.solvedpick.jwt.JwtAuthenticationFilter;
-import com.ssafy.solvedpick.jwt.JwtUtil;
+import com.ssafy.solvedpick.common.jwt.JwtAuthenticationFilter;
+import com.ssafy.solvedpick.common.jwt.JwtUtil;
 
 @Configuration
 @EnableWebSecurity

@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.ownedavatar.repository;
 
+import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,12 +12,6 @@ import java.util.Optional;
 
 public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> {
 
-    @Query("SELECT a " +
-            "FROM OwnedAvatar a " +
-            "LEFT JOIN FETCH a.member m " +
-            "LEFT JOIN FETCH a.avatar " +
-            "WHERE m.id = :memberId")
-    List<OwnedAvatar> findAllByMemberId(@Param("memberId") Long memberId);
 
     Optional<OwnedAvatar> findById(@Param("ownedAvatarId") Long ownedAvatarId);
 
@@ -25,4 +20,11 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
     List<OwnedAvatar> findAllByMemberAndVisibleTrueAndSoldFalse(Member member);
 
     List<OwnedAvatar> findAllByMemberAndVisibleExtensionTrueAndSoldFalse(Member member);
+
+    List<OwnedAvatar> findAllByIdInAndMemberAndSoldFalse(List<Long> id, Member currentMember);
+
+    @Query("SELECT DISTINCT oa.avatar " +
+            "FROM OwnedAvatar oa " +
+            "WHERE oa.member = :member ")
+    List<Avatar> findDistinctByMemberAndAvatar(@Param("member") Member member);
 }

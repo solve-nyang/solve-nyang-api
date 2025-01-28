@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.jwt;
+package com.ssafy.solvedpick.common.jwt;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

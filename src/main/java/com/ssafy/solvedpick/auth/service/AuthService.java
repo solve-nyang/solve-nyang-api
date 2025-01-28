@@ -12,7 +12,7 @@ import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
 import com.ssafy.solvedpick.common.error.exception.UserInfoErrorException;
 import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
-import com.ssafy.solvedpick.jwt.JwtUtil;
+import com.ssafy.solvedpick.common.jwt.JwtUtil;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
