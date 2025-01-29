@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 "/account/verify",
                                 "/account/signin",
                                 "/account/signup",
+                                "/account/password/find",
                                 "/avatar",
                                 "/compose/**",
                                 "/favicon.ico",

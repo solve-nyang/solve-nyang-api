@@ -85,4 +85,7 @@ public class Member {
     	this.point -= point;
     }
     
+    public void updatePassword(String encodedNewPassword) {
+    	this.password = encodedNewPassword;
+    }
 }

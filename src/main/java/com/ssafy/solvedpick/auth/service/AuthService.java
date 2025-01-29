@@ -3,13 +3,14 @@ package com.ssafy.solvedpick.auth.service;
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.auth.domain.VerificationKey;
-import com.ssafy.solvedpick.auth.dto.SignInFormDTO;
-import com.ssafy.solvedpick.auth.dto.SignupFormDTO;
+import com.ssafy.solvedpick.auth.dto.ChangePasswordDTO;
+import com.ssafy.solvedpick.auth.dto.UserDataDTO;
 import com.ssafy.solvedpick.auth.dto.TokenResponse;
 import com.ssafy.solvedpick.auth.dto.UsernameResponse;
 import com.ssafy.solvedpick.auth.repository.VerificationKeyRepository;
 import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
+import com.ssafy.solvedpick.common.error.exception.InvalidPasswordException;
 import com.ssafy.solvedpick.common.error.exception.UserInfoErrorException;
 import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
 import com.ssafy.solvedpick.common.jwt.JwtUtil;
@@ -49,26 +50,26 @@ public class AuthService {
     @Value("${URL.USER_INFO}")
     private String url;
 
-    public TokenResponse signIn(SignInFormDTO signInFormDTO) {
-        Member member = memberRepository.findByUsername(signInFormDTO.getUsername())
+    public TokenResponse signIn(UserDataDTO userDataDTO) {
+        Member member = memberRepository.findByUsername(userDataDTO.getUsername())
                 .orElseThrow(() -> new UserInfoErrorException("Login Error"));
 
-        if (!passwordEncoder.matches(signInFormDTO.getPassword(), member.getPassword())) {
+        if (!passwordEncoder.matches(userDataDTO.getPassword(), member.getPassword())) {
             throw new UserInfoErrorException("Login Error");
         }
 
-        String accessToken = jwtUtil.generateAccessToken(signInFormDTO.getUsername());
+        String accessToken = jwtUtil.generateAccessToken(userDataDTO.getUsername());
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .build();
     }
 
-    public Member create(SignupFormDTO signupFormDTO) {
+    public Member create(UserDataDTO userDataDTO) {
 
         Member user = Member.builder()
-                .username(signupFormDTO.getUsername())
-                .password(passwordEncoder.encode(signupFormDTO.getPassword()))
+                .username(userDataDTO.getUsername())
+                .password(passwordEncoder.encode(userDataDTO.getPassword()))
                 .build();
         user.initSolvedProblems();
 
@@ -135,8 +136,8 @@ public class AuthService {
         }
     }
 
-    public boolean verifyUser(SignupFormDTO signupFormDTO) {
-        String username = signupFormDTO.getUsername();
+    public boolean verifyUser(UserDataDTO userDataDTO) {
+        String username = userDataDTO.getUsername();
 
         try {
             VerificationKey verificationKey = verificationKeyRepository.findByUsername(username)
@@ -163,5 +164,32 @@ public class AuthService {
         log.debug("userName: {}", username);
         return memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
+    }
+    
+    @Transactional
+    public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        Member member = getCurrentMember();
+        String currentPassword = changePasswordDTO.getCurrentPassword();
+        String newPassword = changePasswordDTO.getNewPassword();
+
+        if (!passwordEncoder.matches(currentPassword, member.getPassword())) {
+            throw new InvalidPasswordException("Incorrect current password");
+        }
+
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        member.updatePassword(encodedNewPassword);
+    }
+    
+    @Transactional
+    public void findPassword(UserDataDTO userDataDTO) {
+        Member member = memberRepository.findByUsername(userDataDTO.getUsername())
+            .orElseThrow(() -> new UserInfoErrorException("Member not found"));
+        boolean verified = verifyUser(userDataDTO);
+        if (verified) {
+            String newPassword = passwordEncoder.encode(userDataDTO.getPassword());
+            member.updatePassword(newPassword);
+        } else {
+            throw new VerificationNotFoundException("solved.ac 인증을 확인하세요");
+        }
     }
 }
