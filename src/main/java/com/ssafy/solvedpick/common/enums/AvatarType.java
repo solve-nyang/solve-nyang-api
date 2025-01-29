@@ -12,14 +12,14 @@ import java.util.Arrays;
 public enum AvatarType {
     SSAFY("SSAFY", 334, 334, AnimationType.FLOAT),
 
-    CODING_CAT("CodingCat", 295, 295, AnimationType.FLOAT),
-    YARN_BALL_CAT("YarnBallCat", 312, 311, AnimationType.FLOAT),
+    CODING_CAT("CodingCat", 295, 295, AnimationType.BOUNCE),
+    YARN_BALL_CAT("YarnBallCat", 312, 311, AnimationType.SPIN),
     UFO_CAT("UFOCat", 312, 311, AnimationType.FLOAT),
 
     FISHBOWL_CAT("FishbowlCat", 311, 311, AnimationType.FLOAT),
-    EATING_CAT("EatingCat", 312, 311, AnimationType.FLOAT),
+    EATING_CAT("EatingCat", 312, 311, AnimationType.SHAKE),
     FLEX_CAT("FlexCat", 311, 312, AnimationType.FLOAT),
-    BOX_CAT("BoxCat", 312, 312, AnimationType.FLOAT),
+    BOX_CAT("BoxCat", 312, 312, AnimationType.ZIGZAG),
     FISHING_CAT("FishingCat", 312, 312, AnimationType.FLOAT),
     TOY_CAT("ToyCat", 311, 311, AnimationType.FLOAT),
     LOAF_CAT("LoafCat", 312, 312, AnimationType.FLOAT),

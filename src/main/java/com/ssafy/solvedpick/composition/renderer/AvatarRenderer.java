@@ -3,19 +3,13 @@ package com.ssafy.solvedpick.composition.renderer;
 import com.ssafy.solvedpick.common.enums.AnimationType;
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
-import com.ssafy.solvedpick.composition.animation.AnimationCalculator;
-import com.ssafy.solvedpick.composition.animation.AnimationParams;
 import com.ssafy.solvedpick.composition.resource.SvgResources;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -23,49 +17,59 @@ import java.util.stream.Collectors;
 public class AvatarRenderer {
     private static final int SVG_WIDTH = 600;
     private static final int SVG_HEIGHT = 300;
-    private static final int AVATAR_SIZE = 100;
     private final SvgResources svgResources;
 
     public String renderAvatars(BackgroundType background, List<AvatarType> avatars) {
+
         StringBuilder content = openFile();
         content.append(background.getSvgContent(svgResources));
-        placeAvatars(content, avatars, background);
+        placeAvatars(content, avatars);
         return closeFile(content).toString();
     }
 
-    private void placeAvatars(StringBuilder content, List<AvatarType> avatars, BackgroundType background) {
-
+    private void placeAvatars(StringBuilder content, List<AvatarType> avatars) {
         for (int i = 0; i < avatars.size(); i++) {
             SecureRandom random = new SecureRandom();
-            int startX = random.nextInt(SVG_WIDTH - AVATAR_SIZE);
-            int startY = random.nextInt(SVG_HEIGHT - AVATAR_SIZE);
+            int scaledWidth = (int)(avatars.get(i).getWidth() * 0.3);
+            int scaledHeight = (int)(avatars.get(i).getHeight() * 0.3);
+            int startX = random.nextInt(SVG_WIDTH - scaledWidth);
+            int startY = random.nextInt(SVG_HEIGHT - scaledHeight);
 
-            appendAvatar(content, avatars.get(i), startX, startY, i, background);
+            appendAvatar(content, avatars.get(i), startX, startY, i);
         }
     }
 
-    private void appendAvatar(StringBuilder content, AvatarType avatar, int startX, int startY, int index, BackgroundType background) {
+    private void appendAvatar(StringBuilder content, AvatarType avatar, int startX, int startY, int index) {
+        SecureRandom random = new SecureRandom();
+        int scaledWidth = (int)(avatar.getWidth() * 0.5);
+        int scaledHeight = (int)(avatar.getHeight() * 0.5);
 
-        AnimationParams params = AnimationCalculator.calculateParams(startX, startY, avatar, background);
+        startX = Math.min(SVG_WIDTH - scaledWidth, Math.max(0, startX));
+        startY = Math.min(SVG_HEIGHT - scaledHeight, Math.max(0, startY));
 
+        int moveRange = 400;
 
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(0.3)\">",
-                params.getPositions()[0][0],
-                params.getPositions()[0][1]));
+        int endX = startX + (random.nextInt(moveRange * 2) - moveRange);
+        int endY = startY + (random.nextInt(moveRange * 2) - moveRange);
 
+        endX = Math.min(SVG_WIDTH - scaledWidth, Math.max(0, endX));
+        endY = Math.min(SVG_HEIGHT - scaledHeight, Math.max(0, endY));
 
+        int midX1 = Math.min(SVG_WIDTH - scaledWidth, Math.max(0, startX + (endX - startX)/3));
+        int midY1 = Math.min(SVG_HEIGHT - scaledHeight, Math.max(0, startY + (endY - startY)/3));
+
+        int midX2 = Math.min(SVG_WIDTH - scaledWidth, Math.max(0, startX + (endX - startX)*2/3));
+        int midY2 = Math.min(SVG_HEIGHT - scaledHeight, Math.max(0, startY + (endY - startY)*2/3));
+
+        content.append(String.format("<g transform=\"translate(%d, %d) scale(0.3)\">", startX, startY));
         content.append(avatar.getSvgContent(svgResources));
-
-
-        String positions = Arrays.stream(params.getPositions())
-                .map(pos -> pos[0] + "," + pos[1])
-                .collect(Collectors.joining("; "));
-
         content.append(avatar.getAnimationType().format(
-                positions,
-                params.getDuration()
-        ));
-
+                0, 0,
+                midX1 - startX, midY1 - startY,
+                midX2 - startX, midY2 - startY,
+                endX - startX, endY - startY,
+                0, 0,
+                random.nextInt( 20)+10));
         content.append("</g>");
     }
 
@@ -76,5 +80,4 @@ public class AvatarRenderer {
     private StringBuilder closeFile(StringBuilder file) {
         return file.append("</svg>");
     }
-
 }
