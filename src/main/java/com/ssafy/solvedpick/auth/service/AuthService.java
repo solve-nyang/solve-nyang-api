@@ -189,7 +189,7 @@ public class AuthService {
             String newPassword = passwordEncoder.encode(userDataDTO.getPassword());
             member.updatePassword(newPassword);
         } else {
-            throw new VerificationNotFoundException("Incorrect verificationKey");
+            throw new VerificationNotFoundException("solved.ac 인증을 확인하세요");
         }
     }
 }
