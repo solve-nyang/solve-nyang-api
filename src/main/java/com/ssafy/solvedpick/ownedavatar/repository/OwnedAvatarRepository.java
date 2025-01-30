@@ -18,6 +18,7 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
             "FROM OwnedAvatar oa " +
             "LEFT JOIN FETCH oa.avatar " +
             "WHERE oa.member.id = :memberId " +
+            "AND oa.sold = false " +
             "ORDER BY oa.avatar.grade DESC")
     List<OwnedAvatar> findAllByMemberIdAndSoldFalse(@Param("memberId") Long memberId);
 
