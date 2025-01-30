@@ -53,7 +53,7 @@ public class AvatarRenderer {
     private void appendAvatar(StringBuilder content, AvatarType avatar, Point position) {
         log.debug("avatar = {}", avatar);
         content.append(String.format(
-                "<g transform=\"translate(%d, %d) scale(0.3)\">",
+                "<g transform=\"translate(%d, %d) scale(0.8)\">",
                 position.x, position.y
         ));
         content.append(avatar.getSvgContent(svgResources));
