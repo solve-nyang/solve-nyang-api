@@ -11,7 +11,7 @@ import java.util.Arrays;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum AvatarType {
     SSAFY("SSAFY"),
-    NEY_YEAR_LUCK_CAT("NeyYearLuckCat"),
+    NEW_YEAR_LUCK_CAT("NewYearLuckCat"),
 
     CODING_CAT("CodingCat"),
     YARN_BALL_CAT("YarnBallCat"),
@@ -100,7 +100,7 @@ public enum AvatarType {
     public String getSvgContent(SvgResources svgResources){
         return switch (this) {
             case SSAFY -> svgResources.getSSAFY();
-            case NEY_YEAR_LUCK_CAT -> svgResources.getNewYearLuckCat();
+            case NEW_YEAR_LUCK_CAT -> svgResources.getNewYearLuckCat();
 
             case CODING_CAT -> svgResources.getCodingCat();
             case YARN_BALL_CAT -> svgResources.getYarnBallCat();
