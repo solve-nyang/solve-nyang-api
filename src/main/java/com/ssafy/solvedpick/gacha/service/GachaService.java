@@ -23,7 +23,6 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class GachaService {
 
-//    임시 코스트
     private static final int DRAW_COST = 100;
 
     private final MemberRepository memberRepository;
@@ -79,6 +78,32 @@ public class GachaService {
         return DrawResponse.builder()
                 .avatars(results)
                 .build();
+    }
+
+    @Transactional
+    public boolean getEventAvatar(String avatarName) {
+        Member member = authService.getCurrentMember();
+        Avatar eventAvatar = avatarRepository.findByName(avatarName);
+
+        if (ownedAvatarRepository.existsByMemberAndAvatar(member, eventAvatar)) {
+            return false;
+        }
+
+        OwnedAvatar ownedAvatar = OwnedAvatar.builder()
+                .member(member)
+                .avatar(eventAvatar)
+                .build();
+
+        ownedAvatarRepository.save(ownedAvatar);
+        return true;
+    }
+
+    @Transactional
+    public boolean hasEventAvatar(String avatarName) {
+        Member member = authService.getCurrentMember();
+        Avatar eventAvatar = avatarRepository.findByName(avatarName);
+
+        return ownedAvatarRepository.existsByMemberAndAvatar(member, eventAvatar);
     }
 
     private Grade selectGradeByRandom() {
