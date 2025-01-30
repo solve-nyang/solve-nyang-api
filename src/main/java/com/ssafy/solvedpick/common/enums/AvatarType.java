@@ -11,10 +11,13 @@ import java.util.Arrays;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum AvatarType {
     SSAFY("SSAFY"),
+    NEY_YEAR_LUCK_CAT("NeyYearLuckCat"),
 
     CODING_CAT("CodingCat"),
     YARN_BALL_CAT("YarnBallCat"),
     UFO_CAT("UFOCat"),
+    TTEOKGUK_CAT("TteokGukCat"),
+    MAGPIE_CAT("MagpieCat"),
 
     FISHBOWL_CAT("FishbowlCat"),
     EATING_CAT("EatingCat"),
@@ -27,7 +30,6 @@ public enum AvatarType {
     INVISIBLE_CAT("InvisibleCat"),
     ANONYMOUS_CAT("AnonymousCat"),
     COMFORTABLE_CAT("ComfortableCat"),
-
 
     SPRING_CAT("SpringCat"),
     PYTHON_CAT("PythonCat"),
@@ -98,10 +100,13 @@ public enum AvatarType {
     public String getSvgContent(SvgResources svgResources){
         return switch (this) {
             case SSAFY -> svgResources.getSSAFY();
+            case NEY_YEAR_LUCK_CAT -> svgResources.getNewYearLuckCat();
 
             case CODING_CAT -> svgResources.getCodingCat();
             case YARN_BALL_CAT -> svgResources.getYarnBallCat();
             case UFO_CAT -> svgResources.getUfoCat();
+            case TTEOKGUK_CAT -> svgResources.getTteokgukCat();
+            case MAGPIE_CAT -> svgResources.getMagpieCat();
 
             case FISHBOWL_CAT -> svgResources.getFishbowlCat();
             case EATING_CAT -> svgResources.getEatingCat();
