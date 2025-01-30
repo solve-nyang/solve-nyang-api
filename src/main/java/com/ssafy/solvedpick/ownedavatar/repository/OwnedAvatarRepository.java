@@ -12,10 +12,14 @@ import java.util.Optional;
 
 public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> {
 
-
     Optional<OwnedAvatar> findById(@Param("ownedAvatarId") Long ownedAvatarId);
 
-    List<OwnedAvatar> findAllByMemberIdAndSoldFalse(Long memberId);
+    @Query("SELECT oa " +
+            "FROM OwnedAvatar oa " +
+            "LEFT JOIN FETCH oa.avatar " +
+            "WHERE oa.member.id = :memberId " +
+            "ORDER BY oa.avatar.grade DESC")
+    List<OwnedAvatar> findAllByMemberIdAndSoldFalse(@Param("memberId") Long memberId);
 
     List<OwnedAvatar> findAllByMemberAndVisibleTrueAndSoldFalse(Member member);
 
