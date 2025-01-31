@@ -1,7 +1,7 @@
 package com.ssafy.solvedpick.auction.facade;
 
 import com.ssafy.solvedpick.auction.domain.Auction;
-import com.ssafy.solvedpick.auction.enums.FilterType;
+import com.ssafy.solvedpick.auction.enums.SortType;
 import com.ssafy.solvedpick.auction.service.AuctionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ public class AuctionFacade {
     private final AuctionService auctionService;
 
     public void searchMerchandise(String keyword, int filter, int page) {
-        Sort sort = FilterType.fromValue(filter);
+        Sort sort = SortType.fromValue(filter);
         Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE, sort);
 
         Page<Auction> result = Optional.ofNullable(keyword)

@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum FilterType {
+public enum SortType {
 
     NEWEST(0, Sort.by(Sort.Direction.DESC,"created_at")),
     PRICE_HIGH(1, Sort.by(Sort.Direction.DESC,"price")),
@@ -23,6 +23,6 @@ public enum FilterType {
                 .filter(filter -> filter.value == value)
                 .findFirst()
                 .map(filter -> filter.query)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElse(NEWEST.query);
     }
 }
