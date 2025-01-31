@@ -36,7 +36,8 @@ public enum Point {
     RUBY4(27, 1000),
     RUBY3(28, 1000),
     RUBY2(29, 1000),
-    RUBY1(30, 1000);
+    RUBY1(30, 1000),
+    MASTER(31, 0);
 
     private final int level;
     private final int point;
@@ -49,8 +50,8 @@ public enum Point {
     }
 
     public static String getPointName(int level) {
-        if (level < 0 || level > 30) {
-            throw new IllegalArgumentException("Invalid level: " + level + ". Level must be between 0 and 30");
+        if (level < 0 || level > 31) {
+            throw new IllegalArgumentException("Invalid level: " + level + ". Level must be between 0 and 31");
         }
         return values()[level - 1].name();
     }
