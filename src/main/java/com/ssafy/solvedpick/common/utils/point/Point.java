@@ -57,8 +57,8 @@ public enum Point {
     }
 
     public static String getPointName(int level) {
-        if (level < 0 || level > 30) {
-            throw new IllegalArgumentException("Invalid level: " + level + ". Level must be between 0 and 30");
+        if (level < 0 || level > 31) {
+            throw new IllegalArgumentException("Invalid level: " + level + ". Level must be between 0 and 31");
         }
         return values()[level - 1].name();
     }
