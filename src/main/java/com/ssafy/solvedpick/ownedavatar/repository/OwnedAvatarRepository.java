@@ -30,5 +30,5 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
 
     Boolean existsByMemberAndAvatar(Member member, Avatar avatar);
 
-
+    Optional<OwnedAvatar> findByIdAndMemberAndSoldFalse(Long id, Member member);
 }
