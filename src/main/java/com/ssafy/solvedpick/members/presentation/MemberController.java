@@ -21,7 +21,6 @@ public class MemberController {
 
     @GetMapping()
     public ResponseEntity<UserInfoResponse> getUserInfo(){
-    public ResponseEntity<UserInfoResponse> getUSerInfo(){
         Member member = authService.getCurrentMember();
         UserInfoResponse result = memberService.getUserInfo(member);
         return ResponseEntity.ok(result);
