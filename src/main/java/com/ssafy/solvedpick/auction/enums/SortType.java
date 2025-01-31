@@ -11,7 +11,7 @@ import java.util.Arrays;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum SortType {
 
-    NEWEST(0, Sort.by(Sort.Direction.DESC,"created_at")),
+    NEWEST(0, Sort.by(Sort.Direction.DESC,"createdAt")),
     PRICE_HIGH(1, Sort.by(Sort.Direction.DESC,"price")),
     PRICE_LOW(2, Sort.by(Sort.Direction.ASC,"price"));
 
