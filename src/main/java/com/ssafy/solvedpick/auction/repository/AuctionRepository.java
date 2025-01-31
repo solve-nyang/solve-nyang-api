@@ -12,5 +12,13 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndSoldFalseAndCancelledFalse(
             String keyword, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar"})
     Page<Auction> findAllBySoldFalseAndCancelledFalse(Pageable pageable);
+
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar"})
+    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(
+            int grade, String keyword, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar"})
+    Page<Auction> findAllByOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(int grade, Pageable pageable);
 }
