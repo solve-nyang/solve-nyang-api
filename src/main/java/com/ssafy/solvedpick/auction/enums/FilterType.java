@@ -12,8 +12,7 @@ import java.util.Arrays;
 public enum FilterType {
 
     NEWEST(0, Sort.by(Sort.Direction.DESC,"created_at")),
-    OLDEST(1, Sort.by(Sort.Direction.ASC,"created_at")),
-    PRICE_HIGH(3, Sort.by(Sort.Direction.DESC,"price")),
+    PRICE_HIGH(1, Sort.by(Sort.Direction.DESC,"price")),
     PRICE_LOW(2, Sort.by(Sort.Direction.ASC,"price"));
 
     private final int value;
