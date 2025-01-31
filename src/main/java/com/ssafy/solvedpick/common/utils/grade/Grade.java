@@ -24,4 +24,13 @@ public enum Grade {
                 .findFirst()
                 .orElse(D);
     }
+
+    public static int getValueFromName(String name) {
+        return Arrays.stream(values())
+                .filter(grade -> grade.name().equals(name.toUpperCase()))
+                .map(Grade::getValue)
+                .findFirst()
+                // return not exists value
+                .orElse(-1);
+    }
 }

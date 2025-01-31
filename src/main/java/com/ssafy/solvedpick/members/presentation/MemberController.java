@@ -20,7 +20,7 @@ public class MemberController {
     private final AuthService authService;
 
     @GetMapping()
-    public ResponseEntity<UserInfoResponse> getUSerInfo(){
+    public ResponseEntity<UserInfoResponse> getUserInfo(){
         Member member = authService.getCurrentMember();
         UserInfoResponse result = memberService.getUserInfo(member);
         return ResponseEntity.ok(result);
