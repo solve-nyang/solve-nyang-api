@@ -26,7 +26,7 @@ public class Auction {
     @JoinColumn(name = "owned_avatar_id", nullable = false)
     private OwnedAvatar ownedAvatar;
 
-    @Min(0)
+    @Min(1)
     @Column(nullable = false)
     private Long price;
 
