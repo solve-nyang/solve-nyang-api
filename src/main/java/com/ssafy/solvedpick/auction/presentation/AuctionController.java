@@ -19,10 +19,11 @@ public class AuctionController {
     @GetMapping()
     public ResponseEntity<?> searchMerchandise(
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "filter", defaultValue = "0") int filter,
+            @RequestParam(value = "sort", defaultValue = "0") int sort,
+            @RequestParam(value = "rate", required = false) int rate,
             @RequestParam(value = "page", defaultValue = "1") int page) {
         // TODO: Get a response dto from facade
-        auctionFacade.searchMerchandise(keyword, filter, page);
+        auctionFacade.searchMerchandise(keyword, sort, page);
 
         return ResponseEntity.ok().build();
     }
