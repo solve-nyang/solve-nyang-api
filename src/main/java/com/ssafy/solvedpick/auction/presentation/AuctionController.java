@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.auction.presentation;
 
+import com.ssafy.solvedpick.auction.dto.SearchMerchandiseResponseDTO;
 import com.ssafy.solvedpick.auction.facade.AuctionFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,8 @@ public class AuctionController {
             @RequestParam(value = "sort", defaultValue = "0") int sort,
             @RequestParam(value = "rarity", required = false) String rarity,
             @RequestParam(value = "page", defaultValue = "1") int page) {
-        // TODO: Get a response dto from facade
-        auctionFacade.searchMerchandise(keyword, rarity, sort, page);
+        SearchMerchandiseResponseDTO result = auctionFacade.searchMerchandise(keyword, rarity, sort, page);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(result);
     }
 }
