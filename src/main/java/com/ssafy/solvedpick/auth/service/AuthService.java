@@ -1,6 +1,8 @@
 package com.ssafy.solvedpick.auth.service;
 
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
+import com.ssafy.solvedpick.api.dto.UserData;
+import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.auth.domain.VerificationKey;
 import com.ssafy.solvedpick.auth.dto.ChangePasswordDTO;
@@ -65,6 +67,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public Member create(UserDataDTO userDataDTO) {
 
         Member user = Member.builder()
@@ -73,14 +76,15 @@ public class AuthService {
                 .build();
         user.initSolvedProblems();
 
-//        UserInfoApiResponse apiResponse = apiService.getUserInfo(user.getUsername());
-//        UserData userData = apiResponse.getItems().get(0);
+        UserInfoApiResponse apiResponse = apiService.getUserInfo(user.getUsername());
+        UserData userData = apiResponse.getItems().get(0);
 
         SolvedProblemsApiResponse newProblems = apiService.getSolvedProblems(user.getUsername());
         Problem problem = user.getSolvedProblems();
 
         problem.updateSolvedProblems(newProblems);
 
+        user.updateInfo(userData.getTier(), userData.getSolvedCount(), userData.getMaxStreak());
         this.memberRepository.save(user);
         addDefaultAvatar(user);
         return user;

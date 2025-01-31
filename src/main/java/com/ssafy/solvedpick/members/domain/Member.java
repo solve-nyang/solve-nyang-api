@@ -51,7 +51,19 @@ public class Member {
     
     @Builder.Default
     private int point = 5000;
-    
+
+    @Builder.Default
+    @Column(columnDefinition = "tinyint")
+    private int tier = 0;
+
+    @Builder.Default
+    @Column(columnDefinition = "Integer unsigned")
+    private int solvedCount = 0;
+
+    @Builder.Default
+    @Column(columnDefinition = "Integer unsigned")
+    private int streak = 0;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -87,5 +99,11 @@ public class Member {
     
     public void updatePassword(String encodedNewPassword) {
     	this.password = encodedNewPassword;
+    }
+
+    public void updateInfo(int tier, int solvedCount, int streak) {
+        this.tier = tier;
+        this.solvedCount = solvedCount;
+        this.streak = streak;
     }
 }
