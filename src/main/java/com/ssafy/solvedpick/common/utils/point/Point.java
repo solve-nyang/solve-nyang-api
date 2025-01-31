@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Point {
+    UNRATED(0, 0),
     BRONZE5(1, 2),
     BRONZE4(2, 4),
     BRONZE3(3, 6),
@@ -42,8 +43,15 @@ public enum Point {
 
     public static int getPointFromLevel(int level) {
         if (level < 1 || level > 30) {
-            return BRONZE5.point;
+            return 0;
         }
         return values()[level - 1].point;
+    }
+
+    public static String getPointName(int level) {
+        if (level < 0 || level > 30) {
+            throw new IllegalArgumentException("Invalid level: " + level + ". Level must be between 0 and 30");
+        }
+        return values()[level - 1].name();
     }
 }
