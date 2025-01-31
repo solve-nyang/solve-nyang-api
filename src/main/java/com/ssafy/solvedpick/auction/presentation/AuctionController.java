@@ -20,10 +20,10 @@ public class AuctionController {
     public ResponseEntity<?> searchMerchandise(
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "sort", defaultValue = "0") int sort,
-            @RequestParam(value = "rate", required = false) int rate,
+            @RequestParam(value = "rarity", required = false) String rarity,
             @RequestParam(value = "page", defaultValue = "1") int page) {
         // TODO: Get a response dto from facade
-        auctionFacade.searchMerchandise(keyword, sort, page);
+        auctionFacade.searchMerchandise(keyword, rarity, sort, page);
 
         return ResponseEntity.ok().build();
     }

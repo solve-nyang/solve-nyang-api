@@ -20,8 +20,8 @@ public class AuctionFacade {
 
     private final AuctionService auctionService;
 
-    public void searchMerchandise(String keyword, int filter, int page) {
-        Sort sort = SortType.fromValue(filter);
+    public void searchMerchandise(String keyword, String rarity, int order, int page) {
+        Sort sort = SortType.fromValue(order);
         Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE, sort);
 
         Page<Auction> result = Optional.ofNullable(keyword)
