@@ -11,9 +11,11 @@ import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedavatar.service.OwnedAvatarService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +100,19 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
+    public OwnedAvatar sellToAuction(Long id, Member member) {
+        try {
+            OwnedAvatar ownedAvatar = ownedAvatarRepository.findByIdAndMemberAndSoldFalse(id, member)
+                    .orElseThrow(IllegalAccessException::new);
+            ownedAvatar.setSold();
+
+            return ownedAvatar;
+        } catch (IllegalAccessException e) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
     public AvatarSaleResponseDTO sellAvatars(AvatarSaleRequestDTO request) {
         Member currentMember = authService.getCurrentMember();
         List<Long> idList = request.getSoldAvatars()
@@ -106,7 +121,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
                 .toList();
 
         List<OwnedAvatar> result = ownedAvatarRepository.findAllByIdInAndMemberAndSoldFalse(idList, currentMember);
-        result.forEach(OwnedAvatar::updateSold);
+        result.forEach(OwnedAvatar::setSold);
 
         int successCount = result.size();
         int totalPoints = successCount * SALE_POINT_PER_AVATAR;

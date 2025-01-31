@@ -37,4 +37,8 @@ public class AuctionService {
     public Page<Auction> findMerchandiseWithGrade(int grade, Pageable pageable) {
         return auctionRepository.findAllByOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(grade, pageable);
     }
+
+    public void save(Auction auction) {
+        auctionRepository.save(auction);
+    }
 }

@@ -3,9 +3,15 @@ package com.ssafy.solvedpick.auction.facade;
 import com.ssafy.solvedpick.auction.domain.Auction;
 import com.ssafy.solvedpick.auction.dto.AuctionMerchandiseDTO;
 import com.ssafy.solvedpick.auction.dto.SearchMerchandiseResponseDTO;
+import com.ssafy.solvedpick.auction.dto.SellAvatarRequestDTO;
 import com.ssafy.solvedpick.auction.enums.SortType;
 import com.ssafy.solvedpick.auction.service.AuctionService;
+import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
 import com.ssafy.solvedpick.common.utils.grade.Grade;
+import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
+import com.ssafy.solvedpick.ownedavatar.service.OwnedAvatarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +30,8 @@ public class AuctionFacade {
     private static final int NO_GRADE = -1;
 
     private final AuctionService auctionService;
+    private final AuthService authService;
+    private final OwnedAvatarService ownedAvatarService;
 
     @Transactional
     public SearchMerchandiseResponseDTO searchMerchandise(String keyword, String rarity, int order, int page) {
@@ -65,5 +73,21 @@ public class AuctionFacade {
         return Optional.ofNullable(keyword)
                 .map(k -> auctionService.findMerchandiseWithKeywordAndGrade(k, grade, pageable))
                 .orElseGet(() -> auctionService.findMerchandiseWithGrade(grade, pageable));
+    }
+
+    @Transactional
+    public ResponseMessageDTO sellAvatar(SellAvatarRequestDTO requestDTO) {
+        Member currentMember = authService.getCurrentMember();
+        OwnedAvatar ownedAvatar = ownedAvatarService.sellToAuction(requestDTO.getId(), currentMember);
+
+        Auction auction = Auction.builder()
+                .ownedAvatar(ownedAvatar)
+                .price(requestDTO.getPrice())
+                .build();
+        auctionService.save(auction);
+
+        return ResponseMessageDTO.builder()
+                .message("success")
+                .build();
     }
 }

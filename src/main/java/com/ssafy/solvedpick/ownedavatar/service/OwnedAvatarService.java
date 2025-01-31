@@ -1,5 +1,7 @@
 package com.ssafy.solvedpick.ownedavatar.service;
 
+import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.dto.*;
 
 import java.util.List;
@@ -17,4 +19,6 @@ public interface OwnedAvatarService {
     void setAllVisibilityFalse();
 
     AvatarCollectionResponseDTO getAvatarCollection();
+
+    OwnedAvatar sellToAuction(Long id, Member member);
 }

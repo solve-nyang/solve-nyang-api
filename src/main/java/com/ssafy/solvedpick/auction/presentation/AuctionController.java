@@ -1,13 +1,13 @@
 package com.ssafy.solvedpick.auction.presentation;
 
 import com.ssafy.solvedpick.auction.dto.SearchMerchandiseResponseDTO;
+import com.ssafy.solvedpick.auction.dto.SellAvatarRequestDTO;
 import com.ssafy.solvedpick.auction.facade.AuctionFacade;
+import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +24,13 @@ public class AuctionController {
             @RequestParam(value = "rarity", required = false) String rarity,
             @RequestParam(value = "page", defaultValue = "1") int page) {
         SearchMerchandiseResponseDTO result = auctionFacade.searchMerchandise(keyword, rarity, sort, page);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/sale")
+    public ResponseEntity<?> sellAvatar(@RequestBody SellAvatarRequestDTO requestDTO) {
+        ResponseMessageDTO result = auctionFacade.sellAvatar(requestDTO);
 
         return ResponseEntity.ok().body(result);
     }
