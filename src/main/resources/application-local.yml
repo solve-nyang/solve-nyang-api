@@ -11,7 +11,6 @@ spring:
       - database.properties
       - api.properties
       - jwt.properties
-      - cors.properties
 
   datasource:
     url: ${DB.URL}
