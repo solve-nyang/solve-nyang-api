@@ -30,8 +30,5 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
 
     Boolean existsByMemberAndAvatar(Member member, Avatar avatar);
 
-    @Query("SELECT DISTINCT oa.avatar " +
-            "FROM OwnedAvatar oa " +
-            "WHERE oa.member = :member ")
-    List<Avatar> findDistinctByMemberAndAvatar(@Param("member") Member member);
+
 }
