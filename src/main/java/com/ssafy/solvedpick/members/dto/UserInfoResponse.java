@@ -9,7 +9,7 @@ import lombok.*;
 public class UserInfoResponse {
     private String username;
     private int point;
-    private int solvedacTier;
+    private String tier;
     private int solvedCount;
-    private int solvedacStrick;
+    private int streak;
 }
