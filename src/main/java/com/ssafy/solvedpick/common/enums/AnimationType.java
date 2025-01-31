@@ -22,7 +22,8 @@ public enum AnimationType {
         @Override
         public String format(int x0, int y0, int x1, int y1, int x2, int y2,
                              int x3, int y3, int returnX, int returnY, int duration) {
-            int bounceHeight = Math.abs(y1 - y0);
+            // y1, y2 값을 사용해서 bounceHeight 결정
+            int bounceHeight = Math.min(30, Math.min(Math.abs(y1 - y0), Math.abs(y2 - y0)));
             return String.format(
                     "<animateMotion dur=\"%ds\" repeatCount=\"indefinite\" " +
                             "path=\"M %d,%d Q %d,%d %d,%d T %d,%d\"/>",
@@ -35,33 +36,35 @@ public enum AnimationType {
         }
     },
 
-    SPIN {
-        @Override
-        public String format(int x0, int y0, int x1, int y1, int x2, int y2,
-                             int x3, int y3, int returnX, int returnY, int duration) {
-
-            int centerX = (x0 + x3) / 2;
-            int centerY = (y0 + y3) / 2;
-            int radius = 20;
-
-            return String.format(
-                    "<animateMotion dur=\"%ds\" repeatCount=\"indefinite\" " +
-                            "path=\"M %d,%d A %d,%d 0 1 1 %d,%d A %d,%d 0 1 0 %d,%d\"/>",
-                    duration,
-                    centerX - radius, centerY,
-                    radius, radius,
-                    centerX + radius, centerY,
-                    radius, radius,
-                    centerX - radius, centerY
-            );
-        }
-    },
+//    SPIN {
+//        @Override
+//        public String format(int x0, int y0, int x1, int y1, int x2, int y2,
+//                             int x3, int y3, int returnX, int returnY, int duration) {
+//            // 제어점들과의 거리를 이용해 radius 계산
+//            int radius = Math.min(15, Math.min(
+//                    Math.min(Math.abs(x1 - x0), Math.abs(x2 - x0)),
+//                    Math.min(Math.abs(y1 - y0), Math.abs(y2 - y0))
+//            ));
+//
+//            return String.format(
+//                    "<animateMotion dur=\"%ds\" repeatCount=\"indefinite\" " +
+//                            "path=\"M %d,%d A %d,%d 0 1 1 %d,%d A %d,%d 0 1 0 %d,%d\"/>",
+//                    duration,
+//                    radius, 0,
+//                    radius, radius,
+//                    -radius, 0,
+//                    radius, radius,
+//                    radius, 0
+//            );
+//        }
+//    },
 
     SHAKE {
         @Override
         public String format(int x0, int y0, int x1, int y1, int x2, int y2,
                              int x3, int y3, int returnX, int returnY, int duration) {
-            int shakeAmount = Math.abs(x1 - x0);
+            // 제어점들과의 거리를 이용해 shake 크기 결정
+            int shakeAmount = Math.min(20, Math.min(Math.abs(x1 - x0), Math.abs(x2 - x0)));
             return String.format(
                     "<animateMotion dur=\"%ds\" repeatCount=\"indefinite\" " +
                             "path=\"M %d,%d L %d,%d L %d,%d L %d,%d\"/>",
