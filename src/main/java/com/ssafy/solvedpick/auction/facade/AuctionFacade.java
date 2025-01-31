@@ -41,7 +41,7 @@ public class AuctionFacade {
                 .hasNext(result.hasNext())
                 .totalPage(result.getTotalPages())
                 .hasPrevious(result.hasPrevious())
-                .currentPageNumber(result.getNumber())
+                .currentPageNumber(result.getNumber() + 1)
                 .merchandises(result.getContent()
                         .stream()
                         .map(auction -> AuctionMerchandiseDTO.builder()
