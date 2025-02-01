@@ -18,7 +18,8 @@ public class AuctionService {
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithKeyword(String keyword, Pageable pageable) {
         return auctionRepository.findAllByOwnedAvatar_Avatar_NameContainingAndSoldFalseAndCancelledFalse(
-                keyword, pageable);
+                keyword, pageable
+        );
     }
 
     @Transactional(readOnly = true)
@@ -30,7 +31,8 @@ public class AuctionService {
     public Page<Auction> findMerchandiseWithKeywordAndGrade(String keyword, int grade, Pageable pageable) {
         return auctionRepository
                 .findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(
-                grade, keyword, pageable);
+                        keyword, grade, pageable
+                );
     }
 
     @Transactional(readOnly = true)

@@ -67,4 +67,8 @@ public class OwnedAvatar {
 
         this.sold = false;
     }
+
+    public void updateExtensionVisibility() {
+        this.visibleExtension = !this.visibleExtension;
+    }
 }

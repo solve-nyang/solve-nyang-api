@@ -21,4 +21,6 @@ public interface OwnedAvatarService {
     AvatarCollectionResponseDTO getAvatarCollection();
 
     OwnedAvatar sellToAuction(Long id, Member member);
+
+    void updateAvatarExtensionVisibility(Long ownedAvatarId);
 }
