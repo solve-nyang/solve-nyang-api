@@ -109,7 +109,6 @@ public class AvatarRenderer {
         );
     }
 
-
     private void appendSvgContent(StringBuilder content, AvatarType avatar, int startX, int startY, Path path) {
         SecureRandom random = new SecureRandom();
 
