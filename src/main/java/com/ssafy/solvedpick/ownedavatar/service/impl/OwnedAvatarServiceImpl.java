@@ -118,7 +118,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
-    public void setExtension(Long ownedAvatarId) {
+    public void updateAvatarExtensionVisibility(Long ownedAvatarId) {
         Member currentMember = authService.getCurrentMember();
 
         try {
