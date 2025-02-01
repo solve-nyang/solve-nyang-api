@@ -24,7 +24,14 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
 
     List<OwnedAvatar> findAllByMemberAndVisibleTrueAndSoldFalse(Member member);
 
-    List<OwnedAvatar> findAllByMemberAndVisibleExtensionTrueAndSoldFalse(Member member);
+    @Query("SELECT oa " +
+            "FROM OwnedAvatar oa " +
+            "LEFT JOIN FETCH oa.avatar " +
+            "WHERE oa.member.id = :memberId " +
+            "AND oa.visibleExtension = true " +
+            "AND oa.sold = false " +
+            "ORDER BY oa.avatar.grade DESC")
+    List<OwnedAvatar> findAllByMemberAndVisibleExtensionTrueAndSoldFalse(Long memberId);
 
     List<OwnedAvatar> findAllByIdInAndMemberAndSoldFalse(List<Long> id, Member currentMember);
 
