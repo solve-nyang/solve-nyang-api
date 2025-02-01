@@ -2,6 +2,7 @@ package com.ssafy.solvedpick.auction.service;
 
 import com.ssafy.solvedpick.auction.domain.Auction;
 import com.ssafy.solvedpick.auction.repository.AuctionRepository;
+import com.ssafy.solvedpick.members.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -52,5 +55,9 @@ public class AuctionService {
 
         auction.cancel();
         return auction;
+    }
+
+    public List<Auction> findMemberHistory(Member member) {
+        return auctionRepository.findAllByMember(member.getId());
     }
 }
