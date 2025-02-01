@@ -23,4 +23,6 @@ public interface OwnedAvatarService {
     OwnedAvatar sellToAuction(Long id, Member member);
 
     void updateAvatarExtensionVisibility(Long ownedAvatarId);
+
+    void cancelSold(OwnedAvatar ownedAvatar);
 }

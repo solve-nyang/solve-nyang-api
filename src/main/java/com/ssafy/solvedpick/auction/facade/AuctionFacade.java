@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.auction.facade;
 
 import com.ssafy.solvedpick.auction.domain.Auction;
+import com.ssafy.solvedpick.auction.dto.AuctionCancelRequestDTO;
 import com.ssafy.solvedpick.auction.dto.AuctionMerchandiseDTO;
 import com.ssafy.solvedpick.auction.dto.SearchMerchandiseResponseDTO;
 import com.ssafy.solvedpick.auction.dto.SellAvatarRequestDTO;
@@ -89,5 +90,10 @@ public class AuctionFacade {
         return ResponseMessageDTO.builder()
                 .message("success")
                 .build();
+    }
+
+    public void cancelSale(AuctionCancelRequestDTO requestDTO) {
+        Auction auction = auctionService.cancelAuction(requestDTO.getId());
+        ownedAvatarService.cancelSold(auction.getOwnedAvatar());
     }
 }
