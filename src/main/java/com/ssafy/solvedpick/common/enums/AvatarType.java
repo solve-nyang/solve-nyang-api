@@ -186,11 +186,11 @@ public enum AvatarType {
         };
     }
 
-    public static AvatarType fromValue(String value) {
+    public static AvatarType fromName(String name) {
         return Arrays.stream(values())
-                .filter(type -> type.getName().equalsIgnoreCase(value))
+                .filter(type -> type.getName().equalsIgnoreCase(name))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid AvatarType: " + value));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid AvatarType: " + name));
     }
 
 

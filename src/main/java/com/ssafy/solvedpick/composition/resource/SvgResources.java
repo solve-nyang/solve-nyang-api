@@ -16,7 +16,6 @@ public class SvgResources {
 
     private final String baseField;
     private final String spaceField;
-    private final String starField;
 
     private final String SSAFY;
     private final String newYearLuckCat;
@@ -108,7 +107,6 @@ public class SvgResources {
 
         this.baseField = loadSvg(resourceLoader, "static/backgrounds/BaseField.svg");
         this.spaceField = loadSvg(resourceLoader, "static/backgrounds/SpaceField.svg");
-        this.starField = loadSvg(resourceLoader, "static/backgrounds/StarField.svg");
 
         this.SSAFY = loadSvg(resourceLoader, "static/avatars/SSAFY.svg");
         this.newYearLuckCat = loadSvg(resourceLoader, "static/avatars/NewYearLuckCat.svg");
