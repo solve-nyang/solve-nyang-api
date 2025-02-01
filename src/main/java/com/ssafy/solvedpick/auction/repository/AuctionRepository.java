@@ -5,6 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
@@ -23,4 +27,12 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar"})
     Page<Auction> findAllByOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(int grade, Pageable pageable);
+
+    @Query("SELECT a " +
+            "FROM Auction a " +
+            "LEFT JOIN FETCH a.ownedAvatar " +
+            "LEFT JOIN FETCH a.ownedAvatar.member " +
+            "WHERE a.ownedAvatar.member.id = :memberId " +
+            "ORDER BY a.createdAt DESC")
+    List<Auction> findAllByMember(@Param("memberId") Long memberId);
 }

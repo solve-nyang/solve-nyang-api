@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.auction.presentation;
 
 import com.ssafy.solvedpick.auction.dto.AuctionCancelRequestDTO;
+import com.ssafy.solvedpick.auction.dto.SalesHistoryResponseDTO;
 import com.ssafy.solvedpick.auction.dto.SearchMerchandiseResponseDTO;
 import com.ssafy.solvedpick.auction.dto.SellAvatarRequestDTO;
 import com.ssafy.solvedpick.auction.facade.AuctionFacade;
@@ -41,5 +42,12 @@ public class AuctionController {
         auctionFacade.cancelSale(requestDTO);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMemberSalesHistory() {
+        SalesHistoryResponseDTO result = auctionFacade.getSalesHistory();
+
+        return ResponseEntity.ok().body(result);
     }
 }

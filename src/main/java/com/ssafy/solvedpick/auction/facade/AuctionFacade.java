@@ -1,10 +1,7 @@
 package com.ssafy.solvedpick.auction.facade;
 
 import com.ssafy.solvedpick.auction.domain.Auction;
-import com.ssafy.solvedpick.auction.dto.AuctionCancelRequestDTO;
-import com.ssafy.solvedpick.auction.dto.AuctionMerchandiseDTO;
-import com.ssafy.solvedpick.auction.dto.SearchMerchandiseResponseDTO;
-import com.ssafy.solvedpick.auction.dto.SellAvatarRequestDTO;
+import com.ssafy.solvedpick.auction.dto.*;
 import com.ssafy.solvedpick.auction.enums.SortType;
 import com.ssafy.solvedpick.auction.service.AuctionService;
 import com.ssafy.solvedpick.auth.service.AuthService;
@@ -21,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -95,5 +93,25 @@ public class AuctionFacade {
     public void cancelSale(AuctionCancelRequestDTO requestDTO) {
         Auction auction = auctionService.cancelAuction(requestDTO.getId());
         ownedAvatarService.cancelSold(auction.getOwnedAvatar());
+    }
+
+    public SalesHistoryResponseDTO getSalesHistory() {
+        Member member = authService.getCurrentMember();
+        List<MemberAuctionDTO> history = auctionService.findMemberHistory(member)
+                .stream()
+                .map(auction -> MemberAuctionDTO.builder()
+                        .id(auction.getId())
+                        .sold(auction.getSold())
+                        .price(auction.getPrice())
+                        .createdAt(auction.getCreatedAt())
+                        .cancelled(auction.getCancelled())
+                        .name(auction.getOwnedAvatar().getAvatar().getName())
+                        .rarity(Grade.fromValue(auction.getOwnedAvatar().getAvatar().getGrade()).name())
+                        .build())
+                .toList();
+
+        return SalesHistoryResponseDTO.builder()
+                .history(history)
+                .build();
     }
 }
