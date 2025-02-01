@@ -33,6 +33,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     private final OwnedAvatarRepository ownedAvatarRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<OwnedAvatarDTO> getOwnedAvatars(Long memberId) {
         return ownedAvatarRepository.findAllByMemberIdAndSoldFalse(memberId)
                 .stream()
@@ -60,12 +61,15 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ExtensionAvatarResponseDTO getExtensionAvatars(String username) {
         try {
             Member member = memberRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException(""));
 
-            List<String> avatars = ownedAvatarRepository.findAllByMemberAndVisibleExtensionTrueAndSoldFalse(member)
+            List<String> avatars = ownedAvatarRepository.findAllByMemberAndVisibleExtensionTrueAndSoldFalse(
+                    member.getId()
+                    )
                     .stream()
                     .map(ownedAvatar -> ownedAvatar.getAvatar()
                             .getName())
@@ -89,6 +93,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AvatarCollectionResponseDTO getAvatarCollection() {
         Member member = authService.getCurrentMember();
 
@@ -107,6 +112,20 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
             ownedAvatar.setSold();
 
             return ownedAvatar;
+        } catch (IllegalAccessException e) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public void updateAvatarExtensionVisibility(Long ownedAvatarId) {
+        Member currentMember = authService.getCurrentMember();
+
+        try {
+            OwnedAvatar ownedAvatar = ownedAvatarRepository.findByIdAndMemberAndSoldFalse(ownedAvatarId, currentMember)
+                    .orElseThrow(IllegalAccessException::new);
+
+            ownedAvatar.updateExtensionVisibility();
         } catch (IllegalAccessException e) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
