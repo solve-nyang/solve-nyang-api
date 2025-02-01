@@ -38,11 +38,9 @@ public class CompositionService {
         return ownedAvatarRepository.findAllByMemberAndVisibleTrueAndSoldFalse(member)
                 .stream()
                 .map(avatar -> {
-                    // avatar.getAvatar().getName() 값을 출력하여 확인
                     String avatarName = avatar.getAvatar().getName();
                     log.debug("Avatar Name: " + avatarName);  // 출력
 
-                    // AvatarType 변환
                     return AvatarType.fromValue(avatarName);
                 })
                 .toList();
