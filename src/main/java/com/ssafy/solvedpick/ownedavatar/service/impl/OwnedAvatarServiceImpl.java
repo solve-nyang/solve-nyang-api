@@ -132,6 +132,11 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
+    public void cancelSold(OwnedAvatar ownedAvatar) {
+        ownedAvatar.clearSold();
+    }
+
+    @Override
     public AvatarSaleResponseDTO sellAvatars(AvatarSaleRequestDTO request) {
         Member currentMember = authService.getCurrentMember();
         List<Long> idList = request.getSoldAvatars()
