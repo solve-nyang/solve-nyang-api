@@ -18,9 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Entity
 @Getter
 @Builder
@@ -36,296 +34,143 @@ public class Problem {
 
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long bronze5_solved = 0L;
+	private Integer bronze5_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long bronze4_solved = 0L;
+	private Integer bronze4_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long bronze3_solved = 0L;
+	private Integer bronze3_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long bronze2_solved = 0L;
+	private Integer bronze2_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long bronze1_solved = 0L;
+	private Integer bronze1_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long silver5_solved = 0L;
+	private Integer silver5_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long silver4_solved = 0L;
+	private Integer silver4_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long silver3_solved = 0L;
+	private Integer silver3_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long silver2_solved = 0L;
+	private Integer silver2_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long silver1_solved = 0L;
+	private Integer silver1_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long gold5_solved = 0L;
+	private Integer gold5_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long gold4_solved = 0L;
+	private Integer gold4_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long gold3_solved = 0L;
+	private Integer gold3_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long gold2_solved = 0L;
+	private Integer gold2_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long gold1_solved = 0L;
+	private Integer gold1_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long platinum5_solved = 0L;
+	private Integer platinum5_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long platinum4_solved = 0L;
+	private Integer platinum4_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long platinum3_solved = 0L;
+	private Integer platinum3_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long platinum2_solved = 0L;
+	private Integer platinum2_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long platinum1_solved = 0L;
+	private Integer platinum1_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long diamond5_solved = 0L;
+	private Integer diamond5_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long diamond4_solved = 0L;
+	private Integer diamond4_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long diamond3_solved = 0L;
+	private Integer diamond3_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long diamond2_solved = 0L;
+	private Integer diamond2_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long diamond1_solved = 0L;
+	private Integer diamond1_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long ruby5_solved = 0L;
+	private Integer ruby5_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long ruby4_solved = 0L;
+	private Integer ruby4_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long ruby3_solved = 0L;
+	private Integer ruby3_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long ruby2_solved = 0L;
+	private Integer ruby2_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long ruby1_solved = 0L;
+	private Integer ruby1_solved = 0;
 	@Builder.Default
 	@Column(columnDefinition = "Integer unsigned")
-	private Long unrated_solved = 0L;
+	private Integer unrated_solved = 0;
 
 	@OneToOne
 	@JoinColumn(name = "user_id", unique = true)
 	private Member member;
 
-	public void updateSolvedProblems(SolvedProblemsApiResponse newProblems) {
-		Long plusPoint = 0L;
-	    for (ProblemData  problem : newProblems) {
-	    	int level = problem.getLevel();
-	        int solved = problem.getSolved();
+	public static void initSolvedProblems(Member member) {
+		Problem problem = Problem.builder()
+				.member(member)
+				.build();
+		member.inittSolvedProblem(problem);
+	}
 
-	        switch (level) {
-	            case 0:
-	                if (this.unrated_solved != solved) this.unrated_solved = (long) solved;
-	                break;
-	            case 1:
-	                if (this.bronze5_solved != solved) {
-	                	plusPoint += (solved - this.bronze5_solved) * Point.getPointFromLevel(level);
-	                	this.bronze5_solved = (long) solved;
-	                }
-	                break;
-	            case 2:
-	                if (this.bronze4_solved != solved) {
-	                	plusPoint += (solved - this.bronze4_solved) * Point.getPointFromLevel(level);
-	                	this.bronze4_solved = (long) solved;
-	                }
-	                break;
-	            case 3:
-	                if (this.bronze3_solved != solved) {
-	                	plusPoint += (solved - this.bronze3_solved) * Point.getPointFromLevel(level);
-						this.bronze3_solved = (long) solved;
-					}
-	                break;
-	            case 4:
-	                if (this.bronze2_solved != solved) {
-	                	plusPoint += (solved - this.bronze2_solved) * Point.getPointFromLevel(level);
-						this.bronze2_solved = (long) solved;
-					}
-	                break;
-	            case 5:
-	                if (this.bronze1_solved != solved) {
-	                	plusPoint += (solved - this.bronze1_solved) * Point.getPointFromLevel(level);
-						this.bronze1_solved = (long) solved;
-					}
-	                break;
-	            case 6:
-	                if (this.silver5_solved != solved) {
-	                	plusPoint += (solved - this.silver5_solved) * Point.getPointFromLevel(level);
-						this.silver5_solved = (long) solved;
-					}
-	                break;
-	            case 7:
-	                if (this.silver4_solved != solved) {
-	                	plusPoint += (solved - this.silver4_solved) * Point.getPointFromLevel(level);
-						this.silver4_solved = (long) solved;
-					}
-	                break;
-	            case 8:
-	                if (this.silver3_solved != solved) {
-	                	plusPoint += (solved - this.silver3_solved) * Point.getPointFromLevel(level);
-						this.silver3_solved = (long) solved;
-					}
-	                break;
-	            case 9:
-	                if (this.silver2_solved != solved) {
-	                	plusPoint += (solved - this.silver2_solved) * Point.getPointFromLevel(level);
-						this.silver2_solved = (long) solved;
-					}
-	                break;
-	            case 10:
-	                if (this.silver1_solved != solved) {
-	                	plusPoint += (solved - this.silver1_solved) * Point.getPointFromLevel(level);
-						this.silver1_solved = (long) solved;
-					}
-	                break;
-	            case 11:
-	                if (this.gold5_solved != solved) {
-	                	plusPoint += (solved - this.gold5_solved) * Point.getPointFromLevel(level);
-						this.gold5_solved = (long) solved;
-					}
-	                break;
-	            case 12:
-	                if (this.gold4_solved != solved) {
-	                	plusPoint += (solved - this.gold4_solved) * Point.getPointFromLevel(level);
-						this.gold4_solved = (long) solved;
-					}
-	                break;
-	            case 13:
-	                if (this.gold3_solved != solved) {
-	                	plusPoint += (solved - this.gold3_solved) * Point.getPointFromLevel(level);
-						this.gold3_solved = (long) solved;
-					}
-	                break;
-	            case 14:
-	                if (this.gold2_solved != solved) {
-	                	plusPoint += (solved - this.gold2_solved) * Point.getPointFromLevel(level);
-						this.gold2_solved = (long) solved;
-					}
-	                break;
-	            case 15:
-	                if (this.gold1_solved != solved) {
-	                	plusPoint += (solved - this.gold1_solved) * Point.getPointFromLevel(level);
-						this.gold1_solved = (long) solved;
-					}
-	                break;
-	            case 16:
-	                if (this.platinum5_solved != solved) {
-	                	plusPoint += (solved - this.platinum5_solved) * Point.getPointFromLevel(level);
-						this.platinum5_solved = (long) solved;
-					}
-	                break;
-	            case 17:
-	                if (this.platinum4_solved != solved) {
-	                	plusPoint += (solved - this.platinum4_solved) * Point.getPointFromLevel(level);
-						this.platinum4_solved = (long) solved;
-					}
-	                break;
-	            case 18:
-	                if (this.platinum3_solved != solved) {
-	                	plusPoint += (solved - this.platinum3_solved) * Point.getPointFromLevel(level);
-						this.platinum3_solved = (long) solved;
-					}
-	                break;
-	            case 19:
-	                if (this.platinum2_solved != solved) {
-	                	plusPoint += (solved - this.platinum2_solved) * Point.getPointFromLevel(level);
-						this.platinum2_solved = (long) solved;
-					}
-	                break;
-	            case 20:
-	                if (this.platinum1_solved != solved) {
-	                	plusPoint += (solved - this.platinum1_solved) * Point.getPointFromLevel(level);
-						this.platinum1_solved = (long) solved;
-					}
-	                break;
-	            case 21:
-	                if (this.diamond5_solved != solved) {
-	                	plusPoint += (solved - this.diamond5_solved) * Point.getPointFromLevel(level);
-						this.diamond5_solved = (long) solved;
-					}
-	                break;
-	            case 22:
-	                if (this.diamond4_solved != solved) {
-	                	plusPoint += (solved - this.diamond4_solved) * Point.getPointFromLevel(level);
-						this.diamond4_solved = (long) solved;
-					}
-	                break;
-	            case 23:
-	                if (this.diamond3_solved != solved) {
-	                	plusPoint += (solved - this.diamond3_solved) * Point.getPointFromLevel(level);
-						this.diamond3_solved = (long) solved;
-					}
-	                break;
-	            case 24:
-	                if (this.diamond2_solved != solved) {
-	                	plusPoint += (solved - this.diamond2_solved) * Point.getPointFromLevel(level);
-						this.diamond2_solved = (long) solved;
-					}
-	                break;
-	            case 25:
-	                if (this.diamond1_solved != solved) {
-	                	plusPoint += (solved - this.diamond1_solved) * Point.getPointFromLevel(level);
-						this.diamond1_solved = (long) solved;
-					}
-	                break;
-	            case 26:
-	                if (this.ruby5_solved != solved) {
-	                	plusPoint += (solved - this.ruby5_solved) * Point.getPointFromLevel(level);
-						this.ruby5_solved = (long) solved;
-					}
-	                break;
-	            case 27:
-	                if (this.ruby4_solved != solved) {
-	                	plusPoint += (solved - this.ruby4_solved) * Point.getPointFromLevel(level);
-						this.ruby4_solved = (long) solved;
-					}
-	                break;
-	            case 28:
-	                if (this.ruby3_solved != solved) {
-	                	plusPoint += (solved - this.ruby3_solved) * Point.getPointFromLevel(level);
-						this.ruby3_solved = (long) solved;
-					}
-	                break;
-	            case 29:
-	                if (this.ruby2_solved != solved) {
-	                	plusPoint += (solved - this.ruby2_solved) * Point.getPointFromLevel(level);
-						this.ruby2_solved = (long) solved;
-					}
-	                break;
-	            case 30:
-	                if (this.ruby1_solved != solved) {
-	                	plusPoint += (solved - this.ruby1_solved) * Point.getPointFromLevel(level);
-						this.ruby1_solved = (long) solved;
-					}
-	                break;
-	        }
-	    }
+	public void updateProblemCount(int level, int newSolvedCount){
 
-		this.member.addPoint(plusPoint);
-		log.debug("point : {}", plusPoint);
+		switch(level){
+			case 0 -> this.unrated_solved = newSolvedCount;
+			case 1 -> this.bronze5_solved = newSolvedCount;
+			case 2 -> this.bronze4_solved = newSolvedCount;
+			case 3 -> this.bronze3_solved = newSolvedCount;
+			case 4 -> this.bronze2_solved = newSolvedCount;
+			case 5 -> this.bronze1_solved = newSolvedCount;
+			case 6 -> this.silver5_solved = newSolvedCount;
+			case 7 -> this.silver4_solved = newSolvedCount;
+			case 8 -> this.silver3_solved = newSolvedCount;
+			case 9 -> this.silver2_solved = newSolvedCount;
+			case 10 -> this.silver1_solved = newSolvedCount;
+			case 11 -> this.gold5_solved = newSolvedCount;
+			case 12 -> this.gold4_solved = newSolvedCount;
+			case 13 -> this.gold3_solved = newSolvedCount;
+			case 14 -> this.gold2_solved = newSolvedCount;
+			case 15 -> this.gold1_solved = newSolvedCount;
+			case 16 -> this.platinum5_solved = newSolvedCount;
+			case 17 -> this.platinum4_solved = newSolvedCount;
+			case 18 -> this.platinum3_solved = newSolvedCount;
+			case 19 -> this.platinum2_solved = newSolvedCount;
+			case 20 -> this.platinum1_solved = newSolvedCount;
+			case 21 -> this.diamond5_solved = newSolvedCount;
+			case 22 -> this.diamond4_solved = newSolvedCount;
+			case 23 -> this.diamond3_solved = newSolvedCount;
+			case 24 -> this.diamond2_solved = newSolvedCount;
+			case 25 -> this.diamond1_solved = newSolvedCount;
+			case 26 -> this.ruby5_solved = newSolvedCount;
+			case 27 -> this.ruby4_solved = newSolvedCount;
+			case 28 -> this.ruby3_solved = newSolvedCount;
+			case 29 -> this.ruby2_solved = newSolvedCount;
+			case 30 -> this.ruby1_solved = newSolvedCount;
+		}
 	}
 }
