@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuctionFacade {
 
@@ -36,7 +37,7 @@ public class AuctionFacade {
     private final OwnedAvatarService ownedAvatarService;
     private final MemberService memberService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public SearchMerchandiseResponseDTO searchMerchandise(String keyword, String rarity, int order, int page) {
         Sort sort = SortType.fromValue(order);
         Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE, sort);
@@ -78,7 +79,6 @@ public class AuctionFacade {
                 .orElseGet(() -> auctionService.findMerchandiseWithGrade(grade, pageable));
     }
 
-    @Transactional
     public ResponseMessageDTO sellAvatar(SellAvatarRequestDTO requestDTO) {
         Member currentMember = authService.getCurrentMember();
         OwnedAvatar ownedAvatar = ownedAvatarService.sellToAuction(requestDTO.getId(), currentMember);
