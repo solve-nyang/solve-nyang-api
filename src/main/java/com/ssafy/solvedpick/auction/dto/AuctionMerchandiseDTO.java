@@ -16,5 +16,6 @@ public class AuctionMerchandiseDTO {
     private Long price;
     private String name;
     private String rarity;
+    private Boolean isMine;
     private LocalDateTime createdAt;
 }
