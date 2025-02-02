@@ -33,97 +33,66 @@ public class Problem {
 	private Long id;
 
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer bronze5_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer bronze4_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer bronze3_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer bronze2_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer bronze1_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer silver5_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer silver4_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer silver3_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer silver2_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer silver1_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer gold5_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer gold4_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer gold3_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer gold2_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer gold1_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer platinum5_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer platinum4_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer platinum3_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer platinum2_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer platinum1_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer diamond5_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer diamond4_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer diamond3_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer diamond2_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer diamond1_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer ruby5_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer ruby4_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer ruby3_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer ruby2_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer ruby1_solved = 0;
 	@Builder.Default
-	@Column(columnDefinition = "Integer unsigned")
 	private Integer unrated_solved = 0;
 
 	@OneToOne
