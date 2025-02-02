@@ -50,7 +50,7 @@ public class Member {
     private boolean verified = false;
     
     @Builder.Default
-    private int point = 5000;
+    private Long point = 5000L;
 
     @Builder.Default
     @Column(columnDefinition = "tinyint")
@@ -76,10 +76,11 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedAvatar> avatars = new ArrayList<>();
 
-    public void addPoint(int amount) {
-        if (amount <0) {
+    public void addPoint(long amount) {
+        if (amount < 0) {
             throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
         }
+
         this.point += amount;
     }
 
@@ -88,12 +89,8 @@ public class Member {
     			.member(this)
     			.build();
     }
-
-    public void updatePoint(int newPoint) {
-        this.point += newPoint;
-    }
     
-    public void usePoint(int point) {
+    public void usePoint(long point) {
     	this.point -= point;
     }
     

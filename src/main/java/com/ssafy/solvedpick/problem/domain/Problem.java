@@ -324,7 +324,8 @@ public class Problem {
 	                break;
 	        }
 	    }
-		this.member.updatePoint(plusPoint.intValue());
+
+		this.member.addPoint(plusPoint);
 		log.debug("point : {}", plusPoint);
 	}
 }
