@@ -16,6 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 public class MemberService {
 
     private static final double FEE = 0.95;
+
     private final ProblemFacade problemFacade;
 
     // TODO: 전체 수정하기
