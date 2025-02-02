@@ -41,8 +41,7 @@ public class SecurityConfig {
                                 "/avatar",
                                 "/compose/**",
                                 "/favicon.ico",
-                                "/user/me/extension",
-                                "/auction"
+                                "/user/me/extension"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

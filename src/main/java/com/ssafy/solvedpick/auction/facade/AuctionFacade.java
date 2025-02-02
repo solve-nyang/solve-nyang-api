@@ -39,6 +39,7 @@ public class AuctionFacade {
 
     @Transactional(readOnly = true)
     public SearchMerchandiseResponseDTO searchMerchandise(String keyword, String rarity, int order, int page) {
+        Member member = authService.getCurrentMember();
         Sort sort = SortType.fromValue(order);
         Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE, sort);
 
@@ -61,6 +62,7 @@ public class AuctionFacade {
                                 .price(auction.getPrice())
                                 .createdAt(auction.getCreatedAt())
                                 .name(auction.getOwnedAvatar().getAvatar().getName())
+                                .isMine(member.getId().equals(auction.getOwnedAvatar().getMember().getId()))
                                 .rarity(Grade.fromValue(auction.getOwnedAvatar().getAvatar().getGrade()).name())
                                 .build())
                         .toList())
