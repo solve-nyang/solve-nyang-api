@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.ownedavatar.service;
 
+import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.dto.*;
@@ -25,4 +26,6 @@ public interface OwnedAvatarService {
     void updateAvatarExtensionVisibility(Long ownedAvatarId);
 
     void cancelSold(OwnedAvatar ownedAvatar);
+
+    void buyAvatar(Member buyer, Avatar avatar);
 }

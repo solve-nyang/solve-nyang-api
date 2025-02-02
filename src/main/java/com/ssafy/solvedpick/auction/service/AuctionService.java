@@ -60,4 +60,12 @@ public class AuctionService {
     public List<Auction> findMemberHistory(Member member) {
         return auctionRepository.findAllByMember(member.getId());
     }
+
+    public Auction buyAvatar(Long id) {
+        Auction auction = auctionRepository.findById(id)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+        auction.sold();
+
+        return auction;
+    }
 }

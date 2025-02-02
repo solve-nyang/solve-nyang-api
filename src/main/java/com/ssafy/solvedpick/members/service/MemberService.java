@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.members.service;
 
 import com.ssafy.solvedpick.common.utils.point.Point;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
@@ -13,10 +14,13 @@ import com.ssafy.solvedpick.problem.domain.Problem;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+
+    private static final double FEE = 0.95;
 
     private final ApiService apiService;
 
@@ -42,5 +46,18 @@ public class MemberService {
 
         problem.updateSolvedProblems(newProblems);
         member.updateInfo(userData.getTier(), userData.getSolvedCount(), userData.getMaxStreak());
+    }
+
+    public void sellAvatar(Member seller, Long point) {
+        long result = (long) Math.ceil(point * FEE);
+        seller.addPoint(result);
+    }
+
+    public void buyAvatar(Member buyer, Long point) {
+        if (buyer.getPoint() < point) {
+            throw new HttpClientErrorException(HttpStatus.PAYMENT_REQUIRED);
+        }
+
+        buyer.usePoint(point);
     }
 }
