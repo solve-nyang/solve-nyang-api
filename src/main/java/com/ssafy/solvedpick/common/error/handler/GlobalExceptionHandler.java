@@ -16,8 +16,7 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler({
             MethodArgumentNotValidException.class,
-            IllegalArgumentException.class,
-            HttpClientErrorException.class
+            IllegalArgumentException.class
     })
     public ResponseEntity<ErrorResponse> handleValidationExceptions(Exception ex) {
         String errorMessage = ex.getMessage();
@@ -42,5 +41,16 @@ public class GlobalExceptionHandler {
             .body(ErrorResponse.builder()
             		.message(ex.getMessage())
             		.build());
+    }
+
+    @ExceptionHandler({
+            HttpClientErrorException.class
+    })
+    public ResponseEntity<ErrorResponse> handleHttpClientErrorExceptions(HttpClientErrorException e) {
+        return ResponseEntity
+                .status(e.getStatusCode())
+                .body(ErrorResponse.builder()
+                        .message(e.getMessage())
+                        .build());
     }
 }
