@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.ownedavatar.service.impl;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.avatars.service.AvatarService;
 import com.ssafy.solvedpick.common.utils.grade.Grade;
 import com.ssafy.solvedpick.members.domain.Member;
@@ -134,6 +135,16 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     @Override
     public void cancelSold(OwnedAvatar ownedAvatar) {
         ownedAvatar.clearSold();
+    }
+
+    @Override
+    public void buyAvatar(Member buyer, Avatar avatar) {
+        OwnedAvatar ownedAvatar = OwnedAvatar.builder()
+                .member(buyer)
+                .avatar(avatar)
+                .build();
+
+        ownedAvatarRepository.save(ownedAvatar);
     }
 
     @Override
