@@ -8,6 +8,7 @@ import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
 import com.ssafy.solvedpick.common.utils.grade.Grade;
 import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.members.service.MemberService;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.service.OwnedAvatarService;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +34,7 @@ public class AuctionFacade {
     private final AuctionService auctionService;
     private final AuthService authService;
     private final OwnedAvatarService ownedAvatarService;
+    private final MemberService memberService;
 
     @Transactional
     public SearchMerchandiseResponseDTO searchMerchandise(String keyword, String rarity, int order, int page) {
@@ -113,5 +117,19 @@ public class AuctionFacade {
         return SalesHistoryResponseDTO.builder()
                 .history(history)
                 .build();
+    }
+
+    public void buyAvatar(AuctionBuyRequestDTO requestDTO) {
+        Member buyer = authService.getCurrentMember();
+        Auction auction = auctionService.buyAvatar(requestDTO.getId());
+        Member seller = auction.getOwnedAvatar().getMember();
+
+        if (seller.getId().equals(buyer.getId())) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+
+        memberService.sellAvatar(seller, auction.getPrice());
+        memberService.buyAvatar(buyer, auction.getPrice());
+        ownedAvatarService.buyAvatar(buyer, auction.getOwnedAvatar().getAvatar());
     }
 }
