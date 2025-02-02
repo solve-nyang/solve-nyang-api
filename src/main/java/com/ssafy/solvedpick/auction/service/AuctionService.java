@@ -62,7 +62,7 @@ public class AuctionService {
     }
 
     public Auction buyAvatar(Long id) {
-        Auction auction = auctionRepository.findById(id)
+        Auction auction = auctionRepository.findByIdAndSoldFalseAndCancelledFalse(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         auction.sold();
 

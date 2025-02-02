@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
@@ -35,4 +36,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
             "WHERE a.ownedAvatar.member.id = :memberId " +
             "ORDER BY a.createdAt DESC")
     List<Auction> findAllByMember(@Param("memberId") Long memberId);
+
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Optional<Auction> findByIdAndSoldFalseAndCancelledFalse(long id);
 }
