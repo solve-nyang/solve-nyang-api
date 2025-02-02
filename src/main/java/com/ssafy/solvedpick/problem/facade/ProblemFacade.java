@@ -21,14 +21,15 @@ public class ProblemFacade {
 
     @Transactional
     public void initializeNewUserProblem(Member member) {
-        log.debug("user 생성 문제테이블 생성 : {}", member);
-        Problem.initSolvedProblems(member);
+
+        Problem problem = Problem.initSolvedProblems(member);
+        member.initSolvedProblem(problem);
         syncUserProblemInfo(member);
     }
 
     @Transactional
     public void syncUserProblemInfo(Member member) {
-        log.debug("user 정보 udpate : {}", member);
+
         UserInfoApiResponse apiResponse = apiService.getUserInfo(member.getUsername());
         UserData userData = apiResponse.getItems().get(0);
 

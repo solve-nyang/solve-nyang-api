@@ -98,7 +98,7 @@ public class Member {
         this.streak = streak;
     }
 
-    public void inittSolvedProblem(Problem problem) {
+    public void initSolvedProblem(Problem problem) {
         this.solvedProblems = problem;
     }
 }

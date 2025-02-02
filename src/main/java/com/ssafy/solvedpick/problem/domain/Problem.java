@@ -130,11 +130,13 @@ public class Problem {
 	@JoinColumn(name = "user_id", unique = true)
 	private Member member;
 
-	public static void initSolvedProblems(Member member) {
+	public static Problem initSolvedProblems(Member member) {
+
 		Problem problem = Problem.builder()
 				.member(member)
 				.build();
-		member.inittSolvedProblem(problem);
+
+		return problem;
 	}
 
 	public void updateProblemCount(int level, int newSolvedCount){
