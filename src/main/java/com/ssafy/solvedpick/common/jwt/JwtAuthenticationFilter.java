@@ -3,6 +3,7 @@ package com.ssafy.solvedpick.common.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
@@ -27,9 +28,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            String token = extractJwtFromRequest(request);
-            if (token != null) {
-                processToken(token, request);
+            String accessToken = extractJwtFromRequest(request);
+            
+            if (accessToken != null) {
+            	try {
+                    processToken(accessToken, request);
+                } catch (RuntimeException e) {
+                    String refreshToken = extractRefreshTokenFromCookie(request);
+                    if (refreshToken != null) {
+                        String newAccessToken = jwtUtil.recreateAccessToken(refreshToken);
+                        response.setHeader("New-Access-Token", newAccessToken);
+                    }
+                }
             }
             filterChain.doFilter(request, response);
         } catch (Exception e) {
@@ -38,15 +48,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
     
     private String extractJwtFromRequest(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            return authorizationHeader.substring(7);
-        }
-        return null;
+    	 String authorizationHeader = request.getHeader("Authorization");
+         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+             return authorizationHeader.substring(7);
+         }
+         return null;
     }
     
-    private void processToken(String token, HttpServletRequest request) {
-        String username = jwtUtil.validateToken(token);
+    private void processToken(String accessToken, HttpServletRequest request) {
+        String username = jwtUtil.validateToken(accessToken);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             createAndSetAuthentication(username, request);
         }
@@ -68,5 +78,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         errorDetails.put("status", HttpServletResponse.SC_UNAUTHORIZED);
 
         objectMapper.writeValue(response.getWriter(), errorDetails);
+    }
+    
+    private String extractRefreshTokenFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("refresh_token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

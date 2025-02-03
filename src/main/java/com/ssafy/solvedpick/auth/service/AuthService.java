@@ -1,6 +1,5 @@
 package com.ssafy.solvedpick.auth.service;
 
-import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.auth.domain.VerificationKey;
 import com.ssafy.solvedpick.auth.dto.ChangePasswordDTO;
 import com.ssafy.solvedpick.auth.dto.UserDataDTO;
@@ -19,6 +18,8 @@ import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.facade.OwnedBackgroundFacade;
 import com.ssafy.solvedpick.problem.facade.ProblemFacade;
+
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +53,7 @@ public class AuthService {
     @Value("${URL.USER_INFO}")
     private String url;
 
-    public TokenResponse signIn(UserDataDTO userDataDTO) {
+    public TokenResponse signIn(UserDataDTO userDataDTO, HttpServletResponse response) {
         Member member = memberRepository.findByUsername(userDataDTO.getUsername())
                 .orElseThrow(() -> new UserInfoErrorException("Login Error"));
 
@@ -61,7 +62,9 @@ public class AuthService {
         }
 
         String accessToken = jwtUtil.generateAccessToken(userDataDTO.getUsername());
-
+        String refreshToken = jwtUtil.generateRefreshToken(userDataDTO.getUsername());
+        
+        jwtUtil.addRefreshTokenToCookie(response, refreshToken);
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .build();

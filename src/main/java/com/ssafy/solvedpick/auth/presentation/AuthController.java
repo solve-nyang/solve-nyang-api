@@ -4,8 +4,13 @@ import com.ssafy.solvedpick.auth.dto.*;
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
 import com.ssafy.solvedpick.common.error.dto.ErrorResponse;
+import com.ssafy.solvedpick.common.jwt.JwtUtil;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
+
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
     private final MemberRepository memberRepository;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserDataDTO userDataDTO) {
@@ -45,18 +51,20 @@ public class AuthController {
     
     
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody UserDataDTO userDataDTO) {
+    public ResponseEntity<?> signin(@RequestBody UserDataDTO userDataDTO, HttpServletResponse response) {
         TokenResponse tokenResponse = authService.signIn(userDataDTO);
-
+        
+        jwtUtil.addRefreshTokenToCookie(response, tokenResponse.getRefreshToken());
+        
         return ResponseEntity.ok()
-            .body(tokenResponse);
+            .body(Map.of("accessToken", tokenResponse.getAccessToken()));
     }
 
     @PostMapping("/verify")
     public ResponseEntity<?> getVerificationCode(@RequestBody MemberNameDTO membernameDTO) {
     	String username = membernameDTO.getUsername();
     	boolean check = authService.checkUser(username);
-
+    	
     	if (check) {
     		String code = authService.generateVerificationCode(username);
             VerificationResponseDTO result = new VerificationResponseDTO(code);

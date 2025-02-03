@@ -21,10 +21,6 @@ public class JwtConfig {
     }
     @Bean
     public Key key() {
-        // 안전한 길이의 키 생성
-//        return Keys.secretKeyFor(SignatureAlgorithm.HS512);
-        
-//         또는 기존 시크릿 키를 사용하는 경우
          return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 }
