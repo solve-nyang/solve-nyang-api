@@ -14,7 +14,15 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class SvgResources {
 
-    private final String spaceField;
+    private final String space;
+    private final String beach;
+    private final String field;
+    private final String ocean;
+    private final String sand;
+    private final String snow1;
+    private final String snow2;
+    private final String window1;
+    private final String window2;
 
     private final String SSAFY;
     private final String newYearLuckCat;
@@ -104,7 +112,15 @@ public class SvgResources {
     public SvgResources(ResourceLoader resourceLoader) throws IOException {
         log.debug("Initializing SVG resources");
 
-        this.spaceField = loadSvg(resourceLoader, "static/backgrounds/SpaceField.svg");
+        this.space = loadSvg(resourceLoader, "static/backgrounds/Space.svg");
+        this.beach = loadSvg(resourceLoader, "static/backgrounds/Beach.svg");
+        this.field = loadSvg(resourceLoader, "static/backgrounds/Field.svg");
+        this.ocean = loadSvg(resourceLoader, "static/backgrounds/Ocean.svg");
+        this.sand = loadSvg(resourceLoader, "static/backgrounds/Sand.svg");
+        this.snow1 = loadSvg(resourceLoader, "static/backgrounds/Snow1.svg");
+        this.snow2 = loadSvg(resourceLoader, "static/backgrounds/Snow2.svg");
+        this.window1 = loadSvg(resourceLoader, "static/backgrounds/Window1.svg");
+        this.window2 = loadSvg(resourceLoader, "static/backgrounds/Window2.svg");
 
         this.SSAFY = loadSvg(resourceLoader, "static/avatars/SSAFY.svg");
         this.newYearLuckCat = loadSvg(resourceLoader, "static/avatars/NewYearLuckCat.svg");
