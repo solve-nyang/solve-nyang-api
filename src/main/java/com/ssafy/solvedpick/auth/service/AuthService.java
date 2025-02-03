@@ -17,6 +17,7 @@ import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
+import com.ssafy.solvedpick.ownedbackgrounds.facade.OwnedBackgroundFacade;
 import com.ssafy.solvedpick.problem.facade.ProblemFacade;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -45,6 +47,7 @@ public class AuthService {
     private final AvatarRepository avatarRepository;
     private final OwnedAvatarRepository ownedAvatarRepository;
     private final ProblemFacade problemFacade;
+    private final OwnedBackgroundFacade ownedBackgroundFacade;
 
     @Value("${URL.USER_INFO}")
     private String url;
@@ -72,9 +75,13 @@ public class AuthService {
                 .password(passwordEncoder.encode(userDataDTO.getPassword()))
                 .build();
 
-        problemFacade.initializeNewUserProblem(user);
         this.memberRepository.save(user);
+
         addDefaultAvatar(user);
+        ownedBackgroundFacade.addDefaultBackground(user);
+
+        problemFacade.initializeNewUserProblem(user);
+
         return user;
     }
 
