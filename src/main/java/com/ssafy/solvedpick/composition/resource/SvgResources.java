@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class SvgResources {
 
-    private final String baseField;
     private final String spaceField;
 
     private final String SSAFY;
@@ -105,7 +104,6 @@ public class SvgResources {
     public SvgResources(ResourceLoader resourceLoader) throws IOException {
         log.debug("Initializing SVG resources");
 
-        this.baseField = loadSvg(resourceLoader, "static/backgrounds/BaseField.svg");
         this.spaceField = loadSvg(resourceLoader, "static/backgrounds/SpaceField.svg");
 
         this.SSAFY = loadSvg(resourceLoader, "static/avatars/SSAFY.svg");
