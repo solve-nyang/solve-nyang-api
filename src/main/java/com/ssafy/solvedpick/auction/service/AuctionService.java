@@ -22,27 +22,27 @@ public class AuctionService {
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithKeyword(String keyword, Pageable pageable) {
-        return auctionRepository.findAllByOwnedAvatar_Avatar_NameContainingAndSoldFalseAndCancelledFalse(
+        return auctionRepository.findAllByOwnedAvatar_Avatar_NameContainingAndCancelledFalse(
                 keyword, pageable
         );
     }
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandise(Pageable pageable) {
-        return auctionRepository.findAllBySoldFalseAndCancelledFalse(pageable);
+        return auctionRepository.findAllByCancelledFalse(pageable);
     }
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithKeywordAndGrade(String keyword, int grade, Pageable pageable) {
         return auctionRepository
-                .findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(
+                .findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
                         keyword, grade, pageable
                 );
     }
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithGrade(int grade, Pageable pageable) {
-        return auctionRepository.findAllByOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(grade, pageable);
+        return auctionRepository.findAllByOwnedAvatar_Avatar_GradeAndCancelledFalse(grade, pageable);
     }
 
     public void save(Auction auction) {

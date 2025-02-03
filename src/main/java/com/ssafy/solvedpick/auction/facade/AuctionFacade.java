@@ -59,6 +59,7 @@ public class AuctionFacade {
                         .stream()
                         .map(auction -> AuctionMerchandiseDTO.builder()
                                 .id(auction.getId())
+                                .sold(auction.getSold())
                                 .price(auction.getPrice())
                                 .createdAt(auction.getCreatedAt())
                                 .name(auction.getOwnedAvatar().getAvatar().getName())
