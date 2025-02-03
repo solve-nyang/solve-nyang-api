@@ -1,16 +1,31 @@
 package com.ssafy.solvedpick.ownedavatar.service;
 
-import com.ssafy.solvedpick.ownedavatar.dto.AvatarSaleRequestDto;
-import com.ssafy.solvedpick.ownedavatar.dto.AvatarSaleResponseDto;
-import com.ssafy.solvedpick.ownedavatar.dto.ExtensionAvatarResponseDTO;
-import com.ssafy.solvedpick.ownedavatar.dto.OwnedAvatarDTO;
+import com.ssafy.solvedpick.avatars.domain.Avatar;
+import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
+import com.ssafy.solvedpick.ownedavatar.dto.*;
 
 import java.util.List;
 
 public interface OwnedAvatarService {
 
     List<OwnedAvatarDTO> getOwnedAvatars(Long memberId);
+
     void updateAvatarVisibility(Long avatarId);
-    AvatarSaleResponseDto sellAvatars(AvatarSaleRequestDto request);
+
+    AvatarSaleResponseDTO sellAvatars(AvatarSaleRequestDTO request);
+
     ExtensionAvatarResponseDTO getExtensionAvatars(String username);
+
+    void setAllVisibilityFalse();
+
+    AvatarCollectionResponseDTO getAvatarCollection();
+
+    OwnedAvatar sellToAuction(Long id, Member member);
+
+    void updateAvatarExtensionVisibility(Long ownedAvatarId);
+
+    void cancelSold(OwnedAvatar ownedAvatar);
+
+    void buyAvatar(Member buyer, Avatar avatar);
 }

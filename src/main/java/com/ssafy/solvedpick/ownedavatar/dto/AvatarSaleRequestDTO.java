@@ -7,6 +7,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class AvatarSaleRequestDto {
-    private List<SoldAvatarDto> soldAvatars;
+public class AvatarSaleRequestDTO {
+
+    private List<SoldAvatarDTO> soldAvatars;
 }

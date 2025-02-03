@@ -9,16 +9,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ssafy.solvedpick.common.error.exception.*;
 import com.ssafy.solvedpick.common.error.dto.ErrorResponse;
+import org.springframework.web.client.HttpClientErrorException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String errorMessage = ex.getBindingResult()
-            .getAllErrors()
-            .get(0)
-            .getDefaultMessage();
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class,
+            IllegalArgumentException.class
+    })
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(Exception ex) {
+        String errorMessage = ex.getMessage();
             
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
@@ -40,5 +41,16 @@ public class GlobalExceptionHandler {
             .body(ErrorResponse.builder()
             		.message(ex.getMessage())
             		.build());
+    }
+
+    @ExceptionHandler({
+            HttpClientErrorException.class
+    })
+    public ResponseEntity<ErrorResponse> handleHttpClientErrorExceptions(HttpClientErrorException e) {
+        return ResponseEntity
+                .status(e.getStatusCode())
+                .body(ErrorResponse.builder()
+                        .message(e.getMessage())
+                        .build());
     }
 }

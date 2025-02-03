@@ -5,12 +5,14 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum BackgroundType {
 
     BASE_FIELD("BaseField"),
-    SPACE_FIELD("SpaceField"),;
+    SPACE_FIELD("SpaceField");
 
     private final String name;
 
@@ -20,4 +22,12 @@ public enum BackgroundType {
             case SPACE_FIELD -> svgResources.getSpaceField();
         };
     }
+
+    public static BackgroundType fromName(String name) {
+        return Arrays.stream(values())
+                .filter(type -> type.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid AvatarType: " + name));
+    }
+
 }

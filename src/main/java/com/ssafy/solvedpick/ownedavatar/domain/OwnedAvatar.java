@@ -52,11 +52,23 @@ public class OwnedAvatar {
         this.visible = !this.visible;
     }
 
-    public void updateSold() {
-        if(this.sold) {
+    public void setSold() {
+        if (this.sold) {
             throw new IllegalArgumentException("이미 판매된 아바타입니다");
         }
 
         this.sold = true;
+    }
+
+    public void clearSold() {
+        if (!this.sold) {
+            throw new IllegalArgumentException("판매하지 않은 아바타입니다");
+        }
+
+        this.sold = false;
+    }
+
+    public void updateExtensionVisibility() {
+        this.visibleExtension = !this.visibleExtension;
     }
 }

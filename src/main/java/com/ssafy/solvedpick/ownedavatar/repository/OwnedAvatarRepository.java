@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.ownedavatar.repository;
 
+import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,18 +12,30 @@ import java.util.Optional;
 
 public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> {
 
-    @Query("SELECT a " +
-            "FROM OwnedAvatar a " +
-            "LEFT JOIN FETCH a.member m " +
-            "LEFT JOIN FETCH a.avatar " +
-            "WHERE m.id = :memberId")
-    List<OwnedAvatar> findAllByMemberId(@Param("memberId") Long memberId);
-
     Optional<OwnedAvatar> findById(@Param("ownedAvatarId") Long ownedAvatarId);
 
-    List<OwnedAvatar> findAllByMemberIdAndSoldFalse(Long memberId);
+    @Query("SELECT oa " +
+            "FROM OwnedAvatar oa " +
+            "LEFT JOIN FETCH oa.avatar " +
+            "WHERE oa.member.id = :memberId " +
+            "AND oa.sold = false " +
+            "ORDER BY oa.avatar.grade DESC")
+    List<OwnedAvatar> findAllByMemberIdAndSoldFalse(@Param("memberId") Long memberId);
 
     List<OwnedAvatar> findAllByMemberAndVisibleTrueAndSoldFalse(Member member);
 
-    List<OwnedAvatar> findAllByMemberAndVisibleExtensionTrueAndSoldFalse(Member member);
+    @Query("SELECT oa " +
+            "FROM OwnedAvatar oa " +
+            "LEFT JOIN FETCH oa.avatar " +
+            "WHERE oa.member.id = :memberId " +
+            "AND oa.visibleExtension = true " +
+            "AND oa.sold = false " +
+            "ORDER BY oa.avatar.grade DESC")
+    List<OwnedAvatar> findAllByMemberAndVisibleExtensionTrueAndSoldFalse(Long memberId);
+
+    List<OwnedAvatar> findAllByIdInAndMemberAndSoldFalse(List<Long> id, Member currentMember);
+
+    Boolean existsByMemberAndAvatar(Member member, Avatar avatar);
+
+    Optional<OwnedAvatar> findByIdAndMemberAndSoldFalse(Long id, Member member);
 }

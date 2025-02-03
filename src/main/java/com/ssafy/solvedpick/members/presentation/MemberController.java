@@ -1,5 +1,7 @@
 package com.ssafy.solvedpick.members.presentation;
 
+import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.service.MemberService;
 import com.ssafy.solvedpick.members.dto.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final AuthService authService;
 
     @GetMapping()
-    public ResponseEntity<UserInfoResponse> getUSerInfo(){
-        UserInfoResponse result = memberService.getUserInfo();
+    public ResponseEntity<UserInfoResponse> getUserInfo(){
+        Member member = authService.getCurrentMember();
+        UserInfoResponse result = memberService.getUserInfo(member);
         return ResponseEntity.ok(result);
     }
 }

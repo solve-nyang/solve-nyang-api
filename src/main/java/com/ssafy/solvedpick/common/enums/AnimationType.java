@@ -6,21 +6,19 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum AnimationType {
-    SPACE_FLOAT("""
-    <animateMotion path=\"M %d %d C %d %d %d %d %d %d L %d %d\" 
-    dur=\"%ds\" repeatCount=\"indefinite\" keyPoints=\"0;1;0\" keyTimes=\"0;0.5;1\" calcMode=\"linear\"/>
-    """),
-    SPACE_ROTATE("<animateTransform attributeName=\"transform\" type=\"rotate\" dur=\"%ds\" values=\"0 %d %d; 360 %d %d\" additive=\"sum\" repeatCount=\"indefinite\" />"),
 
-    BASE_BOUNCE("""
-        <animateTransform attributeName=\"transform\" 
-        type=\"translate\" dur=\"%ds\" values=\"%d,%d; %d,%d; %d,%d\" 
-        additive=\"sum\" repeatCount=\"indefinite\" />
-    """);
+    FLOAT {
+        @Override
+        public String format(int x0, int y0, int x1, int y1, int x2, int y2,
+                             int x3, int y3, int returnX, int returnY, int duration) {
+            return String.format(
+                    "<animateMotion dur=\"%ds\" repeatCount=\"indefinite\" " +
+                            "path=\"M %d,%d C %d,%d %d,%d %d,%d L %d,%d\"/>",
+                    duration, x0, y0, x1, y1, x2, y2, x3, y3, returnX, returnY
+            );
+        }
+    };
 
-    private final String animation;
-
-    public String format(Object... args) {
-        return String.format(animation, args);
-    }
+    public abstract String format(int x0, int y0, int x1, int y1, int x2, int y2,
+                                  int x3, int y3, int returnX, int returnY, int duration);
 }

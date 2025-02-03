@@ -3,9 +3,10 @@ package com.ssafy.solvedpick.composition.renderer;
 import com.ssafy.solvedpick.common.enums.AnimationType;
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
+import com.ssafy.solvedpick.composition.renderer.types.Path;
+import com.ssafy.solvedpick.composition.renderer.types.Position;
 import com.ssafy.solvedpick.composition.resource.SvgResources;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +20,11 @@ import java.util.List;
 public class AvatarRenderer {
     private static final int SVG_WIDTH = 600;
     private static final int SVG_HEIGHT = 300;
-    private static final int AVATAR_SIZE = 100;
-    private BackgroundType background;
+    private static final int MARGIN = 70;
+    private static final double AVATAR_SCALE = 0.8;
+    private static final int BASE_AVATAR_SIZE = 100;
+    private static final int SCALED_AVATAR_SIZE = (int)(BASE_AVATAR_SIZE * AVATAR_SCALE);
+
     private final SvgResources svgResources;
 
     public String renderAvatars(BackgroundType background, List<AvatarType> avatars) {
@@ -32,106 +36,95 @@ public class AvatarRenderer {
     }
 
     private void placeAvatars(StringBuilder content, List<AvatarType> avatars) {
-
         for (int i = 0; i < avatars.size(); i++) {
             SecureRandom random = new SecureRandom();
-            int startX = random.nextInt(SVG_WIDTH - AVATAR_SIZE);
-            int startY = random.nextInt(SVG_HEIGHT - AVATAR_SIZE);
+            int startX = random.nextInt(SVG_WIDTH - SCALED_AVATAR_SIZE);
+            int startY = random.nextInt(SVG_HEIGHT - SCALED_AVATAR_SIZE);
 
             appendAvatar(content, avatars.get(i), startX, startY, i);
         }
     }
 
     private void appendAvatar(StringBuilder content, AvatarType avatar, int startX, int startY, int index) {
+        Position edgePosition = calculateEdgePosition();
+        List<Position> controlPositions = calculateControlPositions();
+        Path path = calculatePath(startX, startY, edgePosition, controlPositions);
+        appendSvgContent(content, avatar, startX, startY, path);
+    }
+
+    private Position calculateEdgePosition() {
         SecureRandom random = new SecureRandom();
-        int scaledSize = (int)(AVATAR_SIZE * 0.3);
+        int minX = MARGIN;
+        int maxX = SVG_WIDTH - MARGIN;
+        int minY = MARGIN;
+        int maxY = SVG_HEIGHT - MARGIN;
 
-        startX = Math.min(SVG_WIDTH - scaledSize, Math.max(0, startX));
-        startY = Math.min(SVG_HEIGHT - scaledSize, Math.max(0, startY));
-
-        int moveRange = 50;
-        int endX = startX + (random.nextInt(moveRange * 2) - moveRange);
-        int endY = startY + (random.nextInt(moveRange * 2) - moveRange);
-
-        endX = Math.min(SVG_WIDTH - scaledSize, Math.max(0, endX));
-        endY = Math.min(SVG_HEIGHT - scaledSize, Math.max(0, endY));
-
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(0.3)\">", startX, startY));
-        content.append(avatar.getSvgContent(svgResources));
-        content.append(AnimationType.SPACE_FLOAT.format(
-                0, 0,
-                (endX - startX)/2, (endY - startY)/2,
-                (endX - startX)/2, (endY - startY)/2,
-                endX - startX, endY - startY,
-                0, 0,
-                random.nextInt(20) + 20));
-        content.append("</g>");
-    }
-
-    private String getAnimation(int startX, int startY, int index) {
-        return generateKeyframes(index);
-    }
-
-    private String generateKeyframes(int index) {
-        StringBuilder keyframes = new StringBuilder();
-        List<Point> points = new ArrayList<>();
-        SecureRandom random = new SecureRandom();
-
-        points = generatePoints(random);
-
-        keyframes.append(".avatar-").append(index)
-                .append(" { animation: move-").append(index)
-                .append(" ").append(random.nextInt(10, 20)).append("s infinite; }")
-                .append("@keyframes move-").append(index).append(" {");
-
-        points.forEach(p -> appendKeyframe(keyframes, p));
-        return keyframes.append("}").toString();
-    }
-
-    private void appendKeyframe(StringBuilder keyframes, Point point) {
-        keyframes.append(String.format("%.1f%% { ", point.percentage))
-                .append(String.format("transform: translate(%dpx, %dpx) ", point.x, point.y))
-                .append(String.format("rotate(%.1fdeg); }", point.rotation));
-    }
-
-    private double calculateRotation(int fromX, int fromY, int toX, int toY) {
-        return Math.toDegrees(Math.atan2(toY - fromY, toX - fromX));
-    }
-
-    private List<Point> generatePoints(SecureRandom random) {
-        List<Point> points = new ArrayList<>();
-        int currentX = random.nextInt(SVG_WIDTH - AVATAR_SIZE);
-        int currentY = random.nextInt(SVG_HEIGHT - AVATAR_SIZE);
-        double percentage = 0;
-
-        while (percentage < 100) {
-            percentage += random.nextInt(4) + 2;
-
-            // 다음 위치 계산
-            int nextX = Math.min(SVG_WIDTH - AVATAR_SIZE,
-                    Math.max(0, currentX + random.nextInt(81) - 40));
-            int nextY = Math.min(SVG_HEIGHT - AVATAR_SIZE,
-                    Math.max(0, currentY + random.nextInt(81) - 40));
-
-            points.add(new Point(
-                    Math.min(100, percentage),
-                    nextX,
-                    nextY,
-                    calculateRotation(currentX, currentY, nextX, nextY)
-            ));
-
-            currentX = nextX;
-            currentY = nextY;
-        }
-
-        return points;
-    }
-
-    @Value
-    private static class Point {
-        double percentage;
+        int edge = random.nextInt(4);
         int x, y;
-        double rotation;
+
+        switch (edge) {
+            case 0:
+                x = minX + random.nextInt(maxX - minX + 1);
+                y = minY + random.nextInt(MARGIN);
+                break;
+            case 1:
+                x = maxX - random.nextInt(MARGIN);
+                y = minY + random.nextInt(maxY - minY + 1);
+                break;
+            case 2:
+                x = minX + random.nextInt(maxX - minX + 1);
+                y = maxY - random.nextInt(MARGIN);
+                break;
+            default:
+                x = minX + random.nextInt(MARGIN);
+                y = minY + random.nextInt(maxY - minY + 1);
+                break;
+        }
+        return new Position(x, y);
+    }
+
+    private List<Position> calculateControlPositions() {
+        SecureRandom random = new SecureRandom();
+        int minX = MARGIN;
+        int maxX = SVG_WIDTH - MARGIN;
+        int minY = MARGIN;
+        int maxY = SVG_HEIGHT - MARGIN;
+
+        List<Position> positions = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            int x = minX + random.nextInt(maxX - minX + 1);
+            int y = minY + random.nextInt(maxY - minY + 1);
+            positions.add(new Position(x, y));
+        }
+        return positions;
+    }
+
+    private Path calculatePath(int startX, int startY, Position edge, List<Position> controls) {
+        return new Path(
+                controls.get(0).x() - startX,
+                controls.get(0).y() - startY,
+                controls.get(1).x() - startX,
+                controls.get(1).y() - startY,
+                edge.x() - startX,
+                edge.y() - startY
+        );
+    }
+
+    private void appendSvgContent(StringBuilder content, AvatarType avatar, int startX, int startY, Path path) {
+        SecureRandom random = new SecureRandom();
+
+        content.append(String.format("<g transform=\"translate(%d, %d) scale(%.1f)\">", startX, startY, AVATAR_SCALE));
+        content.append(avatar.getSvgContent(svgResources));
+        content.append(AnimationType.FLOAT.format(
+                0, 0,
+                path.midX1(), path.midY1(),
+                path.midX2(), path.midY2(),
+                path.endX(), path.endY(),
+                0, 0,
+//                15));
+                random.nextInt(20) + 20));
+
+        content.append("</g>");
     }
 
     private StringBuilder openFile() {

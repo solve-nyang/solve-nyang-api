@@ -36,4 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+### Spring Config ###
 src/main/resources/*.properties
+
+### Local Script ###
+connect.bat
+deploy.sh

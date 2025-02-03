@@ -17,9 +17,14 @@ public class SvgResources {
     private final String baseField;
     private final String spaceField;
 
+    private final String SSAFY;
+    private final String newYearLuckCat;
+
     private final String codingCat;
     private final String yarnBallCat;
     private final String ufoCat;
+    private final String tteokgukCat;
+    private final String magpieCat;
 
     private final String fishbowlCat;
     private final String eatingCat;
@@ -32,7 +37,6 @@ public class SvgResources {
     private final String invisibleCat;
     private final String anonymousCat;
     private final String comfortableCat;
-    private final String SSAFY;
 
     private final String springCat;
     private final String pythonCat;
@@ -104,9 +108,14 @@ public class SvgResources {
         this.baseField = loadSvg(resourceLoader, "static/backgrounds/BaseField.svg");
         this.spaceField = loadSvg(resourceLoader, "static/backgrounds/SpaceField.svg");
 
+        this.SSAFY = loadSvg(resourceLoader, "static/avatars/SSAFY.svg");
+        this.newYearLuckCat = loadSvg(resourceLoader, "static/avatars/NewYearLuckCat.svg");
+
         this.codingCat = loadSvg(resourceLoader, "static/avatars/CodingCat.svg");
         this.yarnBallCat = loadSvg(resourceLoader, "static/avatars/YarnBallCat.svg");
         this.ufoCat = loadSvg(resourceLoader, "static/avatars/UFOCat.svg");
+        this.tteokgukCat = loadSvg(resourceLoader, "static/avatars/TteokgukCat.svg");
+        this.magpieCat = loadSvg(resourceLoader, "static/avatars/MagpieCat.svg");
 
         this.fishbowlCat = loadSvg(resourceLoader, "static/avatars/FishbowlCat.svg");
         this.eatingCat = loadSvg(resourceLoader, "static/avatars/EatingCat.svg");
@@ -119,7 +128,6 @@ public class SvgResources {
         this.invisibleCat = loadSvg(resourceLoader, "static/avatars/InvisibleCat.svg");
         this.anonymousCat = loadSvg(resourceLoader, "static/avatars/AnonymousCat.svg");
         this.comfortableCat = loadSvg(resourceLoader, "static/avatars/ComfortableCat.svg");
-        this.SSAFY = loadSvg(resourceLoader, "static/avatars/SSAFY.svg");
 
         this.springCat = loadSvg(resourceLoader, "static/avatars/SpringCat.svg");
         this.pythonCat = loadSvg(resourceLoader, "static/avatars/PythonCat.svg");

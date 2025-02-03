@@ -8,7 +8,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberAvatarResponseDTO {
+public class AvatarCollectionResponseDTO {
 
-    private List<OwnedAvatarDTO> avatars;
+    private List<AvatarCollectionDTO> collections;
 }

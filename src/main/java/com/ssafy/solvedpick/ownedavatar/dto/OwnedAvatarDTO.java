@@ -11,6 +11,6 @@ public class OwnedAvatarDTO {
     private Long ownedAvatarId;
     private String name;
     private String rarity;
-    private double dropRate;
     private boolean visible;
+    private boolean visibleExtension;
 }

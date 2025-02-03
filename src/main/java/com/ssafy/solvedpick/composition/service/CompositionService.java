@@ -8,7 +8,9 @@ import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -30,20 +32,20 @@ public class CompositionService {
 
     private BackgroundType getBackgroundType(Member member) {
         return ownedBackgroundRepository.findByMemberAndVisibleTrue(member)
-                .map(bg -> BackgroundType.valueOf(bg.getBackground().getName()))
-                .orElse(BackgroundType.SPACE_FIELD);
+                .map(ownedBackground -> BackgroundType.fromName(ownedBackground.getBackground().getName()))
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST
+                ));
     }
 
     private List<AvatarType> getAvatarTypes(Member member) {
         return ownedAvatarRepository.findAllByMemberAndVisibleTrueAndSoldFalse(member)
                 .stream()
                 .map(avatar -> {
-                    // avatar.getAvatar().getName() 값을 출력하여 확인
                     String avatarName = avatar.getAvatar().getName();
                     log.debug("Avatar Name: " + avatarName);  // 출력
 
-                    // AvatarType 변환
-                    return AvatarType.fromValue(avatarName);
+                    return AvatarType.fromName(avatarName);
                 })
                 .toList();
     }

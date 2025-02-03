@@ -7,11 +7,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     @Value("${FRONT.URL}")
     private String FRONT_URL;
+    @Value("${FRONT.DEV}")
+    private String DEV_URL;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/user/me/extension")
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
 
         registry.addMapping("/**")
                 .allowedOrigins(
@@ -21,10 +29,12 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://user-images.githubusercontent.com",
                         "https://camo.githubusercontent.com",
                         "https://www.acmicpc.net/",
-                        FRONT_URL
+                        FRONT_URL,
+                        DEV_URL
                 )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
+
     }
 }

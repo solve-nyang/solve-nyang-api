@@ -11,10 +11,13 @@ import java.util.Arrays;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum AvatarType {
     SSAFY("SSAFY"),
+    NEW_YEAR_LUCK_CAT("NewYearLuckCat"),
 
     CODING_CAT("CodingCat"),
     YARN_BALL_CAT("YarnBallCat"),
     UFO_CAT("UFOCat"),
+    TTEOKGUK_CAT("TteokGukCat"),
+    MAGPIE_CAT("MagpieCat"),
 
     FISHBOWL_CAT("FishbowlCat"),
     EATING_CAT("EatingCat"),
@@ -27,7 +30,6 @@ public enum AvatarType {
     INVISIBLE_CAT("InvisibleCat"),
     ANONYMOUS_CAT("AnonymousCat"),
     COMFORTABLE_CAT("ComfortableCat"),
-
 
     SPRING_CAT("SpringCat"),
     PYTHON_CAT("PythonCat"),
@@ -98,10 +100,13 @@ public enum AvatarType {
     public String getSvgContent(SvgResources svgResources){
         return switch (this) {
             case SSAFY -> svgResources.getSSAFY();
+            case NEW_YEAR_LUCK_CAT -> svgResources.getNewYearLuckCat();
 
             case CODING_CAT -> svgResources.getCodingCat();
             case YARN_BALL_CAT -> svgResources.getYarnBallCat();
             case UFO_CAT -> svgResources.getUfoCat();
+            case TTEOKGUK_CAT -> svgResources.getTteokgukCat();
+            case MAGPIE_CAT -> svgResources.getMagpieCat();
 
             case FISHBOWL_CAT -> svgResources.getFishbowlCat();
             case EATING_CAT -> svgResources.getEatingCat();
@@ -181,11 +186,11 @@ public enum AvatarType {
         };
     }
 
-    public static AvatarType fromValue(String value) {
+    public static AvatarType fromName(String name) {
         return Arrays.stream(values())
-                .filter(type -> type.getName().equalsIgnoreCase(value))
+                .filter(type -> type.getName().equalsIgnoreCase(name))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid AvatarType: " + value));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid AvatarType: " + name));
     }
 
 

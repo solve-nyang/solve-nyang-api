@@ -1,6 +1,5 @@
 package com.ssafy.solvedpick.auth.service;
 
-import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.auth.domain.VerificationKey;
 import com.ssafy.solvedpick.auth.dto.ChangePasswordDTO;
@@ -13,12 +12,12 @@ import com.ssafy.solvedpick.avatars.repository.AvatarRepository;
 import com.ssafy.solvedpick.common.error.exception.InvalidPasswordException;
 import com.ssafy.solvedpick.common.error.exception.UserInfoErrorException;
 import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
-import com.ssafy.solvedpick.jwt.JwtUtil;
+import com.ssafy.solvedpick.common.jwt.JwtUtil;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
-import com.ssafy.solvedpick.problem.domain.Problem;
+import com.ssafy.solvedpick.problem.facade.ProblemFacade;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +44,7 @@ public class AuthService {
     private final VerificationKeyRepository verificationKeyRepository;
     private final AvatarRepository avatarRepository;
     private final OwnedAvatarRepository ownedAvatarRepository;
-    private final ApiService apiService;
+    private final ProblemFacade problemFacade;
 
     @Value("${URL.USER_INFO}")
     private String url;
@@ -65,22 +64,15 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public Member create(UserDataDTO userDataDTO) {
 
         Member user = Member.builder()
                 .username(userDataDTO.getUsername())
                 .password(passwordEncoder.encode(userDataDTO.getPassword()))
                 .build();
-        user.initSolvedProblems();
 
-//        UserInfoApiResponse apiResponse = apiService.getUserInfo(user.getUsername());
-//        UserData userData = apiResponse.getItems().get(0);
-
-        SolvedProblemsApiResponse newProblems = apiService.getSolvedProblems(user.getUsername());
-        Problem problem = user.getSolvedProblems();
-
-        problem.updateSolvedProblems(newProblems);
-
+        problemFacade.initializeNewUserProblem(user);
         this.memberRepository.save(user);
         addDefaultAvatar(user);
         return user;
@@ -189,7 +181,7 @@ public class AuthService {
             String newPassword = passwordEncoder.encode(userDataDTO.getPassword());
             member.updatePassword(newPassword);
         } else {
-            throw new VerificationNotFoundException("Incorrect verificationKey");
+            throw new VerificationNotFoundException("solved.ac 인증을 확인하세요");
         }
     }
 }
