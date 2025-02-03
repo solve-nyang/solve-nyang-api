@@ -29,6 +29,9 @@ public class Avatar {
     @Column(unique = true, nullable = false, length = 50)
     private String name;
 
+    @Column(unique = true, nullable = false, length = 50)
+    private String koreanName;
+
     @Min(1)
     @Max(6)
     @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
