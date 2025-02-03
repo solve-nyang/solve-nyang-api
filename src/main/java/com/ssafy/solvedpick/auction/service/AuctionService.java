@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -22,7 +20,7 @@ public class AuctionService {
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithKeyword(String keyword, Pageable pageable) {
-        return auctionRepository.findAllByOwnedAvatar_Avatar_NameContainingAndCancelledFalse(
+        return auctionRepository.findAllByOwnedAvatar_Avatar_KoreanNameContainingAndCancelledFalse(
                 keyword, pageable
         );
     }
@@ -35,7 +33,7 @@ public class AuctionService {
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithKeywordAndGrade(String keyword, int grade, Pageable pageable) {
         return auctionRepository
-                .findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
+                .findAllByOwnedAvatar_Avatar_KoreanNameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
                         keyword, grade, pageable
                 );
     }
