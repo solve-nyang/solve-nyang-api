@@ -2,6 +2,7 @@ package com.ssafy.solvedpick.auction.facade;
 
 import com.ssafy.solvedpick.auction.domain.Auction;
 import com.ssafy.solvedpick.auction.dto.*;
+import com.ssafy.solvedpick.auction.enums.HistoryFilterType;
 import com.ssafy.solvedpick.auction.enums.SortType;
 import com.ssafy.solvedpick.auction.service.AuctionService;
 import com.ssafy.solvedpick.auth.service.AuthService;
@@ -102,23 +103,43 @@ public class AuctionFacade {
         ownedAvatarService.cancelSold(auction.getOwnedAvatar());
     }
 
-    public SalesHistoryResponseDTO getSalesHistory() {
+    @Transactional(readOnly = true)
+    public SalesHistoryResponseDTO getSalesHistory(int filter, int page) {
         Member member = authService.getCurrentMember();
-        List<MemberAuctionDTO> history = auctionService.findMemberHistory(member)
-                .stream()
-                .map(auction -> MemberAuctionDTO.builder()
-                        .id(auction.getId())
-                        .sold(auction.getSold())
-                        .price(auction.getPrice())
-                        .createdAt(auction.getCreatedAt())
-                        .cancelled(auction.getCancelled())
-                        .name(auction.getOwnedAvatar().getAvatar().getName())
-                        .rarity(Grade.fromValue(auction.getOwnedAvatar().getAvatar().getGrade()).name())
-                        .build())
-                .toList();
+        Sort sort = SortType.NEWEST.getQuery();
+        Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE, sort);
+        Page<Auction> result;
+
+        if (filter == HistoryFilterType.ALL.getValue()) {
+            result = auctionService.findMemberHistoryAll(member, pageable);
+        } else if (filter == HistoryFilterType.SOLD.getValue()) {
+            result = auctionService.findMemberHistorySold(member, pageable);
+        } else if (filter == HistoryFilterType.ON_STATUS.getValue()) {
+            result = auctionService.findMemberHistoryOnStatus(member, pageable);
+        } else if (filter == HistoryFilterType.CANCELLED.getValue()) {
+            result = auctionService.findMemberHistoryCancelled(member, pageable);
+        } else {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
 
         return SalesHistoryResponseDTO.builder()
-                .history(history)
+                .size(result.getSize())
+                .hasNext(result.hasNext())
+                .totalPage(result.getTotalPages())
+                .hasPrevious(result.hasPrevious())
+                .currentPageNumber(result.getNumber() + 1)
+                .history(result.getContent()
+                        .stream()
+                        .map(auction -> MemberAuctionDTO.builder()
+                                .id(auction.getId())
+                                .sold(auction.getSold())
+                                .price(auction.getPrice())
+                                .createdAt(auction.getCreatedAt())
+                                .cancelled(auction.getCancelled())
+                                .name(auction.getOwnedAvatar().getAvatar().getName())
+                                .rarity(Grade.fromValue(auction.getOwnedAvatar().getAvatar().getGrade()).name())
+                                .build())
+                        .toList())
                 .build();
     }
 

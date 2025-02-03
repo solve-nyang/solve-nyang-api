@@ -57,15 +57,31 @@ public class AuctionService {
         return auction;
     }
 
-    public List<Auction> findMemberHistory(Member member) {
-        return auctionRepository.findAllByMember(member.getId());
-    }
-
     public Auction buyAvatar(Long id) {
         Auction auction = auctionRepository.findByIdAndSoldFalseAndCancelledFalse(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         auction.sold();
 
         return auction;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Auction> findMemberHistoryAll(Member member, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_Member(member, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Auction> findMemberHistorySold(Member member, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_MemberAndSoldTrue(member, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Auction> findMemberHistoryCancelled(Member member, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_MemberAndCancelledTrue(member, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Auction> findMemberHistoryOnStatus(Member member, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_MemberAndSoldFalseAndCancelledFalse(member, pageable);
     }
 }
