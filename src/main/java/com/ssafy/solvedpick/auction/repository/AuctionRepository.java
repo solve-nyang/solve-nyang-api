@@ -14,20 +14,20 @@ import java.util.Optional;
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndSoldFalseAndCancelledFalse(
+    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndCancelledFalse(
             String keyword, Pageable pageable
     );
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllBySoldFalseAndCancelledFalse(Pageable pageable);
+    Page<Auction> findAllByCancelledFalse(Pageable pageable);
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(
+    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
             String keyword, int grade, Pageable pageable
     );
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(int grade, Pageable pageable);
+    Page<Auction> findAllByOwnedAvatar_Avatar_GradeAndCancelledFalse(int grade, Pageable pageable);
 
     @Query("SELECT a " +
             "FROM Auction a " +
