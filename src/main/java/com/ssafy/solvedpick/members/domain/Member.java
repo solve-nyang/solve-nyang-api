@@ -84,12 +84,6 @@ public class Member {
         this.point += amount;
     }
 
-    public void initSolvedProblems() {
-    	this.solvedProblems = Problem.builder()
-    			.member(this)
-    			.build();
-    }
-    
     public void usePoint(long point) {
     	this.point -= point;
     }
@@ -102,5 +96,9 @@ public class Member {
         this.tier = tier;
         this.solvedCount = solvedCount;
         this.streak = streak;
+    }
+
+    public void initSolvedProblem(Problem problem) {
+        this.solvedProblems = problem;
     }
 }
