@@ -6,16 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndCancelledFalse(
+    Page<Auction> findAllByOwnedAvatar_Avatar_KoreanNameContainingAndCancelledFalse(
             String keyword, Pageable pageable
     );
 
@@ -23,7 +20,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     Page<Auction> findAllByCancelledFalse(Pageable pageable);
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
+    Page<Auction> findAllByOwnedAvatar_Avatar_KoreanNameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
             String keyword, Integer grade, Pageable pageable
     );
 
