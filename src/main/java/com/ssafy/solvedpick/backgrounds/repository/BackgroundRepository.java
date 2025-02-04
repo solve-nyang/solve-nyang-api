@@ -13,6 +13,7 @@ public interface BackgroundRepository extends JpaRepository<Background, Long> {
     Background findByName(String space);
 
     @Query("SELECT new com.ssafy.solvedpick.backgrounds.dto.BackgroundQueryResult(" +
+            "b.id, "+
             "b.name, " +
             "COUNT(ob) > 0 )" +
             "FROM Background b " +
