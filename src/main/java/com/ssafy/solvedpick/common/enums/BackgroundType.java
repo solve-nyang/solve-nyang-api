@@ -11,7 +11,7 @@ import java.util.Arrays;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum BackgroundType {
 
-    SPACE("Space", 0),
+    SPACE("Space", 99999),
     BEACH("Beach", 8000),
     FIELD("Field", 5000),
     OCEAN("Ocean", 8000),

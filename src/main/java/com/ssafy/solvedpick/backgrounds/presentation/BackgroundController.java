@@ -24,9 +24,9 @@ public class BackgroundController {
     }
 
     @PostMapping("/{backgroundId}")
-    public ResponseEntity<Void> purchaseBackground(@PathVariable Long backgroundId) {
+    public ResponseEntity<?> purchaseBackground(@PathVariable Long backgroundId) {
         Member member = authService.getCurrentMember();
         backgroundService.purchaseBackground(backgroundId, member);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
