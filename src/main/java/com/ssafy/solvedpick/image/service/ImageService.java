@@ -1,9 +1,10 @@
 package com.ssafy.solvedpick.image.service;
 
 import com.ssafy.solvedpick.image.domain.Image;
+import com.ssafy.solvedpick.image.dto.ImageSaveRequest;
 import com.ssafy.solvedpick.image.repository.ImageRepository;
 import com.ssafy.solvedpick.members.domain.Member;
-import com.ssafy.solvedpick.s3.dto.PresignedUrlResponse;
+import com.ssafy.solvedpick.image.dto.PresignedUrlResponse;
 import com.ssafy.solvedpick.s3.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -43,16 +44,24 @@ public class ImageService {
     }
 
     @Transactional
-    public void saveImageInfo(String originalFilename, String storedFilename, Member member) {
+    public void saveImage(ImageSaveRequest imageSaveRequest, Member member) {
+        try {
+            Image image = Image.builder()
+                    .member(member)
+                    .originalFilename(imageSaveRequest.getOriginalFilename())
+                    .storedFilename(imageSaveRequest.getStoredFilename())
+                    .build();
 
-        Image image = Image.builder()
-                .member(member)
-                .originalFilename(originalFilename)
-                .storedFilename(storedFilename)
-                .build();
+            imageRepository.save(image);
+            log.debug("Saved image info - originalFilename: {}, storedFilename: {}, member: {}",
+                    imageSaveRequest.getOriginalFilename(), imageSaveRequest.getStoredFilename(), member);
 
-        imageRepository.save(image);
-        log.debug("Saved image info - originalFilename: {}, storedFilename: {}, member: {}",
-                originalFilename, storedFilename, member);
+        } catch (Exception e) {
+            log.error("Failed to save image info", e);
+            throw new HttpClientErrorException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "이미지 정보 저장에 실패했습니다."
+            );
+        }
     }
 }

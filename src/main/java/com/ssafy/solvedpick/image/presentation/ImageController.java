@@ -1,9 +1,10 @@
 package com.ssafy.solvedpick.image.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.image.dto.ImageSaveRequest;
 import com.ssafy.solvedpick.image.service.ImageService;
 import com.ssafy.solvedpick.members.domain.Member;
-import com.ssafy.solvedpick.s3.dto.PresignedUrlResponse;
+import com.ssafy.solvedpick.image.dto.PresignedUrlResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +28,13 @@ public class ImageController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> saveImage(
-            @RequestParam String originalFilename,
-            @RequestParam String storedFilename) {
+    public ResponseEntity<?> saveImage(@RequestBody ImageSaveRequest imageSaveRequest) {
         log.debug("Saving image info - originalFilename: {}, storedFilename: {}",
-                originalFilename, storedFilename);
+                imageSaveRequest.getOriginalFilename(), imageSaveRequest.getStoredFilename());
+
         Member member =  authService.getCurrentMember();
 
-        imageService.saveImageInfo(originalFilename, storedFilename, member);
+        imageService.saveImage(imageSaveRequest, member);
         return ResponseEntity.noContent().build();
     }
 }
