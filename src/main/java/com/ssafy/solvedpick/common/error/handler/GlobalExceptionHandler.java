@@ -1,6 +1,9 @@
 package com.ssafy.solvedpick.common.error.handler;
 
 import com.ssafy.solvedpick.common.error.exception.UserInfoErrorException;
+import com.ssafy.solvedpick.common.error.exception.jwt.JwtExpiredException;
+import com.ssafy.solvedpick.common.error.exception.jwt.JwtInvalidException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,7 +45,19 @@ public class GlobalExceptionHandler {
             		.message(ex.getMessage())
             		.build());
     }
-
+    
+    @ExceptionHandler({
+        JwtExpiredException.class,
+        JwtInvalidException.class
+    })
+    public ResponseEntity<ErrorResponse> handleJwtExceptions(RuntimeException ex) {
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(ErrorResponse.builder()
+                    .message(ex.getMessage())
+                    .build());
+    }
+    
     @ExceptionHandler({
             HttpClientErrorException.class
     })

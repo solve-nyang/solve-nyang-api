@@ -2,11 +2,17 @@ package com.ssafy.solvedpick.common.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
+
+import com.ssafy.solvedpick.common.error.exception.jwt.JwtExpiredException;
+import com.ssafy.solvedpick.common.error.exception.jwt.JwtInvalidException;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Duration;
@@ -47,16 +53,21 @@ public class JwtUtil {
 
     public String validateToken(String token) {
         try {
-            return Jwts.parserBuilder()
+        	Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
+                    .getBody();
+
+            if (claims.getExpiration() == null) {
+                throw new JwtInvalidException("유효하지 않은 토큰입니다.");
+            }
+            
+            return claims.getSubject();
         } catch (ExpiredJwtException e) {
-            throw new RuntimeException("토큰이 만료되었습니다. 재로그인하세요.");
+            throw new JwtExpiredException("토큰이 만료되었습니다.");
         } catch (JwtException e) {
-            throw new RuntimeException("유효하지 않은 토큰입니다.");
+            throw new JwtInvalidException("유효하지 않은 토큰입니다.");
         }
     }
     
@@ -65,16 +76,35 @@ public class JwtUtil {
     	        .httpOnly(true)
     	        .secure(true)
     	        .path("/")
-    	        .domain("www.solve-nyang.com")
+                .domain("www.solve-nyang.com")
     	        .sameSite("Strict")
     	        .maxAge(Duration.ofMillis(refreshTokenExpiration))
     	        .build();
-    	
     	response.addHeader("Set-Cookie", cookie.toString());
     }
     
     public String recreateAccessToken(String refreshToken) {
         String username = validateToken(refreshToken);
         return generateAccessToken(username);
-    }    
+    }
+    
+    public String extractJwtFromRequest(HttpServletRequest request) {
+   	 String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        return null;
+   }
+   
+    public String extractRefreshTokenFromCookie(HttpServletRequest request) {
+   	Cookie[] cookies = request.getCookies();
+   	if (cookies != null) {
+   		for (Cookie cookie : cookies) {
+   			if ("refresh_token".equals(cookie.getName())) {
+   				return cookie.getValue();
+   			}
+   		}
+   	}
+   	return null;
+   }
 }

@@ -38,8 +38,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/account/verify",
                                 "/account/signin",
+                                "/account/signout",
                                 "/account/signup",
                                 "/account/password/find",
+                                "/jwt/reissue",
                                 "/avatar",
                                 "/compose/**",
                                 "/favicon.ico",

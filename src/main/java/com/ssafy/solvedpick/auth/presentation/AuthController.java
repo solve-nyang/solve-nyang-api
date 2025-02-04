@@ -4,7 +4,6 @@ import com.ssafy.solvedpick.auth.dto.*;
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
 import com.ssafy.solvedpick.common.error.dto.ErrorResponse;
-import com.ssafy.solvedpick.common.jwt.JwtUtil;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
     private final MemberRepository memberRepository;
-    private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserDataDTO userDataDTO) {
@@ -49,17 +49,32 @@ public class AuthController {
                         .build());
     }
     
-    
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody UserDataDTO userDataDTO, HttpServletResponse response) {
-        TokenResponse tokenResponse = authService.signIn(userDataDTO);
-        
-        jwtUtil.addRefreshTokenToCookie(response, tokenResponse.getRefreshToken());
+        TokenResponse tokenResponse = authService.signIn(userDataDTO, response);
         
         return ResponseEntity.ok()
             .body(Map.of("accessToken", tokenResponse.getAccessToken()));
     }
-
+    
+    @GetMapping("/signout")
+    public ResponseEntity<?> signout(HttpServletResponse response) {
+    	ResponseCookie cookie = ResponseCookie.from("refresh_token", "")
+    	        .httpOnly(true)
+    	        .secure(true)
+    	        .path("/")
+    	        .domain("www.solve-nyang.com")
+    	        .maxAge(0)
+    	        .sameSite("Strict")
+    	        .build();
+    	response.addHeader("Set-Cookie", cookie.toString());
+    	
+    	return ResponseEntity.ok()
+    	        .body(ResponseMessageDTO.builder()
+                        .message("로그아웃 되었습니다.")
+                        .build());
+    }
+    
     @PostMapping("/verify")
     public ResponseEntity<?> getVerificationCode(@RequestBody MemberNameDTO membernameDTO) {
     	String username = membernameDTO.getUsername();
