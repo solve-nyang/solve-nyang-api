@@ -121,7 +121,7 @@ public class AvatarRenderer {
                 path.endX(), path.endY(),
                 0, 0,
 //                15));
-                random.nextInt(20) + 20));
+                random.nextInt(50) + 10));
 
         content.append("</g>");
     }
