@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.s3.dto;
+package com.ssafy.solvedpick.image.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
