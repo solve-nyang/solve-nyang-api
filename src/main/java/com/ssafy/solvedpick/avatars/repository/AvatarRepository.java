@@ -25,6 +25,7 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
             "FROM Avatar a " +
             "LEFT JOIN OwnedAvatar oa ON a.id = oa.avatar.id " +
             "AND oa.member.id = :memberId " +
-            "GROUP BY a.name, a.grade")
+            "GROUP BY a.name, a.grade " +
+            "ORDER BY a.grade DESC")
     List<AvatarCollectionDTO> getAvatarCollections(@Param("memberId") Long memberId);
 }
