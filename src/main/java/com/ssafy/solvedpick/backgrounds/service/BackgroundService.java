@@ -41,4 +41,27 @@ public class BackgroundService {
         return BackgroundResponse.from(backgroundInfos);
     }
 
+    @Transactional
+    public void purchaseBackground(Long backgroundId, Member member) {
+        Background background = backgroundRepository.findById(backgroundId)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "존재하지 않는 배경입니다."));
+
+        if (ownedBackgroundRepository.existsByMemberAndBackground(member, background)) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "이미 소유중인 배경입니다.");
+        }
+
+        if (member.getPoint() < BackgroundType.fromName(background.getName()).getPrice()) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "포인트가 부족합니다.");
+        }
+
+        member.usePoint(BackgroundType.fromName(background.getName()).getPrice());
+
+        OwnedBackground ownedBackground = OwnedBackground.builder()
+                .member(member)
+                .background(background)
+                .visible(false)
+                .build();
+
+        ownedBackgroundRepository.save(ownedBackground);
+    }
 }

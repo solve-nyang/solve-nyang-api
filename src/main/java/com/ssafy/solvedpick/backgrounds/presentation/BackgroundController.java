@@ -6,9 +6,7 @@ import com.ssafy.solvedpick.backgrounds.service.BackgroundService;
 import com.ssafy.solvedpick.members.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/background")
@@ -23,5 +21,12 @@ public class BackgroundController {
         Member member = authService.getCurrentMember();
         BackgroundResponse response = backgroundService.getAllBackgroundsWithOwnership(member.getId());
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{backgroundId}")
+    public ResponseEntity<Void> purchaseBackground(@PathVariable Long backgroundId) {
+        Member member = authService.getCurrentMember();
+        backgroundService.purchaseBackground(backgroundId, member);
+        return ResponseEntity.ok().build();
     }
 }
