@@ -15,4 +15,6 @@ public interface OwnedBackgroundRepository extends JpaRepository<OwnedBackground
     List<OwnedBackground> findAllByMember(Member member);
 
     Boolean existsByMemberAndBackground(Member member, Background background);
+
+    Optional<OwnedBackground> findByIdAndMember(Long id, Member member);
 }

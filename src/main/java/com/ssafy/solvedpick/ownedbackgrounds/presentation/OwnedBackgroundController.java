@@ -22,4 +22,11 @@ public class OwnedBackgroundController {
         OwnedBackgroundResponse response = ownedBackgroundService.getOwnedBackgrounds(member);
         return ResponseEntity.ok(response);
     }
+
+    @PatchMapping("/{backgroundId}")
+    public ResponseEntity<?> updateOwnedBackground(@PathVariable Long backgroundId) {
+        Member member = authService.getCurrentMember();
+        ownedBackgroundService.updateBackgroundVisibility(member, backgroundId);
+        return ResponseEntity.noContent().build();
+    }
 }
