@@ -28,6 +28,7 @@ public class OwnedBackgroundService {
                 .map(background -> OwnedBackgroundDTO.builder()
                         .id(background.getId())
                         .name(background.getBackground().getName())
+                        .visible(background.isVisible())
                         .build())
                 .toList();
 

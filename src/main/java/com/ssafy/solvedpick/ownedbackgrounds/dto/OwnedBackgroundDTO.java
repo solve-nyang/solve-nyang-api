@@ -12,5 +12,6 @@ public class OwnedBackgroundDTO {
 
     private Long id;
     private String name;
+    private Boolean visible;
 
 }
