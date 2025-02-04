@@ -6,8 +6,10 @@ import com.ssafy.solvedpick.ownedbackgrounds.dto.OwnedBackgroundDTO;
 import com.ssafy.solvedpick.ownedbackgrounds.dto.OwnedBackgroundResponse;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -32,5 +34,17 @@ public class OwnedBackgroundService {
         return OwnedBackgroundResponse.builder()
                 .backgrounds(backgroundDTOS)
                 .build();
+    }
+
+    @Transactional
+    public void updateBackgroundVisibility(Member member, Long backgroundId) {
+
+        ownedBackgroundRepository.findByMemberAndVisibleTrue(member)
+                .ifPresent(OwnedBackground::updateVisibility);
+
+        OwnedBackground newBackground = ownedBackgroundRepository.findByIdAndMember(backgroundId, member)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "소유하지 않은 배경입니다."));
+
+        newBackground.updateVisibility();
     }
 }

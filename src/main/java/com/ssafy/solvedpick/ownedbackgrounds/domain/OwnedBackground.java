@@ -38,4 +38,8 @@ public class OwnedBackground {
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    public void updateVisibility(){
+        this.visible = !this.visible;
+    }
 }
