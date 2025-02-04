@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,9 +45,9 @@ public class AuctionFacade {
 
         int grade = Optional.ofNullable(rarity)
                 .map(Grade::getValueFromName)
-                .orElseGet(() -> NO_GRADE);
+                .orElse(NO_GRADE);
 
-        Page<Auction> result = findAuctions(keyword, grade, pageable);
+        Page<Auction> result = findAuctionsWithCondition(keyword, grade, pageable);
 
         return SearchMerchandiseResponseDTO.builder()
                 .size(result.getSize())
@@ -71,7 +70,7 @@ public class AuctionFacade {
                 .build();
     }
 
-    private Page<Auction> findAuctions(String keyword, int grade, Pageable pageable) {
+    private Page<Auction> findAuctionsWithCondition(String keyword, int grade, Pageable pageable) {
         if (grade == NO_GRADE) {
             return Optional.ofNullable(keyword)
                     .map(k -> auctionService.findMerchandiseWithKeyword(k, pageable))
@@ -108,19 +107,7 @@ public class AuctionFacade {
         Member member = authService.getCurrentMember();
         Sort sort = SortType.NEWEST.getQuery();
         Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE, sort);
-        Page<Auction> result;
-
-        if (filter == HistoryFilterType.ALL.getValue()) {
-            result = auctionService.findMemberHistoryAll(member, pageable);
-        } else if (filter == HistoryFilterType.SOLD.getValue()) {
-            result = auctionService.findMemberHistorySold(member, pageable);
-        } else if (filter == HistoryFilterType.ON_STATUS.getValue()) {
-            result = auctionService.findMemberHistoryOnStatus(member, pageable);
-        } else if (filter == HistoryFilterType.CANCELLED.getValue()) {
-            result = auctionService.findMemberHistoryCancelled(member, pageable);
-        } else {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
-        }
+        Page<Auction> result = getMemberHistoryWithCondition(filter, member, pageable);
 
         return SalesHistoryResponseDTO.builder()
                 .size(result.getSize())
@@ -141,6 +128,20 @@ public class AuctionFacade {
                                 .build())
                         .toList())
                 .build();
+    }
+
+    private Page<Auction> getMemberHistoryWithCondition(int filter, Member member, Pageable pageable) {
+        if (filter == HistoryFilterType.ALL.getValue()) {
+            return auctionService.findMemberHistoryAll(member, pageable);
+        } else if (filter == HistoryFilterType.SOLD.getValue()) {
+            return auctionService.findMemberHistorySold(member, pageable);
+        } else if (filter == HistoryFilterType.ON_STATUS.getValue()) {
+            return auctionService.findMemberHistoryOnStatus(member, pageable);
+        } else if (filter == HistoryFilterType.CANCELLED.getValue()) {
+            return auctionService.findMemberHistoryCancelled(member, pageable);
+        }
+
+        throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
     }
 
     public void buyAvatar(AuctionBuyRequestDTO requestDTO) {
