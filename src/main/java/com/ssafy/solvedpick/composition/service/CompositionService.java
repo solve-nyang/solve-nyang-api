@@ -33,7 +33,7 @@ public class CompositionService {
     private BackgroundType getBackgroundType(Member member) {
         return ownedBackgroundRepository.findByMemberAndVisibleTrue(member)
                 .map(ownedBackground -> BackgroundType.fromName(ownedBackground.getBackground().getName()))
-                .orElse(BackgroundType.fromName(BackgroundType.SPACE_FIELD.getName()));
+                .orElse(BackgroundType.fromName(BackgroundType.SPACE.getName()));
     }
 
     private List<AvatarType> getAvatarTypes(Member member) {

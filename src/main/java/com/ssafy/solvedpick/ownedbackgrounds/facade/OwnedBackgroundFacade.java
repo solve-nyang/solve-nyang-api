@@ -16,7 +16,7 @@ public class OwnedBackgroundFacade {
     private final BackgroundRepository backgroundRepository;
 
     public void addDefaultBackground(Member member) {
-        Background defaultBackground = backgroundRepository.findByName("SpaceField");
+        Background defaultBackground = backgroundRepository.findByName("Space");
 
         OwnedBackground ownedBackground = OwnedBackground.builder()
                 .member(member)
