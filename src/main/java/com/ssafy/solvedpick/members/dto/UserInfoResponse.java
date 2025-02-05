@@ -7,8 +7,9 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserInfoResponse {
+
     private String username;
-    private int point;
+    private Long point;
     private String tier;
     private int solvedCount;
     private int streak;

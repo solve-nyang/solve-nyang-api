@@ -1,7 +1,6 @@
 package com.ssafy.solvedpick.auction.presentation;
 
-import com.ssafy.solvedpick.auction.dto.SearchMerchandiseResponseDTO;
-import com.ssafy.solvedpick.auction.dto.SellAvatarRequestDTO;
+import com.ssafy.solvedpick.auction.dto.*;
 import com.ssafy.solvedpick.auction.facade.AuctionFacade;
 import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +32,29 @@ public class AuctionController {
         ResponseMessageDTO result = auctionFacade.sellAvatar(requestDTO);
 
         return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/sale")
+    public ResponseEntity<?> cancelSale(@RequestBody AuctionCancelRequestDTO requestDTO) {
+        auctionFacade.cancelSale(requestDTO);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMemberSalesHistory(
+            @RequestParam(value = "filter", defaultValue = "0") int filter,
+            @RequestParam(value = "page", defaultValue = "1") int page
+    ) {
+        SalesHistoryResponseDTO result = auctionFacade.getSalesHistory(filter, page);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/buy")
+    public ResponseEntity<?> buyAvatar(@RequestBody AuctionBuyRequestDTO requestDTO) {
+        auctionFacade.buyAvatar(requestDTO);
+
+        return ResponseEntity.noContent().build();
     }
 }

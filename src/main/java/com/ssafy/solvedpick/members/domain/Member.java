@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.solvedpick.image.domain.Image;
+import com.ssafy.solvedpick.ownedbackgrounds.domain.OwnedBackground;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -50,7 +52,7 @@ public class Member {
     private boolean verified = false;
     
     @Builder.Default
-    private int point = 5000;
+    private Long point = 5000L;
 
     @Builder.Default
     @Column(columnDefinition = "tinyint")
@@ -76,24 +78,23 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedAvatar> avatars = new ArrayList<>();
 
-    public void addPoint(int amount) {
-        if (amount <0) {
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OwnedBackground> backgrounds = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
+
+    public void addPoint(long amount) {
+        if (amount < 0) {
             throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
         }
+
         this.point += amount;
     }
 
-    public void initSolvedProblems() {
-    	this.solvedProblems = Problem.builder()
-    			.member(this)
-    			.build();
-    }
-
-    public void updatePoint(int newPoint) {
-        this.point += newPoint;
-    }
-    
-    public void usePoint(int point) {
+    public void usePoint(long point) {
     	this.point -= point;
     }
     
@@ -105,5 +106,9 @@ public class Member {
         this.tier = tier;
         this.solvedCount = solvedCount;
         this.streak = streak;
+    }
+
+    public void initSolvedProblem(Problem problem) {
+        this.solvedProblems = problem;
     }
 }

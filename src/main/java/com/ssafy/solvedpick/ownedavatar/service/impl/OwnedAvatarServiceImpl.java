@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.ownedavatar.service.impl;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.avatars.service.AvatarService;
 import com.ssafy.solvedpick.common.utils.grade.Grade;
 import com.ssafy.solvedpick.members.domain.Member;
@@ -33,6 +34,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     private final OwnedAvatarRepository ownedAvatarRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<OwnedAvatarDTO> getOwnedAvatars(Long memberId) {
         return ownedAvatarRepository.findAllByMemberIdAndSoldFalse(memberId)
                 .stream()
@@ -60,12 +62,15 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ExtensionAvatarResponseDTO getExtensionAvatars(String username) {
         try {
             Member member = memberRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException(""));
 
-            List<String> avatars = ownedAvatarRepository.findAllByMemberAndVisibleExtensionTrueAndSoldFalse(member)
+            List<String> avatars = ownedAvatarRepository.findAllByMemberAndVisibleExtensionTrueAndSoldFalse(
+                    member.getId()
+                    )
                     .stream()
                     .map(ownedAvatar -> ownedAvatar.getAvatar()
                             .getName())
@@ -89,6 +94,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AvatarCollectionResponseDTO getAvatarCollection() {
         Member member = authService.getCurrentMember();
 
@@ -110,6 +116,35 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
         } catch (IllegalAccessException e) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public void updateAvatarExtensionVisibility(Long ownedAvatarId) {
+        Member currentMember = authService.getCurrentMember();
+
+        try {
+            OwnedAvatar ownedAvatar = ownedAvatarRepository.findByIdAndMemberAndSoldFalse(ownedAvatarId, currentMember)
+                    .orElseThrow(IllegalAccessException::new);
+
+            ownedAvatar.updateExtensionVisibility();
+        } catch (IllegalAccessException e) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public void cancelSold(OwnedAvatar ownedAvatar) {
+        ownedAvatar.clearSold();
+    }
+
+    @Override
+    public void buyAvatar(Member buyer, Avatar avatar) {
+        OwnedAvatar ownedAvatar = OwnedAvatar.builder()
+                .member(buyer)
+                .avatar(avatar)
+                .build();
+
+        ownedAvatarRepository.save(ownedAvatar);
     }
 
     @Override

@@ -24,6 +24,10 @@ jobs:
         run: |
           echo '${{ secrets.API_PROPERTIES }}' > ./src/main/resources/api.properties
 
+      - name: Create s3.properties
+        run: |
+          echo '${{ secrets.S3_PROPERTIES }}' > ./src/main/resources/s3.properties
+
       - name: Create application-dev.yml
         run: |
           echo '${{ secrets.APPLICATION_DEV_PROPERTIES }}' > ./src/main/resources/application-dev.yml

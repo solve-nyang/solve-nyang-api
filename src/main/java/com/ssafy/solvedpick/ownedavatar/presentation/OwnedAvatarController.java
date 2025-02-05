@@ -29,10 +29,9 @@ public class OwnedAvatarController {
     }
 
     @PatchMapping("/avatar/{ownedAvatarId}")
-    public ResponseEntity<?> updateAvatarVisibility(
-            @PathVariable Long ownedAvatarId
-    ) {
+    public ResponseEntity<?> updateAvatarVisibility(@PathVariable Long ownedAvatarId) {
         ownedAvatarService.updateAvatarVisibility(ownedAvatarId);
+
         return ResponseEntity.noContent().build();
     }
 
@@ -48,6 +47,13 @@ public class OwnedAvatarController {
         ExtensionAvatarResponseDTO result = ownedAvatarService.getExtensionAvatars(username);
 
         return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/extension/{ownedAvatarId}")
+    public ResponseEntity<?> updateAvatarExtensionVisibility(@PathVariable Long ownedAvatarId) {
+        ownedAvatarService.updateAvatarExtensionVisibility(ownedAvatarId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/sale")

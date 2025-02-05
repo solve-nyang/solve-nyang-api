@@ -1,24 +1,44 @@
 package com.ssafy.solvedpick.auction.repository;
 
 import com.ssafy.solvedpick.auction.domain.Auction;
+import com.ssafy.solvedpick.members.domain.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
-    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndSoldFalseAndCancelledFalse(
-            String keyword, Pageable pageable);
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Page<Auction> findAllByOwnedAvatar_Avatar_KoreanNameContainingAndCancelledFalse(
+            String keyword, Pageable pageable
+    );
 
-    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar"})
-    Page<Auction> findAllBySoldFalseAndCancelledFalse(Pageable pageable);
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Page<Auction> findAllByCancelledFalse(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(
-            int grade, String keyword, Pageable pageable);
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Page<Auction> findAllByOwnedAvatar_Avatar_KoreanNameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
+            String keyword, Integer grade, Pageable pageable
+    );
 
-    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(int grade, Pageable pageable);
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Page<Auction> findAllByOwnedAvatar_Avatar_GradeAndCancelledFalse(Integer grade, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Optional<Auction> findByIdAndSoldFalseAndCancelledFalse(Long id);
+
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Page<Auction> findAllByOwnedAvatar_Member(Member member, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Page<Auction> findAllByOwnedAvatar_MemberAndSoldTrue(Member member, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Page<Auction> findAllByOwnedAvatar_MemberAndCancelledTrue(Member member, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
+    Page<Auction> findAllByOwnedAvatar_MemberAndSoldFalseAndCancelledFalse(Member member, Pageable pageable);
 }
