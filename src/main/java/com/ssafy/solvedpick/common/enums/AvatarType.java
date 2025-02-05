@@ -12,12 +12,19 @@ import java.util.Arrays;
 public enum AvatarType {
     SSAFY("SSAFY"),
     NEW_YEAR_LUCK_CAT("NewYearLuckCat"),
+    IDEA_CAT("IdeaCat"),
+    MVP_CAT("MVPCat"),
 
     CODING_CAT("CodingCat"),
     YARN_BALL_CAT("YarnBallCat"),
     UFO_CAT("UFOCat"),
     TTEOKGUK_CAT("TteokGukCat"),
     MAGPIE_CAT("MagpieCat"),
+    CAFFEINE_CAT("CaffeineCat"),
+    SINGING_CAT("SingingCat"),
+    WORK_CAT("WorkCat"),
+    DIVER_CAT("DiverCat"),
+    ANGRY_CAT("AngryCat"),
 
     FISHBOWL_CAT("FishbowlCat"),
     EATING_CAT("EatingCat"),
@@ -30,6 +37,14 @@ public enum AvatarType {
     INVISIBLE_CAT("InvisibleCat"),
     ANONYMOUS_CAT("AnonymousCat"),
     COMFORTABLE_CAT("ComfortableCat"),
+    SPLASH_CAT("SplashCat"),
+    FARMER_CAT("FarmerCat"),
+    BOOK_CAT("BookCat"),
+    PHONE_CAT("PhoneCat"),
+    BIRTHDAY_CAT("BirthdayCat"),
+    JUMP_CAT("JumpCat"),
+    SICK_CAT("SickCat"),
+    GYM_CAT("GymCat"),
 
     SPRING_CAT("SpringCat"),
     PYTHON_CAT("PythonCat"),
@@ -101,12 +116,19 @@ public enum AvatarType {
         return switch (this) {
             case SSAFY -> svgResources.getSSAFY();
             case NEW_YEAR_LUCK_CAT -> svgResources.getNewYearLuckCat();
+            case IDEA_CAT -> svgResources.getIdeaCat();
+            case MVP_CAT -> svgResources.getMvpCat();
 
             case CODING_CAT -> svgResources.getCodingCat();
             case YARN_BALL_CAT -> svgResources.getYarnBallCat();
             case UFO_CAT -> svgResources.getUfoCat();
             case TTEOKGUK_CAT -> svgResources.getTteokgukCat();
             case MAGPIE_CAT -> svgResources.getMagpieCat();
+            case CAFFEINE_CAT -> svgResources.getCaffeineCat();
+            case SINGING_CAT -> svgResources.getSingingCat();
+            case WORK_CAT -> svgResources.getWorkCat();
+            case DIVER_CAT -> svgResources.getDiverCat();
+            case ANGRY_CAT -> svgResources.getAngryCat();
 
             case FISHBOWL_CAT -> svgResources.getFishbowlCat();
             case EATING_CAT -> svgResources.getEatingCat();
@@ -119,6 +141,14 @@ public enum AvatarType {
             case INVISIBLE_CAT -> svgResources.getInvisibleCat();
             case ANONYMOUS_CAT -> svgResources.getAnonymousCat();
             case COMFORTABLE_CAT -> svgResources.getComfortableCat();
+            case SPLASH_CAT -> svgResources.getSplashCat();
+            case FARMER_CAT -> svgResources.getFarmerCat();
+            case BOOK_CAT -> svgResources.getBookCat();
+            case PHONE_CAT -> svgResources.getPhoneCat();
+            case BIRTHDAY_CAT -> svgResources.getBirthdayCat();
+            case JUMP_CAT -> svgResources.getJumpCat();
+            case SICK_CAT -> svgResources.getSickCat();
+            case GYM_CAT -> svgResources.getGymCat();
 
             case SPRING_CAT -> svgResources.getSpringCat();
             case PYTHON_CAT -> svgResources.getPythonCat();

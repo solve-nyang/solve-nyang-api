@@ -42,8 +42,11 @@ public class AuctionController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getMemberSalesHistory() {
-        SalesHistoryResponseDTO result = auctionFacade.getSalesHistory();
+    public ResponseEntity<?> getMemberSalesHistory(
+            @RequestParam(value = "filter", defaultValue = "0") int filter,
+            @RequestParam(value = "page", defaultValue = "1") int page
+    ) {
+        SalesHistoryResponseDTO result = auctionFacade.getSalesHistory(filter, page);
 
         return ResponseEntity.ok().body(result);
     }

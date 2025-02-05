@@ -14,17 +14,31 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class SvgResources {
 
-    private final String baseField;
-    private final String spaceField;
+    private final String space;
+    private final String beach;
+    private final String field;
+    private final String ocean;
+    private final String sand;
+    private final String snow1;
+    private final String snow2;
+    private final String window1;
+    private final String window2;
 
     private final String SSAFY;
     private final String newYearLuckCat;
+    private final String ideaCat;
+    private final String mvpCat;
 
     private final String codingCat;
     private final String yarnBallCat;
     private final String ufoCat;
     private final String tteokgukCat;
     private final String magpieCat;
+    private final String caffeineCat;
+    private final String singingCat;
+    private final String workCat;
+    private final String diverCat;
+    private final String angryCat;
 
     private final String fishbowlCat;
     private final String eatingCat;
@@ -37,6 +51,14 @@ public class SvgResources {
     private final String invisibleCat;
     private final String anonymousCat;
     private final String comfortableCat;
+    private final String splashCat;
+    private final String farmerCat;
+    private final String bookCat;
+    private final String phoneCat;
+    private final String birthdayCat;
+    private final String jumpCat;
+    private final String sickCat;
+    private final String gymCat;
 
     private final String springCat;
     private final String pythonCat;
@@ -105,17 +127,31 @@ public class SvgResources {
     public SvgResources(ResourceLoader resourceLoader) throws IOException {
         log.debug("Initializing SVG resources");
 
-        this.baseField = loadSvg(resourceLoader, "static/backgrounds/BaseField.svg");
-        this.spaceField = loadSvg(resourceLoader, "static/backgrounds/SpaceField.svg");
+        this.space = loadSvg(resourceLoader, "static/backgrounds/Space.svg");
+        this.beach = loadSvg(resourceLoader, "static/backgrounds/Beach.svg");
+        this.field = loadSvg(resourceLoader, "static/backgrounds/Field.svg");
+        this.ocean = loadSvg(resourceLoader, "static/backgrounds/Ocean.svg");
+        this.sand = loadSvg(resourceLoader, "static/backgrounds/Sand.svg");
+        this.snow1 = loadSvg(resourceLoader, "static/backgrounds/Snow1.svg");
+        this.snow2 = loadSvg(resourceLoader, "static/backgrounds/Snow2.svg");
+        this.window1 = loadSvg(resourceLoader, "static/backgrounds/Window1.svg");
+        this.window2 = loadSvg(resourceLoader, "static/backgrounds/Window2.svg");
 
         this.SSAFY = loadSvg(resourceLoader, "static/avatars/SSAFY.svg");
         this.newYearLuckCat = loadSvg(resourceLoader, "static/avatars/NewYearLuckCat.svg");
+        this.ideaCat = loadSvg(resourceLoader, "static/avatars/IdeaCat.svg");
+        this.mvpCat = loadSvg(resourceLoader, "static/avatars/MVPCat.svg");
 
         this.codingCat = loadSvg(resourceLoader, "static/avatars/CodingCat.svg");
         this.yarnBallCat = loadSvg(resourceLoader, "static/avatars/YarnBallCat.svg");
         this.ufoCat = loadSvg(resourceLoader, "static/avatars/UFOCat.svg");
         this.tteokgukCat = loadSvg(resourceLoader, "static/avatars/TteokgukCat.svg");
         this.magpieCat = loadSvg(resourceLoader, "static/avatars/MagpieCat.svg");
+        this.caffeineCat = loadSvg(resourceLoader, "static/avatars/CaffeineCat.svg");
+        this.singingCat = loadSvg(resourceLoader, "static/avatars/SingingCat.svg");
+        this.workCat = loadSvg(resourceLoader, "static/avatars/WorkCat.svg");
+        this.diverCat = loadSvg(resourceLoader, "static/avatars/DiverCat.svg");
+        this.angryCat = loadSvg(resourceLoader, "static/avatars/AngryCat.svg");
 
         this.fishbowlCat = loadSvg(resourceLoader, "static/avatars/FishbowlCat.svg");
         this.eatingCat = loadSvg(resourceLoader, "static/avatars/EatingCat.svg");
@@ -128,6 +164,14 @@ public class SvgResources {
         this.invisibleCat = loadSvg(resourceLoader, "static/avatars/InvisibleCat.svg");
         this.anonymousCat = loadSvg(resourceLoader, "static/avatars/AnonymousCat.svg");
         this.comfortableCat = loadSvg(resourceLoader, "static/avatars/ComfortableCat.svg");
+        this.splashCat = loadSvg(resourceLoader, "static/avatars/SplashCat.svg");
+        this.farmerCat = loadSvg(resourceLoader, "static/avatars/FarmerCat.svg");
+        this.bookCat = loadSvg(resourceLoader, "static/avatars/BookCat.svg");
+        this.phoneCat = loadSvg(resourceLoader, "static/avatars/PhoneCat.svg");
+        this.birthdayCat = loadSvg(resourceLoader, "static/avatars/BirthdayCat.svg");
+        this.jumpCat = loadSvg(resourceLoader, "static/avatars/JumpCat.svg");
+        this.sickCat = loadSvg(resourceLoader, "static/avatars/SickCat.svg");
+        this.gymCat = loadSvg(resourceLoader, "static/avatars/GymCat.svg");
 
         this.springCat = loadSvg(resourceLoader, "static/avatars/SpringCat.svg");
         this.pythonCat = loadSvg(resourceLoader, "static/avatars/PythonCat.svg");

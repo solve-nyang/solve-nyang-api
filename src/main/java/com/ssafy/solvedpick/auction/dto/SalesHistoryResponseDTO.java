@@ -12,5 +12,10 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SalesHistoryResponseDTO {
 
+    private Integer currentPageNumber;
+    private Integer size;
+    private Integer totalPage;
+    private Boolean hasNext;
+    private Boolean hasPrevious;
     private List<MemberAuctionDTO> history;
 }

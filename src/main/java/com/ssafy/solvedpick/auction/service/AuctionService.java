@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -22,27 +20,27 @@ public class AuctionService {
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithKeyword(String keyword, Pageable pageable) {
-        return auctionRepository.findAllByOwnedAvatar_Avatar_NameContainingAndSoldFalseAndCancelledFalse(
+        return auctionRepository.findAllByOwnedAvatar_Avatar_KoreanNameContainingAndCancelledFalse(
                 keyword, pageable
         );
     }
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandise(Pageable pageable) {
-        return auctionRepository.findAllBySoldFalseAndCancelledFalse(pageable);
+        return auctionRepository.findAllByCancelledFalse(pageable);
     }
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithKeywordAndGrade(String keyword, int grade, Pageable pageable) {
         return auctionRepository
-                .findAllByOwnedAvatar_Avatar_NameContainingAndOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(
+                .findAllByOwnedAvatar_Avatar_KoreanNameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
                         keyword, grade, pageable
                 );
     }
 
     @Transactional(readOnly = true)
     public Page<Auction> findMerchandiseWithGrade(int grade, Pageable pageable) {
-        return auctionRepository.findAllByOwnedAvatar_Avatar_GradeAndSoldFalseAndCancelledFalse(grade, pageable);
+        return auctionRepository.findAllByOwnedAvatar_Avatar_GradeAndCancelledFalse(grade, pageable);
     }
 
     public void save(Auction auction) {
@@ -57,15 +55,31 @@ public class AuctionService {
         return auction;
     }
 
-    public List<Auction> findMemberHistory(Member member) {
-        return auctionRepository.findAllByMember(member.getId());
-    }
-
     public Auction buyAvatar(Long id) {
         Auction auction = auctionRepository.findByIdAndSoldFalseAndCancelledFalse(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         auction.sold();
 
         return auction;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Auction> findMemberHistoryAll(Member member, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_Member(member, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Auction> findMemberHistorySold(Member member, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_MemberAndSoldTrue(member, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Auction> findMemberHistoryCancelled(Member member, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_MemberAndCancelledTrue(member, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Auction> findMemberHistoryOnStatus(Member member, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_MemberAndSoldFalseAndCancelledFalse(member, pageable);
     }
 }
