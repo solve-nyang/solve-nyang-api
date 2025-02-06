@@ -26,99 +26,12 @@ public class AvatarRenderer {
     private static final int SCALED_AVATAR_SIZE = (int)(BASE_AVATAR_SIZE * AVATAR_SCALE);
 
     private final SvgResources svgResources;
+    private final LetterRenderer letterRenderer;
 
     public String renderAvatars(BackgroundType background, List<AvatarType> avatars) {
         StringBuilder content = openFile();
         content.append(background.getSvgContent(svgResources));
-
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 40, 33));
-        content.append(svgResources.getLetters().get('a'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 53, 30));
-        content.append(svgResources.getLetters().get('b'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 66, 33));
-        content.append(svgResources.getLetters().get('c'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 79, 30));
-        content.append(svgResources.getLetters().get('d'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 92, 33));
-        content.append(svgResources.getLetters().get('e'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 105, 30));
-        content.append(svgResources.getLetters().get('f'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 118, 35));
-        content.append(svgResources.getLetters().get('g'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 131, 30));
-        content.append(svgResources.getLetters().get('h'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 144, 30));
-        content.append(svgResources.getLetters().get('i'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 149, 31));
-        content.append(svgResources.getLetters().get('j'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 160, 30));
-        content.append(svgResources.getLetters().get('k'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 183, 30));
-        content.append(svgResources.getLetters().get('l'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 196, 33));
-        content.append(svgResources.getLetters().get('n'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 209, 33));
-        content.append(svgResources.getLetters().get('o'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 222, 33));
-        content.append(svgResources.getLetters().get('p'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 235, 33));
-        content.append(svgResources.getLetters().get('q'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 248, 33));
-        content.append(svgResources.getLetters().get('r'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 261, 33));
-        content.append(svgResources.getLetters().get('s'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 274, 30));
-        content.append(svgResources.getLetters().get('t'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 287, 33));
-        content.append(svgResources.getLetters().get('u'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 300, 33));
-        content.append(svgResources.getLetters().get('v'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 313, 33));
-        content.append(svgResources.getLetters().get('m'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 329, 33));
-        content.append(svgResources.getLetters().get('w'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 345, 30));
-        content.append(svgResources.getLetters().get('i'));
-        content.append("</g>");
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 350, 30));
-        content.append(svgResources.getLetters().get('i'));
-        content.append("</g>");
-//        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 345, 30));
-//        content.append(svgResources.getLetters().get('x'));
-//        content.append("</g>");
-//        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 361, 30));
-//        content.append(svgResources.getLetters().get('y'));
-//        content.append("</g>");
-//        content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">", 374, 30));
-//        content.append(svgResources.getLetters().get('z'));
-//        content.append("</g>");
-
-
-
-
+        letterRenderer.renderUsername(content, "a1we2r6w8ds4afsa3d", 40, 30);
         placeAvatars(content, avatars);
         return closeFile(content).toString();
     }
@@ -209,7 +122,6 @@ public class AvatarRenderer {
                 path.midX2(), path.midY2(),
                 path.endX(), path.endY(),
                 0, 0,
-//                15));
                 random.nextInt(50) + 10));
 
         content.append("</g>");
