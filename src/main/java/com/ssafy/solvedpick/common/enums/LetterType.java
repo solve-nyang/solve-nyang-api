@@ -31,12 +31,6 @@ public enum LetterType {
     private final int gap;
     private final int hgap;
 
-    public String getSvgContent(SvgResources svgResources) {
-        return Character.isDigit(this.name)
-                ? svgResources.getNumbers().get(this.name)
-                : svgResources.getLetters().get(this.name);
-    }
-
     public static LetterType fromName(char name) {
         return Arrays.stream(values())
                 .filter(type -> type.getName() == name)
