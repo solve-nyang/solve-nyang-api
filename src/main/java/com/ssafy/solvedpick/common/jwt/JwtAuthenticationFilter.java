@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -22,11 +23,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
-
+    
+    private static final Set<String> PERMIT_ALL_PATHS = Set.of(
+    		"/account/verify",
+            "/account/signin",
+            "/account/signout",
+            "/account/signup",
+            "/account/password/find",
+            "/jwt/reissue",
+            "/avatar",
+            "/compose/**",
+            "/favicon.ico",
+            "/user/me/extension"
+    );
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-    	if (request.getRequestURI().equals("/jwt/reissue")) {
+    	if (PERMIT_ALL_PATHS.contains(request.getRequestURI())) {
     	        filterChain.doFilter(request, response);
     	        return;
     	    }
