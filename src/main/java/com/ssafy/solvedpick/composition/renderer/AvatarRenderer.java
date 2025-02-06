@@ -28,7 +28,6 @@ public class AvatarRenderer {
     private final SvgResources svgResources;
 
     public String renderAvatars(BackgroundType background, List<AvatarType> avatars) {
-        this.background= background;
         StringBuilder content = openFile();
         content.append(background.getSvgContent(svgResources));
         placeAvatars(content, avatars);
