@@ -47,8 +47,10 @@ public class AuctionService {
         auctionRepository.save(auction);
     }
 
-    public Auction cancelAuction(Long auctionId) {
-        Auction auction = auctionRepository.findById(auctionId)
+    public Auction cancelAuction(Long auctionId, Member member) {
+        Auction auction = auctionRepository.findByIdAndOwnedAvatar_MemberAndSoldFalseAndCancelledFalse(
+                        auctionId, member
+                )
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
         auction.cancel();
