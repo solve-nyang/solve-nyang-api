@@ -8,11 +8,16 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Getter
 @Component
 public class SvgResources {
+
+    private final Map<Character, String> letters;
+    private final Map<Character, String> numbers;
 
     private final String space;
     private final String beach;
@@ -126,6 +131,18 @@ public class SvgResources {
 
     public SvgResources(ResourceLoader resourceLoader) throws IOException {
         log.debug("Initializing SVG resources");
+        this.letters = new HashMap<>();
+        for (char c = 'A'; c <= 'Z'; c++) {
+            this.letters.put(c, loadSvg(resourceLoader, String.format("static/letters/%c.svg", c)));
+        }
+        for (char c = 'a'; c <= 'z'; c++) {
+            this.letters.put(c, loadSvg(resourceLoader, String.format("static/letters/_%c.svg", c)));
+        }
+
+        this.numbers = new HashMap<>();
+        for (char n = '0'; n <= '9'; n++) {
+            this.numbers.put(n, loadSvg(resourceLoader, String.format("static/numbers/%c.svg", n)));
+        }
 
         this.space = loadSvg(resourceLoader, "static/backgrounds/Space.svg");
         this.beach = loadSvg(resourceLoader, "static/backgrounds/Beach.svg");
