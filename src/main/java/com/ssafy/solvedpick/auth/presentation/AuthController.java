@@ -63,9 +63,9 @@ public class AuthController {
     	        .httpOnly(true)
     	        .secure(true)
     	        .path("/")
-    	        .domain("www.solve-nyang.com")
+    	        // .domain("www.solve-nyang.com")
     	        .maxAge(0)
-    	        .sameSite("Strict")
+    	        .sameSite("None")
     	        .build();
     	response.addHeader("Set-Cookie", cookie.toString());
     	

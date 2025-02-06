@@ -76,8 +76,8 @@ public class JwtUtil {
     	        .httpOnly(true)
     	        .secure(true)
     	        .path("/")
-                .domain("www.solve-nyang.com")
-    	        .sameSite("Strict")
+                // .domain("www.solve-nyang.com")
+    	        .sameSite("None")
     	        .maxAge(Duration.ofMillis(refreshTokenExpiration))
     	        .build();
     	response.addHeader("Set-Cookie", cookie.toString());
