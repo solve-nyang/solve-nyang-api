@@ -77,7 +77,6 @@ public class AuthService {
 
         this.memberRepository.save(user);
 
-        addDefaultAvatar(user);
         ownedBackgroundFacade.addDefaultBackground(user);
 
         problemFacade.initializeNewUserProblem(user);

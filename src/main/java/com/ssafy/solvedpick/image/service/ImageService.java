@@ -49,12 +49,12 @@ public class ImageService {
             Image image = Image.builder()
                     .member(member)
                     .originalFilename(imageSaveRequest.getOriginalFilename())
-                    .storedFilename(imageSaveRequest.getStoredFilename())
+                    .storedFilename(extractUUID(imageSaveRequest))
                     .build();
 
             imageRepository.save(image);
-            log.debug("Saved image info - originalFilename: {}, storedFilename: {}, member: {}",
-                    imageSaveRequest.getOriginalFilename(), imageSaveRequest.getStoredFilename(), member);
+            log.debug("Saved image info - originalFilename: {}, uuid: {}, member: {}",
+                    imageSaveRequest.getOriginalFilename(), extractUUID(imageSaveRequest), member);
 
         } catch (Exception e) {
             log.error("Failed to save image info", e);
@@ -63,5 +63,10 @@ public class ImageService {
                     "이미지 정보 저장에 실패했습니다."
             );
         }
+    }
+
+    private String extractUUID(ImageSaveRequest imageSaveRequest) {
+        int lastHyphenIndex = imageSaveRequest.getStoredFilename().lastIndexOf("-");
+        return imageSaveRequest.getStoredFilename().substring(0, lastHyphenIndex);
     }
 }
