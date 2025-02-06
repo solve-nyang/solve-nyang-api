@@ -3,6 +3,7 @@ package com.ssafy.solvedpick.composition.service;
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
 import com.ssafy.solvedpick.composition.renderer.AvatarRenderer;
+import com.ssafy.solvedpick.composition.renderer.CompositeRenderer;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
@@ -19,15 +20,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompositionService {
 
-    private final AvatarRenderer avatarRenderer;
     private final OwnedAvatarRepository ownedAvatarRepository;
     private final OwnedBackgroundRepository ownedBackgroundRepository;
+    private final CompositeRenderer compositeRenderer;
 
     public String generateCompositeImage(Member member) {
         BackgroundType background = getBackgroundType(member);
         List<AvatarType> avatars = getAvatarTypes(member);
-
-        return avatarRenderer.renderAvatars(background, avatars);
+        return compositeRenderer.render(background, avatars, "membergetUsername");
     }
 
     private BackgroundType getBackgroundType(Member member) {
