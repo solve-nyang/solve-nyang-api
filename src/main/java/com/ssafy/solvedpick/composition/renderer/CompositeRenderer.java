@@ -3,7 +3,6 @@ package com.ssafy.solvedpick.composition.renderer;
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
 import com.ssafy.solvedpick.composition.renderer.types.SvgDimensions;
-import com.ssafy.solvedpick.composition.resource.SvgResources;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +18,13 @@ public class CompositeRenderer {
     private static final int BASE_AVATAR_SIZE = 100;
     private static final int SCALED_AVATAR_SIZE = (int)(BASE_AVATAR_SIZE * AVATAR_SCALE);
 
-    private final SvgResources svgResources;
+    private final BackgroundRenderer backgroundRenderer;
     private final AvatarRenderer avatarRenderer;
     private final LetterRenderer letterRenderer;
 
     public String render(BackgroundType background, List<AvatarType> avatars, String username) {
         StringBuilder content = openFile();
-        content.append(background.getSvgContent(svgResources));
+        backgroundRenderer.renderBackground(content, background);
         letterRenderer.renderUsername(content, username, 40, 30);
         avatarRenderer.renderAvatars(content, avatars, getSvgDimensions());
         return closeFile(content).toString();

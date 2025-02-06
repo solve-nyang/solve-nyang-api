@@ -2,7 +2,6 @@ package com.ssafy.solvedpick.composition.renderer;
 
 import com.ssafy.solvedpick.common.enums.AnimationType;
 import com.ssafy.solvedpick.common.enums.AvatarType;
-import com.ssafy.solvedpick.common.enums.BackgroundType;
 import com.ssafy.solvedpick.composition.renderer.types.Path;
 import com.ssafy.solvedpick.composition.renderer.types.Position;
 import com.ssafy.solvedpick.composition.renderer.types.SvgDimensions;
