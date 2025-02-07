@@ -69,7 +69,6 @@ public class AuthService {
 
     @Transactional
     public Member create(UserDataDTO userDataDTO) {
-    	isValidPassword(userDataDTO.getPassword());
         Member user = Member.builder()
                 .username(userDataDTO.getUsername())
                 .password(passwordEncoder.encode(userDataDTO.getPassword()))

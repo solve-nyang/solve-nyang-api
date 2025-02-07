@@ -23,6 +23,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserDataDTO userDataDTO) {
+        authService.isValidPassword(userDataDTO.getPassword());
         if(memberRepository.existsByUsername(userDataDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMessageDTO.builder()
                     .message("이미 가입된 회원입니다.")
