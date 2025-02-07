@@ -38,7 +38,9 @@ public class AuctionFacade {
     private final MemberService memberService;
 
     @Transactional(readOnly = true)
-    public SearchMerchandiseResponseDTO searchMerchandise(String keyword, String rarity, int order, int page) {
+    public SearchMerchandiseResponseDTO searchMerchandise(
+            String keyword, String rarity, int order, int page, Boolean sold
+    ) {
         Member member = authService.getCurrentMember();
         Sort sort = SortType.fromValue(order);
         Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE, sort);
@@ -47,7 +49,7 @@ public class AuctionFacade {
                 .map(Grade::getValueFromName)
                 .orElse(NO_GRADE);
 
-        Page<Auction> result = findAuctionsWithCondition(keyword, grade, pageable);
+        Page<Auction> result = findAuctionsWithCondition(keyword, grade, sold, pageable);
 
         return SearchMerchandiseResponseDTO.builder()
                 .size(result.getSize())
@@ -70,27 +72,22 @@ public class AuctionFacade {
                 .build();
     }
 
-    private Page<Auction> findAuctionsWithCondition(String keyword, int grade, Pageable pageable) {
+    private Page<Auction> findAuctionsWithCondition(String keyword, int grade, Boolean sold, Pageable pageable) {
         if (grade == NO_GRADE) {
             return Optional.ofNullable(keyword)
-                    .map(k -> auctionService.findMerchandiseWithKeyword(k, pageable))
-                    .orElseGet(() -> auctionService.findMerchandise(pageable));
+                    .map(k -> auctionService.findMerchandiseWithKeyword(k, sold, pageable))
+                    .orElseGet(() -> auctionService.findMerchandise(sold, pageable));
         }
 
         return Optional.ofNullable(keyword)
-                .map(k -> auctionService.findMerchandiseWithKeywordAndGrade(k, grade, pageable))
-                .orElseGet(() -> auctionService.findMerchandiseWithGrade(grade, pageable));
+                .map(k -> auctionService.findMerchandiseWithKeywordAndGrade(k, sold, grade, pageable))
+                .orElseGet(() -> auctionService.findMerchandiseWithGrade(grade, sold, pageable));
     }
 
     public ResponseMessageDTO sellAvatar(SellAvatarRequestDTO requestDTO) {
         Member currentMember = authService.getCurrentMember();
         OwnedAvatar ownedAvatar = ownedAvatarService.sellToAuction(requestDTO.getId(), currentMember);
-
-        Auction auction = Auction.builder()
-                .ownedAvatar(ownedAvatar)
-                .price(requestDTO.getPrice())
-                .build();
-        auctionService.save(auction);
+        auctionService.createAuction(ownedAvatar, requestDTO.getPrice());
 
         return ResponseMessageDTO.builder()
                 .message("success")
