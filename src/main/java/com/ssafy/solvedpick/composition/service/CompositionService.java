@@ -24,7 +24,13 @@ public class CompositionService {
     public String generateCompositeImage(Member member) {
         BackgroundType background = getBackgroundType(member);
         List<AvatarType> avatars = getAvatarTypes(member);
-        return compositeRenderer.render(background, avatars, "membergetUsername");
+        return compositeRenderer.render(
+                background,
+                avatars,
+                member.getUsername(),
+                1,
+                member.getSolvedCount(),
+                member.getStreak());
     }
 
     private BackgroundType getBackgroundType(Member member) {
