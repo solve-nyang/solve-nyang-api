@@ -54,4 +54,16 @@ public class LetterRenderer {
         }
         return totalGap;
     }
+
+    public void renderWithrenderWithRightAligned(StringBuilder content, String Type, int numbers, int endX, int startY, int fixedGap) {
+        String numberStr = String.valueOf(numbers);
+        int numberWidth = calculateTotalGap(numberStr);
+        int streakWidth = calculateTotalGap(Type);
+        
+        int numberStartX = endX - numberWidth;
+        int streakStartX = numberStartX - fixedGap - streakWidth;
+
+        renderText(content, Type, streakStartX, startY);
+        renderNumber(content, numberStr, numberStartX, startY);
+    }
 }
