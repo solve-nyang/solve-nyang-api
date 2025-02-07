@@ -23,12 +23,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserDataDTO userDataDTO) {
-    	boolean verified = authService.verifyUser(userDataDTO);
         if(memberRepository.existsByUsername(userDataDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMessageDTO.builder()
                     .message("이미 가입된 회원입니다.")
                     .build());
         }
+        boolean verified = authService.verifyUser(userDataDTO);
 
     	if (verified) {
     		authService.create(userDataDTO);

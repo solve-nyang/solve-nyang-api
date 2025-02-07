@@ -69,7 +69,7 @@ public class AuthService {
 
     @Transactional
     public Member create(UserDataDTO userDataDTO) {
-
+    	isValidPassword(userDataDTO.getPassword());
         Member user = Member.builder()
                 .username(userDataDTO.getUsername())
                 .password(passwordEncoder.encode(userDataDTO.getPassword()))
@@ -188,6 +188,32 @@ public class AuthService {
             member.updatePassword(newPassword);
         } else {
             throw new VerificationNotFoundException("solved.ac 인증을 확인하세요");
+        }
+    }
+    
+    public void isValidPassword(String password) {
+    	if (password == null || password.length() < 8) {
+    		throw new InvalidPasswordException("비밀번호는 8자 이상이어야 합니다.");
+    	}
+    	
+    	if (password.matches(".*\\s+.*")) {
+    		throw new InvalidPasswordException("비밀번호에 공백을 포함할 수 없습니다.");
+    	}
+    	
+    	if (password.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣].*")) {
+    		throw new InvalidPasswordException("비밀번호에 한글을 포함할 수 없습니다.");
+    	}
+    	
+    	String specialChars = "[~!@#$%^&*_+=`|\\\\(){},.\\/\\[\\]\\-:;\"'<>?]";
+    	String alphabet = "[a-zA-Z]";
+    	String numbers = "[0-9]";
+    	
+    	boolean hasSpecialChar = password.matches(".*" + specialChars + ".*");
+    	boolean hasAlphabet = password.matches(".*" + alphabet + ".*");
+    	boolean hasNumber = password.matches(".*" + numbers + ".*");
+    	
+    	if (!(hasSpecialChar && hasAlphabet && hasNumber)) {
+            throw new InvalidPasswordException("비밀번호는 영문자, 숫자, 특수문자를 모두 포함해야 합니다.");
         }
     }
 }
