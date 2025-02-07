@@ -18,14 +18,22 @@ public class CompositeRenderer {
     private static final int BASE_AVATAR_SIZE = 100;
     private static final int SCALED_AVATAR_SIZE = (int)(BASE_AVATAR_SIZE * AVATAR_SCALE);
 
+    private static final int TITLE_START_X = 40;
+    private static final int TITLE_START_Y = 30;
+    private static final int INFO_END_X = 580;
+    private static final int INFO_GAP = 10;
+
+
     private final BackgroundRenderer backgroundRenderer;
     private final AvatarRenderer avatarRenderer;
     private final LetterRenderer letterRenderer;
+    private final InfoRenderer infoRenderer;
 
-    public String render(BackgroundType background, List<AvatarType> avatars, String username) {
+    public String render(BackgroundType background, List<AvatarType> avatars, String title,  int classNum, int solvedCount, int streakCount) {
         StringBuilder content = openFile();
         backgroundRenderer.renderBackground(content, background);
-        letterRenderer.renderUsername(content, username, 40, 30);
+        letterRenderer.renderUsername(content, title, TITLE_START_X, TITLE_START_Y);
+        infoRenderer.renderInfo(content, classNum, solvedCount, streakCount, INFO_END_X, INFO_GAP);
         avatarRenderer.renderAvatars(content, avatars, getSvgDimensions());
         return closeFile(content).toString();
     }
