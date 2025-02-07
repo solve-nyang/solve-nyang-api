@@ -72,6 +72,7 @@ public class AuthController {
     
     @PostMapping("/password/change")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        authService.isValidPassword(changePasswordDTO.getNewPassword());
         authService.changePassword(changePasswordDTO);
 
         return ResponseEntity.ok()
@@ -82,6 +83,7 @@ public class AuthController {
 
     @PostMapping("password/find")
     public ResponseEntity<?> findPassword(@RequestBody UserDataDTO userDataDTO) {
+        authService.isValidPassword(userDataDTO.getPassword());
         authService.findPassword(userDataDTO);
 
         return ResponseEntity.ok()
