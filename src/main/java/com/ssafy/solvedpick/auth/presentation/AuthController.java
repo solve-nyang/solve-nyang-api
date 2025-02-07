@@ -23,12 +23,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserDataDTO userDataDTO) {
-    	boolean verified = authService.verifyUser(userDataDTO);
+        authService.isValidPassword(userDataDTO.getPassword());
         if(memberRepository.existsByUsername(userDataDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMessageDTO.builder()
                     .message("이미 가입된 회원입니다.")
                     .build());
         }
+        boolean verified = authService.verifyUser(userDataDTO);
 
     	if (verified) {
     		authService.create(userDataDTO);
@@ -71,6 +72,7 @@ public class AuthController {
     
     @PostMapping("/password/change")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        authService.isValidPassword(changePasswordDTO.getNewPassword());
         authService.changePassword(changePasswordDTO);
 
         return ResponseEntity.ok()
@@ -81,6 +83,7 @@ public class AuthController {
 
     @PostMapping("password/find")
     public ResponseEntity<?> findPassword(@RequestBody UserDataDTO userDataDTO) {
+        authService.isValidPassword(userDataDTO.getPassword());
         authService.findPassword(userDataDTO);
 
         return ResponseEntity.ok()
