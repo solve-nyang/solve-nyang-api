@@ -22,7 +22,20 @@ public class AuctionController {
             @RequestParam(value = "sort", defaultValue = "0") int sort,
             @RequestParam(value = "rarity", required = false) String rarity,
             @RequestParam(value = "page", defaultValue = "1") int page) {
-        SearchMerchandiseResponseDTO result = auctionFacade.searchMerchandise(keyword, rarity, sort, page);
+        final Boolean sold = false;
+        SearchMerchandiseResponseDTO result = auctionFacade.searchMerchandise(keyword, rarity, sort, page, sold);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/sold")
+    public ResponseEntity<?> searchSoldMerchandise(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "sort", defaultValue = "0") int sort,
+            @RequestParam(value = "rarity", required = false) String rarity,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        final Boolean sold = true;
+        SearchMerchandiseResponseDTO result = auctionFacade.searchMerchandise(keyword, rarity, sort, page, sold);
 
         return ResponseEntity.ok().body(result);
     }
