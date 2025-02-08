@@ -42,7 +42,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "Integer unsigned")
     private Long id;
-	
+
     @Column(nullable = false, unique = true, length = 30)
     private String username;
     
@@ -97,5 +97,9 @@ public class Member {
 
     public void initSolvedProblem(Problem problem) {
         this.solvedProblems = problem;
+    }
+
+    public void initMemberDisplay(MemberDisplay memberDisplay){
+        this.memberDisplay = memberDisplay;
     }
 }

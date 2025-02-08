@@ -59,6 +59,12 @@ public class MemberDisplay {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    public static MemberDisplay initMemberDisplay(Member member) {
+        return MemberDisplay.builder()
+                .member(member)
+                .build();
+    }
+
     public void updateInfo(UserData userData) {
         this.tier = userData.getTier();
         this.memberClass = userData.getMemberClass();
