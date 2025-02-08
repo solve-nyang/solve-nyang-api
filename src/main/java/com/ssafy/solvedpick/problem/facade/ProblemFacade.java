@@ -4,6 +4,8 @@ import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.api.dto.UserData;
 import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
+import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
+import com.ssafy.solvedpick.memberdisplay.service.MemberDisplayService;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.problem.domain.Problem;
 import com.ssafy.solvedpick.problem.service.ProblemService;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProblemFacade {
     private final ProblemService problemService;
     private final ApiService apiService;
+    private final MemberDisplayService memberDisplayService;
 
     @Transactional
     public void initializeNewUserProblem(Member member) {
@@ -37,7 +40,9 @@ public class ProblemFacade {
         Problem problem = member.getSolvedProblems();
 
         problemService.updateSolvedProblems(problem, newProblems);
-        member.updateInfo(userData.getTier(), userData.getSolvedCount(), userData.getMaxStreak());
+
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+        memberDisplayService.updateMemberDisplay(memberDisplay, userData);
     }
 }
 
