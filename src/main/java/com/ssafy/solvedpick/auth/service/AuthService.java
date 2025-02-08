@@ -12,12 +12,12 @@ import com.ssafy.solvedpick.common.error.exception.InvalidPasswordException;
 import com.ssafy.solvedpick.common.error.exception.UserInfoErrorException;
 import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
 import com.ssafy.solvedpick.common.jwt.JwtUtil;
+import com.ssafy.solvedpick.facade.UserFacade;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.facade.OwnedBackgroundFacade;
-import com.ssafy.solvedpick.problem.facade.ProblemFacade;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -47,7 +47,7 @@ public class AuthService {
     private final VerificationKeyRepository verificationKeyRepository;
     private final AvatarRepository avatarRepository;
     private final OwnedAvatarRepository ownedAvatarRepository;
-    private final ProblemFacade problemFacade;
+    private final UserFacade userFacade;
     private final OwnedBackgroundFacade ownedBackgroundFacade;
 
     @Value("${URL.USER_INFO}")
@@ -83,7 +83,7 @@ public class AuthService {
         addDefaultAvatar(user);
         ownedBackgroundFacade.addDefaultBackground(user);
 
-        problemFacade.initializeNewUserProblem(user);
+        userFacade.initializeNewUserInfo(user);
 
         return user;
     }
