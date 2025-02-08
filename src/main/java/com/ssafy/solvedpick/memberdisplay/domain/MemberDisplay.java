@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.memberdisplay.domain;
 
+import com.ssafy.solvedpick.api.dto.UserData;
 import com.ssafy.solvedpick.members.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,29 +27,42 @@ public class MemberDisplay {
     private Member member;
 
     @Column(columnDefinition = "tinyint")
-    private int tier;
+    private Integer tier;
 
     @Builder.Default
-    private boolean tierVisible = false;
+    private Boolean tierVisible = false;
+
+    @Column(columnDefinition = "tinyint")
+    private Integer memberClass;
+
+    @Builder.Default
+    private Boolean memberClassVisible = false;
 
     @Column(columnDefinition = "Integer unsigned")
-    private int solvedCount;
+    private Integer solvedCount;
 
     @Builder.Default
-    private boolean solvedVisible = false;
+    private Boolean solvedVisible = false;
 
     @Column(columnDefinition = "Integer unsigned")
-    private int streak;
+    private Integer streak;
 
     @Builder.Default
-    private boolean streakVisible = false;
+    private Boolean streakVisible = false;
 
     private String title;
 
     @Builder.Default
-    private boolean titleVisible = false;
+    private Boolean titleVisible = false;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    public void updateInfo(UserData userData) {
+        this.tier = userData.getTier();
+        this.memberClass = userData.getMemberClass();
+        this.solvedCount = userData.getSolvedCount();
+        this.streak = userData.getMaxStreak();
+    }
 }

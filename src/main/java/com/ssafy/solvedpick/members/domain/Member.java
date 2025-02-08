@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssafy.solvedpick.image.domain.Image;
+import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.ownedbackgrounds.domain.OwnedBackground;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -54,18 +55,6 @@ public class Member {
     @Builder.Default
     private Long point = 5000L;
 
-    @Builder.Default
-    @Column(columnDefinition = "tinyint")
-    private int tier = 0;
-
-    @Builder.Default
-    @Column(columnDefinition = "Integer unsigned")
-    private int solvedCount = 0;
-
-    @Builder.Default
-    @Column(columnDefinition = "Integer unsigned")
-    private int streak = 0;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -86,6 +75,10 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
+    @Builder.Default
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private MemberDisplay memberDisplay = null;
+
     public void addPoint(long amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
@@ -100,12 +93,6 @@ public class Member {
     
     public void updatePassword(String encodedNewPassword) {
     	this.password = encodedNewPassword;
-    }
-
-    public void updateInfo(int tier, int solvedCount, int streak) {
-        this.tier = tier;
-        this.solvedCount = solvedCount;
-        this.streak = streak;
     }
 
     public void initSolvedProblem(Problem problem) {
