@@ -1,11 +1,10 @@
 package com.ssafy.solvedpick.members.service;
 
-import com.ssafy.solvedpick.common.utils.point.Point;
-import com.ssafy.solvedpick.problem.facade.ProblemFacade;
+import com.ssafy.solvedpick.facade.UserFacade;
+import com.ssafy.solvedpick.members.dto.BasicUserInfoResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.ssafy.solvedpick.members.domain.Member;
-import com.ssafy.solvedpick.members.dto.UserInfoResponse;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,23 +16,19 @@ public class MemberService {
 
     private static final double FEE = 0.95;
 
-    private final ProblemFacade problemFacade;
+    private final UserFacade userFacade;
 
-    // TODO: 전체 수정하기
-    public UserInfoResponse getUserInfo(Member member) {
+    public BasicUserInfoResponse getUserInfo(Member member) {
 
-        return UserInfoResponse.builder()
+        return BasicUserInfoResponse.builder()
                 .username(member.getUsername())
                 .point(member.getPoint())
-                .tier(Point.getPointName(member.getTier()))
-                .solvedCount(member.getSolvedCount())
-                .streak(member.getStreak())
                 .build();
     }
 
     @Transactional
     public void updateUserProcess(Member member) {
-        problemFacade.syncUserProblemInfo(member);
+        userFacade.syncUserInfo(member);
     }
 
     public void sellAvatar(Member seller, Long point) {

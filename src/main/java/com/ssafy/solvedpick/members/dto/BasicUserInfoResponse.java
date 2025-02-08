@@ -1,0 +1,12 @@
+package com.ssafy.solvedpick.members.dto;
+
+import lombok.*;
+
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class BasicUserInfoResponse {
+    private String username;
+    private Long point;
+}

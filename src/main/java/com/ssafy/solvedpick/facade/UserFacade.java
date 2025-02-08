@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.problem.facade;
+package com.ssafy.solvedpick.facade;
 
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.api.dto.UserData;
@@ -17,21 +17,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProblemFacade {
+public class UserFacade {
     private final ProblemService problemService;
     private final ApiService apiService;
     private final MemberDisplayService memberDisplayService;
 
     @Transactional
-    public void initializeNewUserProblem(Member member) {
-
+    public void initializeNewUserInfo(Member member) {
         Problem problem = Problem.initSolvedProblems(member);
         member.initSolvedProblem(problem);
-        syncUserProblemInfo(member);
+
+        MemberDisplay memberDisplay = MemberDisplay.initMemberDisplay(member);
+        member.initMemberDisplay(memberDisplay);
+
+        syncUserInfo(member);
     }
 
     @Transactional
-    public void syncUserProblemInfo(Member member) {
+    public void syncUserInfo(Member member) {
 
         UserInfoApiResponse apiResponse = apiService.getUserInfo(member.getUsername());
         UserData userData = apiResponse.getItems().get(0);
