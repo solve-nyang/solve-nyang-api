@@ -2,9 +2,9 @@ package com.ssafy.solvedpick.composition.renderer;
 
 import com.ssafy.solvedpick.common.enums.AnimationType;
 import com.ssafy.solvedpick.common.enums.AvatarType;
-import com.ssafy.solvedpick.common.enums.BackgroundType;
 import com.ssafy.solvedpick.composition.renderer.types.Path;
 import com.ssafy.solvedpick.composition.renderer.types.Position;
+import com.ssafy.solvedpick.composition.renderer.types.SvgDimensions;
 import com.ssafy.solvedpick.composition.resource.SvgResources;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,45 +18,30 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AvatarRenderer {
-    private static final int SVG_WIDTH = 600;
-    private static final int SVG_HEIGHT = 300;
-    private static final int MARGIN = 70;
-    private static final double AVATAR_SCALE = 0.8;
-    private static final int BASE_AVATAR_SIZE = 100;
-    private static final int SCALED_AVATAR_SIZE = (int)(BASE_AVATAR_SIZE * AVATAR_SCALE);
-
     private final SvgResources svgResources;
 
-    public String renderAvatars(BackgroundType background, List<AvatarType> avatars) {
-        StringBuilder content = openFile();
-        content.append(background.getSvgContent(svgResources));
-        placeAvatars(content, avatars);
-        return closeFile(content).toString();
-    }
-
-    private void placeAvatars(StringBuilder content, List<AvatarType> avatars) {
-        for (int i = 0; i < avatars.size(); i++) {
+    public void renderAvatars(StringBuilder content, List<AvatarType> avatars, SvgDimensions dimensions) {
+        for (AvatarType avatar : avatars) {
             SecureRandom random = new SecureRandom();
-            int startX = random.nextInt(SVG_WIDTH - SCALED_AVATAR_SIZE);
-            int startY = random.nextInt(SVG_HEIGHT - SCALED_AVATAR_SIZE);
-
-            appendAvatar(content, avatars.get(i), startX, startY, i);
+            int startX = random.nextInt(dimensions.width() - dimensions.scaledAvatarSize());
+            int startY = random.nextInt(dimensions.height() - dimensions.scaledAvatarSize());
+            appendAvatar(content, avatar, startX, startY, dimensions);
         }
     }
 
-    private void appendAvatar(StringBuilder content, AvatarType avatar, int startX, int startY, int index) {
-        Position edgePosition = calculateEdgePosition();
-        List<Position> controlPositions = calculateControlPositions();
+    private void appendAvatar(StringBuilder content, AvatarType avatar, int startX, int startY, SvgDimensions dimensions) {
+        Position edgePosition = calculateEdgePosition(dimensions);
+        List<Position> controlPositions = calculateControlPositions(dimensions);
         Path path = calculatePath(startX, startY, edgePosition, controlPositions);
-        appendSvgContent(content, avatar, startX, startY, path);
+        appendSvgContent(content, avatar, startX, startY, path, dimensions.scale());
     }
 
-    private Position calculateEdgePosition() {
+    private Position calculateEdgePosition(SvgDimensions dimensions) {
         SecureRandom random = new SecureRandom();
-        int minX = MARGIN;
-        int maxX = SVG_WIDTH - MARGIN;
-        int minY = MARGIN;
-        int maxY = SVG_HEIGHT - MARGIN;
+        int minX = dimensions.margin();
+        int maxX = dimensions.width() - dimensions.margin();
+        int minY = dimensions.margin();
+        int maxY = dimensions.height() - dimensions.margin();
 
         int edge = random.nextInt(4);
         int x, y;
@@ -64,30 +49,30 @@ public class AvatarRenderer {
         switch (edge) {
             case 0:
                 x = minX + random.nextInt(maxX - minX + 1);
-                y = minY + random.nextInt(MARGIN);
+                y = minY + random.nextInt(dimensions.margin());
                 break;
             case 1:
-                x = maxX - random.nextInt(MARGIN);
+                x = maxX - random.nextInt(dimensions.margin());
                 y = minY + random.nextInt(maxY - minY + 1);
                 break;
             case 2:
                 x = minX + random.nextInt(maxX - minX + 1);
-                y = maxY - random.nextInt(MARGIN);
+                y = maxY - random.nextInt(dimensions.margin());
                 break;
             default:
-                x = minX + random.nextInt(MARGIN);
+                x = minX + random.nextInt(dimensions.margin());
                 y = minY + random.nextInt(maxY - minY + 1);
                 break;
         }
         return new Position(x, y);
     }
 
-    private List<Position> calculateControlPositions() {
+    private List<Position> calculateControlPositions(SvgDimensions dimensions) {
         SecureRandom random = new SecureRandom();
-        int minX = MARGIN;
-        int maxX = SVG_WIDTH - MARGIN;
-        int minY = MARGIN;
-        int maxY = SVG_HEIGHT - MARGIN;
+        int minX = dimensions.margin();
+        int maxX = dimensions.width() - dimensions.margin();
+        int minY = dimensions.margin();
+        int maxY = dimensions.height() - dimensions.margin();
 
         List<Position> positions = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
@@ -109,10 +94,9 @@ public class AvatarRenderer {
         );
     }
 
-    private void appendSvgContent(StringBuilder content, AvatarType avatar, int startX, int startY, Path path) {
+    private void appendSvgContent(StringBuilder content, AvatarType avatar, int startX, int startY, Path path, double scale) {
         SecureRandom random = new SecureRandom();
-
-        content.append(String.format("<g transform=\"translate(%d, %d) scale(%.1f)\">", startX, startY, AVATAR_SCALE));
+        content.append(String.format("<g transform=\"translate(%d, %d) scale(%.1f)\">", startX, startY, scale));
         content.append(avatar.getSvgContent(svgResources));
         content.append(AnimationType.FLOAT.format(
                 0, 0,
@@ -120,17 +104,7 @@ public class AvatarRenderer {
                 path.midX2(), path.midY2(),
                 path.endX(), path.endY(),
                 0, 0,
-//                15));
                 random.nextInt(50) + 10));
-
         content.append("</g>");
-    }
-
-    private StringBuilder openFile() {
-        return new StringBuilder().append("<svg width=\"600\" height=\"300\" viewBox=\"0 0 600 300\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
-    }
-
-    private StringBuilder closeFile(StringBuilder file) {
-        return file.append("</svg>");
     }
 }

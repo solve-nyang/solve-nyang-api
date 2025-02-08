@@ -2,15 +2,13 @@ package com.ssafy.solvedpick.composition.service;
 
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
-import com.ssafy.solvedpick.composition.renderer.AvatarRenderer;
+import com.ssafy.solvedpick.composition.renderer.CompositeRenderer;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,15 +17,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompositionService {
 
-    private final AvatarRenderer avatarRenderer;
     private final OwnedAvatarRepository ownedAvatarRepository;
     private final OwnedBackgroundRepository ownedBackgroundRepository;
+    private final CompositeRenderer compositeRenderer;
 
     public String generateCompositeImage(Member member) {
         BackgroundType background = getBackgroundType(member);
         List<AvatarType> avatars = getAvatarTypes(member);
-
-        return avatarRenderer.renderAvatars(background, avatars);
+        return compositeRenderer.render(
+                background,
+                avatars,
+                member.getUsername(),
+                1,
+                member.getSolvedCount(),
+                member.getStreak());
     }
 
     private BackgroundType getBackgroundType(Member member) {
@@ -41,7 +44,7 @@ public class CompositionService {
                 .stream()
                 .map(avatar -> {
                     String avatarName = avatar.getAvatar().getName();
-                    log.debug("Avatar Name: " + avatarName);  // 출력
+                    log.debug("Avatar Name: " + avatarName);
 
                     return AvatarType.fromName(avatarName);
                 })
