@@ -13,8 +13,12 @@ public class LetterRenderer {
 
     private final SvgResources svgResources;
 
-    public void renderUsername(StringBuilder content, String username, int startX, int startY) {
-        String[] parts = username.replaceAll("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", " ").split(" ");
+    public void renderTitle(StringBuilder content, String title, int startX, int startY) {
+        if(title == null){
+            return;
+        }
+
+        String[] parts = title.replaceAll("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", " ").split(" ");
         int currentX = startX;
 
         for (String part : parts) {

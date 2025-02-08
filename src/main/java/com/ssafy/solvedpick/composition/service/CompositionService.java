@@ -3,6 +3,8 @@ package com.ssafy.solvedpick.composition.service;
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
 import com.ssafy.solvedpick.composition.renderer.CompositeRenderer;
+import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
+import com.ssafy.solvedpick.memberdisplay.repository.MemberDisplayRepository;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
@@ -20,17 +22,21 @@ public class CompositionService {
     private final OwnedAvatarRepository ownedAvatarRepository;
     private final OwnedBackgroundRepository ownedBackgroundRepository;
     private final CompositeRenderer compositeRenderer;
+    private final MemberDisplayRepository memberDisplayRepository;
 
     public String generateCompositeImage(Member member) {
         BackgroundType background = getBackgroundType(member);
         List<AvatarType> avatars = getAvatarTypes(member);
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+
         return compositeRenderer.render(
                 background,
                 avatars,
-                member.getUsername(),
-                1,
-                member.getSolvedCount(),
-                member.getStreak());
+                memberDisplay.getTitleVisible() ? memberDisplay.getTitle() : null,
+                memberDisplay.getMemberClassVisible() ? memberDisplay.getMemberClass() : null,
+                memberDisplay.getSolvedVisible() ? memberDisplay.getSolvedCount() : null,
+                memberDisplay.getStreakVisible() ? memberDisplay.getStreak() : null
+        );
     }
 
     private BackgroundType getBackgroundType(Member member) {
