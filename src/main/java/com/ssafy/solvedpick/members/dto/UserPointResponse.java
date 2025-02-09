@@ -6,11 +6,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInfoResponse {
-
-    private String username;
+public class UserPointResponse {
     private Long point;
-    private String tier;
-    private int solvedCount;
-    private int streak;
 }

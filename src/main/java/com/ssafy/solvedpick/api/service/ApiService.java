@@ -24,20 +24,19 @@ public class ApiService {
         log.debug("Calling API: {}", url);
 
         ResponseEntity<String> rawResponse = restTemplate.getForEntity(url, String.class);
-        log.debug("Raw API Response: {}", rawResponse.getBody());  // 실제 JSON 응답을 확인
+        log.debug("Raw API Response: {}", rawResponse.getBody());
         
         UserInfoApiResponse response = restTemplate.getForObject(url, UserInfoApiResponse.class);
         log.debug("Parsed Response: {}", response);
         return response;
     }
-    
-    
+
     public SolvedProblemsApiResponse getSolvedProblems(String username) {
     	String url = baseUrl + "/user/problem_stats?handle=" + username;
     	log.debug("Calling API: {}", url);
     	
     	ResponseEntity<String> rawResponse = restTemplate.getForEntity(url, String.class);
-        log.debug("Raw API Response: {}", rawResponse.getBody());  // 실제 JSON 응답을 확인
+        log.debug("Raw API Response: {}", rawResponse.getBody());
         
         SolvedProblemsApiResponse response = restTemplate.getForObject(url, SolvedProblemsApiResponse.class);
         log.debug("Parsed Response: {}", response);

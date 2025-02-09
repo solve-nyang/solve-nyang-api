@@ -29,10 +29,10 @@ public class CompositeRenderer {
     private final LetterRenderer letterRenderer;
     private final InfoRenderer infoRenderer;
 
-    public String render(BackgroundType background, List<AvatarType> avatars, String title,  int classNum, int solvedCount, int streakCount) {
+    public String render(BackgroundType background, List<AvatarType> avatars, String title,  Integer classNum, Integer solvedCount, Integer streakCount) {
         StringBuilder content = openFile();
         backgroundRenderer.renderBackground(content, background);
-        letterRenderer.renderUsername(content, title, TITLE_START_X, TITLE_START_Y);
+        letterRenderer.renderTitle(content, title, TITLE_START_X, TITLE_START_Y);
         infoRenderer.renderInfo(content, classNum, solvedCount, streakCount, INFO_END_X, INFO_GAP);
         avatarRenderer.renderAvatars(content, avatars, getSvgDimensions());
         return closeFile(content).toString();
