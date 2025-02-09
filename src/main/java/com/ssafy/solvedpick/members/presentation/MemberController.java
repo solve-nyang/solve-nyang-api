@@ -3,6 +3,7 @@ package com.ssafy.solvedpick.members.presentation;
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.dto.BasicUserInfoResponse;
+import com.ssafy.solvedpick.members.dto.UserProfileResponse;
 import com.ssafy.solvedpick.members.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +23,14 @@ public class MemberController {
     @GetMapping()
     public ResponseEntity<BasicUserInfoResponse> getUserInfo(){
         Member member = authService.getCurrentMember();
-        BasicUserInfoResponse result = memberService.getUserInfo(member);
-        return ResponseEntity.ok(result);
+        BasicUserInfoResponse response = memberService.getUserInfo(member);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileResponse> getUserProfile(){
+        Member member = authService.getCurrentMember();
+        UserProfileResponse response = memberService.getUserProfile(member);
+        return ResponseEntity.ok(response);
     }
 }

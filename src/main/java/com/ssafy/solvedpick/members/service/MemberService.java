@@ -1,7 +1,10 @@
 package com.ssafy.solvedpick.members.service;
 
+import com.ssafy.solvedpick.common.utils.point.Point;
 import com.ssafy.solvedpick.facade.UserFacade;
+import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.members.dto.BasicUserInfoResponse;
+import com.ssafy.solvedpick.members.dto.UserProfileResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.ssafy.solvedpick.members.domain.Member;
@@ -29,6 +32,19 @@ public class MemberService {
     @Transactional
     public void updateUserProcess(Member member) {
         userFacade.syncUserInfo(member);
+    }
+
+    public UserProfileResponse getUserProfile(Member member) {
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+
+        return UserProfileResponse.builder()
+                .username(member.getUsername())
+                .point(member.getPoint())
+                .memberClass(memberDisplay.getMemberClass())
+                .tier(Point.getPointName(memberDisplay.getTier()))
+                .solvedCount(memberDisplay.getSolvedCount())
+                .streak(memberDisplay.getStreak())
+                .build();
     }
 
     public void sellAvatar(Member seller, Long point) {
