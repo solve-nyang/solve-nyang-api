@@ -6,9 +6,11 @@ import com.ssafy.solvedpick.common.utils.point.Point;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.problem.domain.Problem;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -16,6 +18,7 @@ public class ProblemService {
 
     public void updateSolvedProblems(Problem problem, SolvedProblemsApiResponse newProblems) {
         int totalPointDiff = calculateTotalPointDiff(problem, newProblems);
+        log.info("{}: {}", problem.getMember().getUsername(), totalPointDiff);
 
         if (totalPointDiff > 0) {
             Member member = problem.getMember();
