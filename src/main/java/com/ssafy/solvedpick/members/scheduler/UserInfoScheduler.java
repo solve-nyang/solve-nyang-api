@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ public class UserInfoScheduler {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    @Scheduled(cron = "0 0 2 * * *", zone="Asia/Seoul")
+    @Transactional
+    @Scheduled(cron = "0 20 2 * * *", zone="Asia/Seoul")
     public void updateUserInfo() {
         List<Member> members = memberRepository.findAll();
         log.info("scheduled update start, size: {}", members.size());
