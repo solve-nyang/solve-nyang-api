@@ -18,7 +18,7 @@ public class UserInfoScheduler {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    @Scheduled(cron = "0 10 1 * * *", zone="Asia/Seoul")
+    @Scheduled(cron = "0 30 1 * * *", zone="Asia/Seoul")
     public void updateUserInfo() {
         log.info("scheduled update start");
         List<Member> members = memberRepository.findAll();
