@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Slf4j
@@ -17,7 +18,7 @@ public class UserInfoScheduler {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    @Scheduled(cron = "0 15 0 * * *")
+    @Scheduled(cron = "0 10 1 * * *", zone="Asia/Seoul")
     public void updateUserInfo() {
         log.info("scheduled update start");
         List<Member> members = memberRepository.findAll();
