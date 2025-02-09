@@ -17,14 +17,18 @@ public class UserInfoScheduler {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 15 0 * * *")
     public void updateUserInfo() {
+        log.info("scheduled update start");
         List<Member> members = memberRepository.findAll();
-
-        log.debug("updateUser Start(List size) : {}", members.size());
         for (Member member : members) {
-            memberService.updateUserProcess(member);
+            try {
+                memberService.updateUserProcess(member);
+            } catch (Exception e) {
+                log.info("stopped at {}", member.getId());
+            }
         }
-        log.debug("updateUser End(List size) : {}", members.size());
+
+        log.info("updateUser End(List size)");
     }
 }
