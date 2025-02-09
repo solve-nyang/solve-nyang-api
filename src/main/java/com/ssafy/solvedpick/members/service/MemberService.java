@@ -3,7 +3,8 @@ package com.ssafy.solvedpick.members.service;
 import com.ssafy.solvedpick.common.utils.point.Point;
 import com.ssafy.solvedpick.facade.UserFacade;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
-import com.ssafy.solvedpick.members.dto.BasicUserInfoResponse;
+import com.ssafy.solvedpick.members.dto.BasicUsernameResponse;
+import com.ssafy.solvedpick.members.dto.UserPointResponse;
 import com.ssafy.solvedpick.members.dto.UserProfileResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,10 @@ public class MemberService {
 
     private final UserFacade userFacade;
 
-    public BasicUserInfoResponse getUserInfo(Member member) {
+    public BasicUsernameResponse getUsername(Member member) {
 
-        return BasicUserInfoResponse.builder()
+        return BasicUsernameResponse.builder()
                 .username(member.getUsername())
-                .point(member.getPoint())
                 .build();
     }
 
@@ -44,6 +44,12 @@ public class MemberService {
                 .tier(Point.getPointName(memberDisplay.getTier()))
                 .solvedCount(memberDisplay.getSolvedCount())
                 .streak(memberDisplay.getStreak())
+                .build();
+    }
+
+    public UserPointResponse getUserPoint(Member member){
+        return UserPointResponse.builder()
+                .point(member.getPoint())
                 .build();
     }
 

@@ -2,7 +2,8 @@ package com.ssafy.solvedpick.members.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.members.domain.Member;
-import com.ssafy.solvedpick.members.dto.BasicUserInfoResponse;
+import com.ssafy.solvedpick.members.dto.BasicUsernameResponse;
+import com.ssafy.solvedpick.members.dto.UserPointResponse;
 import com.ssafy.solvedpick.members.dto.UserProfileResponse;
 import com.ssafy.solvedpick.members.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,9 @@ public class MemberController {
     private final AuthService authService;
 
     @GetMapping()
-    public ResponseEntity<BasicUserInfoResponse> getUserInfo(){
+    public ResponseEntity<BasicUsernameResponse> getUsername(){
         Member member = authService.getCurrentMember();
-        BasicUserInfoResponse response = memberService.getUserInfo(member);
+        BasicUsernameResponse response = memberService.getUsername(member);
         return ResponseEntity.ok(response);
     }
 
@@ -31,6 +32,13 @@ public class MemberController {
     public ResponseEntity<UserProfileResponse> getUserProfile(){
         Member member = authService.getCurrentMember();
         UserProfileResponse response = memberService.getUserProfile(member);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/point")
+    public ResponseEntity<UserPointResponse> getUserPoint(){
+        Member member = authService.getCurrentMember();
+        UserPointResponse response = memberService.getUserPoint(member);
         return ResponseEntity.ok(response);
     }
 }
