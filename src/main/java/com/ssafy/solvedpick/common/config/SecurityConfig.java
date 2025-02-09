@@ -51,9 +51,13 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(handler -> handler
                         .authenticationEntryPoint((request, response, e) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        })
+                        .accessDeniedHandler((request, response, e) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                         })
                     )
+
                 .formLogin(login -> login.disable())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
