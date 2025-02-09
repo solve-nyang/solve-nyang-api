@@ -18,7 +18,6 @@ public class ProblemService {
 
     public void updateSolvedProblems(Problem problem, SolvedProblemsApiResponse newProblems) {
         int totalPointDiff = calculateTotalPointDiff(problem, newProblems);
-        log.info("{}: {}", problem.getMember().getUsername(), totalPointDiff);
 
         if (totalPointDiff > 0) {
             Member member = problem.getMember();
@@ -74,7 +73,8 @@ public class ProblemService {
 
         if (currentCount != newSolvedCount) {
             problem.updateProblemCount(level, newSolvedCount);
-            return (newSolvedCount - currentCount) * Point.getPointFromLevel(level);
+            int point = (newSolvedCount - currentCount) * Point.getPointFromLevel(level);
+            return Math.max(point, 0);
         }
 
         return 0;
