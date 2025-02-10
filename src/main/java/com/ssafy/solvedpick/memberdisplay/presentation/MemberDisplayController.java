@@ -32,7 +32,7 @@ public class MemberDisplayController {
         Member member = authService.getCurrentMember();
         memberDisplayService.setDisplayTitle(member, displayTitleRequest);
         compositionService.invalidateImageCache(member.getUsername());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/tier")
