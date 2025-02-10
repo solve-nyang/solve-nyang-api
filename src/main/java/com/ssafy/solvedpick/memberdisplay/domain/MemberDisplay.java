@@ -43,7 +43,7 @@ public class MemberDisplay {
     private Integer solvedCount;
 
     @Builder.Default
-    private Boolean solvedVisible = false;
+    private Boolean solvedCountVisible = false;
 
     @Column(columnDefinition = "Integer unsigned")
     private Integer streak;

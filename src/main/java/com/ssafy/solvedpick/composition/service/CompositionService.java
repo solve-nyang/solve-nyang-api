@@ -51,7 +51,7 @@ public class CompositionService {
                 avatars,
                 memberDisplay.getTitleVisible() ? memberDisplay.getTitle() : null,
                 memberDisplay.getMemberClassVisible() ? memberDisplay.getMemberClass() : null,
-                memberDisplay.getSolvedVisible() ? memberDisplay.getSolvedCount() : null,
+                memberDisplay.getSolvedCountVisible() ? memberDisplay.getSolvedCount() : null,
                 memberDisplay.getStreakVisible() ? memberDisplay.getStreak() : null
         );
     }
