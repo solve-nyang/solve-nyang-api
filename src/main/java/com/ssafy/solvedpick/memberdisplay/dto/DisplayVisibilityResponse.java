@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class DisplayVisibilityResponse {
+    private String title;
     private Boolean titleVisible;
     private Boolean tierVisible;
     private Boolean memberClassVisible;

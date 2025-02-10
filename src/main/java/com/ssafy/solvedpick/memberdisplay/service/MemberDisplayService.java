@@ -27,6 +27,7 @@ public class MemberDisplayService {
         MemberDisplay memberDisplay = member.getMemberDisplay();
 
         return DisplayVisibilityResponse.builder()
+                .title(memberDisplay.getTitle()!=null ? memberDisplay.getTitle() : member.getUsername())
                 .memberClassVisible(memberDisplay.getMemberClassVisible())
                 .tierVisible(memberDisplay.getTierVisible())
                 .titleVisible(memberDisplay.getTitleVisible())
