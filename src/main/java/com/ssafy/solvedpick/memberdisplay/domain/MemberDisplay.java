@@ -43,7 +43,7 @@ public class MemberDisplay {
     private Integer solvedCount;
 
     @Builder.Default
-    private Boolean solvedVisible = false;
+    private Boolean solvedCountVisible = false;
 
     @Column(columnDefinition = "Integer unsigned")
     private Integer streak;
@@ -76,5 +76,29 @@ public class MemberDisplay {
         this.memberClass = userData.getMemberClass();
         this.solvedCount = userData.getSolvedCount();
         this.streak = userData.getMaxStreak();
+    }
+
+    public void toggleTierVisibility() {
+        this.tierVisible = !this.tierVisible;
+    }
+
+    public void toggleClassVisibility() {
+        this.memberClassVisible = !this.memberClassVisible;
+    }
+
+    public void toggleSolvedCountVisibility() {
+        this.solvedCountVisible = !this.solvedCountVisible;
+    }
+
+    public void toggleStreakVisibility() {
+        this.streakVisible = !this.streakVisible;
+    }
+
+    public void toggleTitleVisibility() {
+        this.titleVisible = !this.titleVisible;
+    }
+
+    public void toggleMemberClassVisibility() {
+        this.memberClassVisible = !this.memberClassVisible;
     }
 }
