@@ -77,4 +77,28 @@ public class MemberDisplay {
         this.solvedCount = userData.getSolvedCount();
         this.streak = userData.getMaxStreak();
     }
+
+    public void toggleTierVisibility() {
+        this.tierVisible = !this.tierVisible;
+    }
+
+    public void toggleClassVisibility() {
+        this.memberClassVisible = !this.memberClassVisible;
+    }
+
+    public void toggleSolvedCountVisibility() {
+        this.solvedCountVisible = !this.solvedCountVisible;
+    }
+
+    public void toggleStreakVisibility() {
+        this.streakVisible = !this.streakVisible;
+    }
+
+    public void toggleTitleVisibility() {
+        this.titleVisible = !this.titleVisible;
+    }
+
+    public void toggleMemberClassVisibility() {
+        this.memberClassVisible = !this.memberClassVisible;
+    }
 }

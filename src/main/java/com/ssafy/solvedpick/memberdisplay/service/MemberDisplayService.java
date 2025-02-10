@@ -6,8 +6,10 @@ import com.ssafy.solvedpick.memberdisplay.dto.DisplayVisibilityResponse;
 import com.ssafy.solvedpick.memberdisplay.repository.MemberDisplayRepository;
 import com.ssafy.solvedpick.members.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +35,45 @@ public class MemberDisplayService {
                 .build();
     }
 
+    @Transactional
+    public void toggleTier(Member member) {
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+        validateMemberDisplay(member, memberDisplay);
+        memberDisplay.toggleTierVisibility();
+    }
 
+    @Transactional
+    public void toggleMemberClass(Member member) {
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+        validateMemberDisplay(member, memberDisplay);
+        memberDisplay.toggleMemberClassVisibility();
+    }
+
+    @Transactional
+    public void toggleTitle(Member member) {
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+        validateMemberDisplay(member, memberDisplay);
+        memberDisplay.toggleTitleVisibility();
+    }
+
+    @Transactional
+    public void toggleSolvedCount(Member member) {
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+        validateMemberDisplay(member, memberDisplay);
+        memberDisplay.toggleSolvedCountVisibility();
+    }
+
+    @Transactional
+    public void toggleStreak(Member member) {
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+        validateMemberDisplay(member, memberDisplay);
+        memberDisplay.toggleStreakVisibility();
+    }
+
+
+    private void validateMemberDisplay(Member member, MemberDisplay memberDisplay) {
+        if (!memberDisplay.getMember().getId().equals(member.getId())) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
+        }
+    }
 }
