@@ -27,7 +27,7 @@ public class MemberDisplayController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/title")
+    @PatchMapping("/user-title")
     public ResponseEntity<?> setDisplayTitle(@RequestBody DisplayTitleRequest displayTitleRequest) {
         Member member = authService.getCurrentMember();
         memberDisplayService.setDisplayTitle(member, displayTitleRequest);
