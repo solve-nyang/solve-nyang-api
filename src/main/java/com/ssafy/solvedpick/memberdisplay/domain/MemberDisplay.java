@@ -78,12 +78,12 @@ public class MemberDisplay {
         this.streak = userData.getMaxStreak();
     }
 
-    public void toggleTierVisibility() {
-        this.tierVisible = !this.tierVisible;
+    public void updateTitle(String title){
+        this.title = title;
     }
 
-    public void toggleClassVisibility() {
-        this.memberClassVisible = !this.memberClassVisible;
+    public void toggleTierVisibility() {
+        this.tierVisible = !this.tierVisible;
     }
 
     public void toggleSolvedCountVisibility() {

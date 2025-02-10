@@ -2,15 +2,13 @@ package com.ssafy.solvedpick.memberdisplay.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.composition.service.CompositionService;
+import com.ssafy.solvedpick.memberdisplay.dto.DisplayTitleRequest;
 import com.ssafy.solvedpick.memberdisplay.dto.DisplayVisibilityResponse;
 import com.ssafy.solvedpick.memberdisplay.service.MemberDisplayService;
 import com.ssafy.solvedpick.members.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -27,6 +25,13 @@ public class MemberDisplayController {
         Member member = authService.getCurrentMember();
         DisplayVisibilityResponse response = memberDisplayService.getDisplaySetting(member);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/title")
+    public ResponseEntity<?> setDisplayTitle(@RequestBody DisplayTitleRequest displayTitleRequest) {
+        Member member = authService.getCurrentMember();
+        memberDisplayService.setDisplayTitle(member, displayTitleRequest);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/tier")

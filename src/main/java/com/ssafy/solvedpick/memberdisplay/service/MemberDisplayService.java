@@ -2,6 +2,7 @@ package com.ssafy.solvedpick.memberdisplay.service;
 
 import com.ssafy.solvedpick.api.dto.UserData;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
+import com.ssafy.solvedpick.memberdisplay.dto.DisplayTitleRequest;
 import com.ssafy.solvedpick.memberdisplay.dto.DisplayVisibilityResponse;
 import com.ssafy.solvedpick.memberdisplay.repository.MemberDisplayRepository;
 import com.ssafy.solvedpick.members.domain.Member;
@@ -37,44 +38,52 @@ public class MemberDisplayService {
     }
 
     @Transactional
+    public void setDisplayTitle(Member member,DisplayTitleRequest displayTitleRequest) {
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+        String title = displayTitleRequest.getTitle();
+        validateTitle(title);
+        memberDisplay.updateTitle(title);
+    }
+
+    private void validateTitle(String title) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "제목은 필수 입력값입니다.");
+        }
+        if (title.length() > 20) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "제목은 20자를 초과할 수 없습니다.");
+        }
+        if (!title.matches("^[a-zA-Z0-9]+$")) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "제목은 영문자와 숫자만 사용 가능합니다.");
+        }
+    }
+
+    @Transactional
     public void toggleTier(Member member) {
         MemberDisplay memberDisplay = member.getMemberDisplay();
-        validateMemberDisplay(member, memberDisplay);
         memberDisplay.toggleTierVisibility();
     }
 
     @Transactional
     public void toggleMemberClass(Member member) {
         MemberDisplay memberDisplay = member.getMemberDisplay();
-        validateMemberDisplay(member, memberDisplay);
         memberDisplay.toggleMemberClassVisibility();
     }
 
     @Transactional
     public void toggleTitle(Member member) {
         MemberDisplay memberDisplay = member.getMemberDisplay();
-        validateMemberDisplay(member, memberDisplay);
         memberDisplay.toggleTitleVisibility();
     }
 
     @Transactional
     public void toggleSolvedCount(Member member) {
         MemberDisplay memberDisplay = member.getMemberDisplay();
-        validateMemberDisplay(member, memberDisplay);
         memberDisplay.toggleSolvedCountVisibility();
     }
 
     @Transactional
     public void toggleStreak(Member member) {
         MemberDisplay memberDisplay = member.getMemberDisplay();
-        validateMemberDisplay(member, memberDisplay);
         memberDisplay.toggleStreakVisibility();
-    }
-
-
-    private void validateMemberDisplay(Member member, MemberDisplay memberDisplay) {
-        if (!memberDisplay.getMember().getId().equals(member.getId())) {
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
-        }
     }
 }
