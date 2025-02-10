@@ -27,6 +27,8 @@ public class Image {
     @Column(name = "stored_filename")
     private String storedFilename;
 
+    private Boolean visible;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
