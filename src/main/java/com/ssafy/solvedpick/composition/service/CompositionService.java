@@ -46,10 +46,14 @@ public class CompositionService {
         List<AvatarType> avatars = getAvatarTypes(member);
         MemberDisplay memberDisplay = member.getMemberDisplay();
 
+        String titleToDisplay = memberDisplay.getTitleVisible()
+                ? (memberDisplay.getTitle() != null ? memberDisplay.getTitle() : member.getUsername())
+                : null;
+
         return compositeRenderer.render(
                 background,
                 avatars,
-                memberDisplay.getTitleVisible() ? memberDisplay.getTitle() : null,
+                titleToDisplay,
                 memberDisplay.getMemberClassVisible() ? memberDisplay.getMemberClass() : null,
                 memberDisplay.getSolvedCountVisible() ? memberDisplay.getSolvedCount() : null,
                 memberDisplay.getStreakVisible() ? memberDisplay.getStreak() : null
