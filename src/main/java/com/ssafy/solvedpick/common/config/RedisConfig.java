@@ -13,15 +13,15 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
     @Value("${REDIS.HOST}")
-    private String REDIS_HOST;
-    @Value("{REDIS.PORT}")
-    private Integer REDIS_PORT;
+    private String redisHost;
+    @Value("${REDIS.PORT}")
+    private Integer redisPort;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
-        config.setHostName(REDIS_HOST);
-        config.setPort(REDIS_PORT);
+        config.setHostName(redisHost);
+        config.setPort(redisPort);
         return new LettuceConnectionFactory(config);
     }
 
