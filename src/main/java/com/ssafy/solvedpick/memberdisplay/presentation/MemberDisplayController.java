@@ -31,6 +31,7 @@ public class MemberDisplayController {
     public ResponseEntity<?> setDisplayTitle(@RequestBody DisplayTitleRequest displayTitleRequest) {
         Member member = authService.getCurrentMember();
         memberDisplayService.setDisplayTitle(member, displayTitleRequest);
+        compositionService.invalidateImageCache(member.getUsername());
         return ResponseEntity.ok().build();
     }
 
