@@ -1,6 +1,5 @@
 package com.ssafy.solvedpick.attendance.domain;
 
-import com.ssafy.solvedpick.members.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class AttendanceRecord {
     private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Integer userId; 
+    private Long userId; 
 
     @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
@@ -33,12 +32,12 @@ public class AttendanceRecord {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public AttendanceRecord(Integer userId) {
+    public AttendanceRecord(Long userId) {
         this.userId = userId;
         this.attendanceDate = LocalDate.now();
     }
 
-    public static AttendanceRecord create(Integer userId) {
+    public static AttendanceRecord create(Long userId) {
         return new AttendanceRecord(userId);
     }
 } 
