@@ -12,7 +12,7 @@ public class AttendanceController {
 
     private final AttendanceService attendanceService;
 
-    @PostMapping("/check")
+    @PostMapping("/reward")
     public ResponseEntity<Void> checkAttendance() {
         attendanceService.checkAttendance(); 
         return ResponseEntity.ok().build(); 
