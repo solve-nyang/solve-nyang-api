@@ -24,7 +24,7 @@ public class AttendanceRecord {
     private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Integer userId;  // JWT에서 받은 id만 저장
+    private Integer userId; 
 
     @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
@@ -33,12 +33,12 @@ public class AttendanceRecord {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public AttendanceRecord(Member member) {
-        this.member = member;
+    public AttendanceRecord(Integer userId) {
+        this.userId = userId;
         this.attendanceDate = LocalDate.now();
     }
 
-    public static AttendanceRecord create(Member member) {
-        return new AttendanceRecord(member);
+    public static AttendanceRecord create(Integer userId) {
+        return new AttendanceRecord(userId);
     }
 } 
