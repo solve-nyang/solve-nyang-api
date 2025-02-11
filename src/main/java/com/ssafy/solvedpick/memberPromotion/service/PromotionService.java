@@ -15,14 +15,12 @@ public class PromotionService {
     private final PromotionRepository promotionRepository;
 
     @Transactional(readOnly = true)
-    public int getMemberCoin(Member member) {
-        Promotion promotion = promotionRepository.findByMember(member)
+    public Promotion getPromotionByMember(Member member) {
+        return promotionRepository.findByMember(member)
                 .orElseGet(() -> save(member));
-
-        return promotion.getCoin();
     }
 
-    public Promotion save(Member member) {
+    private Promotion save(Member member) {
         Promotion promotion = Promotion.builder()
                 .member(member)
                 .build();
