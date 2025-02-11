@@ -70,4 +70,8 @@ public class AvatarService {
                 .orElseThrow(()-> new IllegalStateException("해당 등급의 통계 정보를 찾을 수 없습니다"));
 
     }
+
+    public Avatar findByName(String name) {
+        return avatarRepository.findByName(name);
+    }
 }
