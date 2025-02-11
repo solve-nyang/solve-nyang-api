@@ -29,13 +29,14 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserDataDTO userDataDTO) {
-    	boolean verified = authService.verifyUser(userDataDTO);
+        authService.isValidPassword(userDataDTO.getPassword());
         if(memberRepository.existsByUsername(userDataDTO.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMessageDTO.builder()
-                    .message("이미 가입된 회원입니다.")
-                    .build());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMessageDTO.builder()
+                .message("이미 가입된 회원입니다.")
+                .build());
         }
-
+        boolean verified = authService.verifyUser(userDataDTO);
+                
     	if (verified) {
     		authService.create(userDataDTO);
     		return ResponseEntity.ok()
@@ -45,7 +46,7 @@ public class AuthController {
     	}
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ResponseMessageDTO.builder()
-                        .message("solved.ac 인증을 확인하세요")
+                        .message("solved.ac에 암호화 키를 잘 저장하였는지 확인하세요.")
                         .build());
     }
     
@@ -89,11 +90,12 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.builder()
-                        .message("Invalid user"));
+                        .message("존재하지 않는 유저입니다."));
     }
     
     @PostMapping("/password/change")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        authService.isValidPassword(changePasswordDTO.getNewPassword());
         authService.changePassword(changePasswordDTO);
 
         return ResponseEntity.ok()
@@ -104,6 +106,7 @@ public class AuthController {
 
     @PostMapping("password/find")
     public ResponseEntity<?> findPassword(@RequestBody UserDataDTO userDataDTO) {
+        authService.isValidPassword(userDataDTO.getPassword());
         authService.findPassword(userDataDTO);
 
         return ResponseEntity.ok()
