@@ -19,7 +19,8 @@ public enum BackgroundType {
     SNOW1("Snow1", 5000),
     SNOW2("Snow2", 5000),
     WINDOW1("Window1", 2000),
-    WINDOW2("Window2", 5000);
+    WINDOW2("Window2", 5000),
+    HEART("Heart", 2000);
 
     private final String name;
     private final int price;
@@ -35,6 +36,7 @@ public enum BackgroundType {
             case SNOW2 -> svgResources.getSnow2();
             case WINDOW1 -> svgResources.getWindow1();
             case WINDOW2 -> svgResources.getWindow2();
+            case HEART -> svgResources.getHeart();
         };
     }
 

@@ -14,6 +14,9 @@ public enum AvatarType {
     NEW_YEAR_LUCK_CAT("NewYearLuckCat"),
     IDEA_CAT("IdeaCat"),
     MVP_CAT("MVPCat"),
+    CUPID_CAT("CupidCat"),
+    CHOCO_FONDUE_CAT("ChocoFondueCat"),
+    LIKE_CAT("LikeCat"),
 
     CODING_CAT("CodingCat"),
     YARN_BALL_CAT("YarnBallCat"),
@@ -56,6 +59,13 @@ public enum AvatarType {
     CSS_CAT("CSSCat"),
     JS_CAT("JSCat"),
     HTML_CAT("HTMLCat"),
+    REACT_CAT("ReactCat"),
+    NODE_CAT("NodeCat"),
+    DJANGO_CAT("DjangoCat"),
+    KOTLIN_CAT("KotlinCat"),
+    SWIFT_CAT("SwiftCat"),
+    VUE_CAT("VueCat"),
+    RUST_CAT("RustCat"),
 
     PUMPKIN("Pumpkin"),
     NERO("Nero"),
@@ -118,6 +128,9 @@ public enum AvatarType {
             case NEW_YEAR_LUCK_CAT -> svgResources.getNewYearLuckCat();
             case IDEA_CAT -> svgResources.getIdeaCat();
             case MVP_CAT -> svgResources.getMvpCat();
+            case CUPID_CAT -> svgResources.getCupidCat();
+            case CHOCO_FONDUE_CAT -> svgResources.getChocoFondueCat();
+            case LIKE_CAT -> svgResources.getLikeCat();
 
             case CODING_CAT -> svgResources.getCodingCat();
             case YARN_BALL_CAT -> svgResources.getYarnBallCat();
@@ -160,6 +173,13 @@ public enum AvatarType {
             case CSS_CAT -> svgResources.getCssCat();
             case JS_CAT -> svgResources.getJsCat();
             case HTML_CAT -> svgResources.getHtmlCat();
+            case REACT_CAT -> svgResources.getReactCat();
+            case NODE_CAT -> svgResources.getNodeCat();
+            case DJANGO_CAT -> svgResources.getDjangoCat();
+            case KOTLIN_CAT -> svgResources.getKotlinCat();
+            case SWIFT_CAT -> svgResources.getSwiftCat();
+            case VUE_CAT -> svgResources.getVueCat();
+            case RUST_CAT -> svgResources.getRustCat();
 
             case PUMPKIN -> svgResources.getPumpkin();
             case NERO -> svgResources.getNero();
