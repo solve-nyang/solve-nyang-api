@@ -101,7 +101,7 @@ public class ImageService {
 
     @Transactional
     public void voteImage(Member member, Long imageId) {
-        String key = generateVoteKey(member);  // imageId 제거
+        String key = generateVoteKey(member);
         Duration expirationTime = IS_TEST_MODE ?
                 getTestExpirationTime() :
                 getTimeUntilMidnight();

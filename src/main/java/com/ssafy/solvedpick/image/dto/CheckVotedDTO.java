@@ -9,5 +9,5 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CheckVotedDTO {
-    Boolean voted;
+    private Boolean voted;
 }
