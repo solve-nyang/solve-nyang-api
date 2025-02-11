@@ -27,7 +27,9 @@ public class Image {
     @Column(name = "stored_filename")
     private String storedFilename;
 
-    private Boolean visible;
+    @Builder.Default
+    @Column(name = "visible")
+    private Boolean visible=false;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)

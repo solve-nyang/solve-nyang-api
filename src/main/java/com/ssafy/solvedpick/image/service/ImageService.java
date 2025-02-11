@@ -53,6 +53,7 @@ public class ImageService {
                     .member(member)
                     .originalFilename(imageSaveRequest.getOriginalFilename())
                     .storedFilename(imageSaveRequest.getStoredFilename())
+                    .visible(false)
                     .build();
 
             imageRepository.save(image);
