@@ -16,6 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +31,6 @@ public class ImageService {
     private final RedisTemplate<String, String> redisTemplate;
 
     private static final String VOTE_KEY_PREFIX = "vote:";
-    private static final LocalDateTime CONTEST_END_DATE = LocalDateTime.of(2025, 2, 22, 0, 0, 0);
 
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
             "image/png",
@@ -99,18 +99,24 @@ public class ImageService {
 
     @Transactional
     public void voteImage(Member member, Long imageId) {
-        String key = VOTE_KEY_PREFIX + member.getId() + ":" + imageId;
-        Duration timeUntilEnd = Duration.between(LocalDateTime.now(), CONTEST_END_DATE);
+        LocalDateTime now = LocalDateTime.now();
+        String today = now.format(DateTimeFormatter.ISO_DATE);
+        String key = VOTE_KEY_PREFIX + member.getId() + ":" + imageId + ":" + today;
 
-        if(timeUntilEnd.isNegative()){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "투표가 마감되었습니다.");
-        }
+        LocalDateTime tomorrow = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        Duration timeUntilMidnight = Duration.between(now, tomorrow);
 
-        Boolean isFirstVote = redisTemplate.opsForValue()
-                .setIfAbsent(key, "voted", timeUntilEnd.toSeconds(), TimeUnit.SECONDS);
+        LocalDateTime testExpirationTime = now.plusMinutes(5);
+        Duration testTimeUntilExpiration = Duration.between(now, testExpirationTime);
 
-        if (Boolean.FALSE.equals(isFirstVote)) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "이미 투표한 이미지입니다.");
+        Boolean testIsFirstVoteToday = redisTemplate.opsForValue()
+                .setIfAbsent(key, "voted", testTimeUntilExpiration.toSeconds(), TimeUnit.SECONDS);
+
+        Boolean isFirstVoteToday = redisTemplate.opsForValue()
+                .setIfAbsent(key, "voted", timeUntilMidnight.toSeconds(), TimeUnit.SECONDS);
+
+        if (Boolean.FALSE.equals(testIsFirstVoteToday)) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "오늘은 더 이상 투표할 수 없습니다.");
         }
 
         Image image = imageRepository.findById(imageId)
