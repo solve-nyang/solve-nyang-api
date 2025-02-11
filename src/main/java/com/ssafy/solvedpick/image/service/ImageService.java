@@ -29,6 +29,8 @@ public class ImageService {
     private final S3Service s3Service;
     private final ImageRepository imageRepository;
     private final RedisTemplate<String, String> redisTemplate;
+    private static final boolean IS_TEST_MODE = true;
+    private static final int TEST_EXPIRATION_MINUTES = 5;
 
     private static final String VOTE_KEY_PREFIX = "vote:";
 
@@ -99,23 +101,15 @@ public class ImageService {
 
     @Transactional
     public void voteImage(Member member, Long imageId) {
-        LocalDateTime now = LocalDateTime.now();
-        String today = now.format(DateTimeFormatter.ISO_DATE);
-        String key = VOTE_KEY_PREFIX + member.getId() + ":" + imageId + ":" + today;
+        String key = generateVoteKey(member);  // imageId 제거
+        Duration expirationTime = IS_TEST_MODE ?
+                getTestExpirationTime() :
+                getTimeUntilMidnight();
 
-        LocalDateTime tomorrow = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        Duration timeUntilMidnight = Duration.between(now, tomorrow);
+        Boolean isFirstVote = redisTemplate.opsForValue()
+                .setIfAbsent(key, "voted", expirationTime.toSeconds(), TimeUnit.SECONDS);
 
-        LocalDateTime testExpirationTime = now.plusMinutes(5);
-        Duration testTimeUntilExpiration = Duration.between(now, testExpirationTime);
-
-        Boolean testIsFirstVoteToday = redisTemplate.opsForValue()
-                .setIfAbsent(key, "voted", testTimeUntilExpiration.toSeconds(), TimeUnit.SECONDS);
-
-        Boolean isFirstVoteToday = redisTemplate.opsForValue()
-                .setIfAbsent(key, "voted", timeUntilMidnight.toSeconds(), TimeUnit.SECONDS);
-
-        if (Boolean.FALSE.equals(testIsFirstVoteToday)) {
+        if (Boolean.FALSE.equals(isFirstVote)) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "오늘은 더 이상 투표할 수 없습니다.");
         }
 
@@ -125,6 +119,11 @@ public class ImageService {
                         "해당 이미지가 존재하지 않습니다."
                 ));
         image.updateVoteCount();
+    }
+
+    private Duration getTestExpirationTime() {
+        LocalDateTime now = LocalDateTime.now();
+        return Duration.between(now, now.plusMinutes(TEST_EXPIRATION_MINUTES));
     }
 
     public ImageCountResponse getVoteCount() {
@@ -139,5 +138,26 @@ public class ImageService {
         return ImageCountResponse.builder()
                 .voteCounts(voteCounts)
                 .build();
+    }
+
+    public CheckVotedDTO getCheckVoted(Member member) {
+        String key = generateVoteKey(member);
+        Boolean hasVoted = redisTemplate.hasKey(key);
+
+        return CheckVotedDTO.builder()
+                .voted(hasVoted)
+                .build();
+    }
+
+    private String generateVoteKey(Member member) {
+        LocalDateTime now = LocalDateTime.now();
+        String today = now.format(DateTimeFormatter.ISO_DATE);
+        return VOTE_KEY_PREFIX + member.getId() + ":" + today;
+    }
+
+    private Duration getTimeUntilMidnight() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tomorrow = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return Duration.between(now, tomorrow);
     }
 }
