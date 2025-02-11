@@ -1,12 +1,9 @@
 package com.ssafy.solvedpick.image.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
-import com.ssafy.solvedpick.image.dto.ContestImageResponse;
-import com.ssafy.solvedpick.image.dto.ImageCountResponse;
-import com.ssafy.solvedpick.image.dto.ImageSaveRequest;
+import com.ssafy.solvedpick.image.dto.*;
 import com.ssafy.solvedpick.image.service.ImageService;
 import com.ssafy.solvedpick.members.domain.Member;
-import com.ssafy.solvedpick.image.dto.PresignedUrlResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +54,13 @@ public class ImageController {
     public ResponseEntity<ImageCountResponse> getVoteCount() {
         ImageCountResponse votes = imageService.getVoteCount();
         return ResponseEntity.ok(votes);
+    }
+
+    @GetMapping("/voted")
+    public ResponseEntity<CheckVotedDTO> checkVoted() {
+        Member member =  authService.getCurrentMember();
+        CheckVotedDTO response = imageService.getCheckVoted(member);
+        return ResponseEntity.ok(response);
     }
 
 }
