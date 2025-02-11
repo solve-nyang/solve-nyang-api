@@ -1,9 +1,7 @@
 package com.ssafy.solvedpick.image.service;
 
 import com.ssafy.solvedpick.image.domain.Image;
-import com.ssafy.solvedpick.image.dto.ContestImageDTO;
-import com.ssafy.solvedpick.image.dto.ContestImageResponse;
-import com.ssafy.solvedpick.image.dto.ImageSaveRequest;
+import com.ssafy.solvedpick.image.dto.*;
 import com.ssafy.solvedpick.image.repository.ImageRepository;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.image.dto.PresignedUrlResponse;
@@ -11,13 +9,17 @@ import com.ssafy.solvedpick.s3.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -25,6 +27,10 @@ import java.util.Set;
 public class ImageService {
     private final S3Service s3Service;
     private final ImageRepository imageRepository;
+    private final RedisTemplate<String, String> redisTemplate;
+
+    private static final String VOTE_KEY_PREFIX = "vote:";
+    private static final LocalDateTime CONTEST_END_DATE = LocalDateTime.of(2025, 2, 22, 0, 0, 0);
 
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
             "image/png",
@@ -88,6 +94,44 @@ public class ImageService {
 
         return ContestImageResponse.builder()
                 .images(images)
+                .build();
+    }
+
+    @Transactional
+    public void voteImage(Member member, Long imageId) {
+        String key = VOTE_KEY_PREFIX + member.getId() + ":" + imageId;
+        Duration timeUntilEnd = Duration.between(LocalDateTime.now(), CONTEST_END_DATE);
+
+        if(timeUntilEnd.isNegative()){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "투표가 마감되었습니다.");
+        }
+
+        Boolean isFirstVote = redisTemplate.opsForValue()
+                .setIfAbsent(key, "voted", timeUntilEnd.toSeconds(), TimeUnit.SECONDS);
+
+        if (Boolean.FALSE.equals(isFirstVote)) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "이미 투표한 이미지입니다.");
+        }
+
+        Image image = imageRepository.findById(imageId)
+                .orElseThrow(() -> new HttpClientErrorException(
+                        HttpStatus.NOT_FOUND,
+                        "해당 이미지가 존재하지 않습니다."
+                ));
+        image.updateVoteCount();
+    }
+
+    public ImageCountResponse getVoteCount() {
+        List<ImageCountDTO> voteCounts = imageRepository.findImageByVisibleTrue()
+                .stream()
+                .map(image -> ImageCountDTO.builder()
+                        .imageId(image.getId())
+                        .count(image.getVoteCount())
+                        .build())
+                .toList();
+
+        return ImageCountResponse.builder()
+                .voteCounts(voteCounts)
                 .build();
     }
 }
