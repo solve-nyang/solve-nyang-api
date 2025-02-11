@@ -1,6 +1,8 @@
 package com.ssafy.solvedpick.image.service;
 
 import com.ssafy.solvedpick.image.domain.Image;
+import com.ssafy.solvedpick.image.dto.ContestImageDTO;
+import com.ssafy.solvedpick.image.dto.ContestImageResponse;
 import com.ssafy.solvedpick.image.dto.ImageSaveRequest;
 import com.ssafy.solvedpick.image.repository.ImageRepository;
 import com.ssafy.solvedpick.members.domain.Member;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -63,5 +66,25 @@ public class ImageService {
                     "이미지 정보 저장에 실패했습니다."
             );
         }
+    }
+
+    public ContestImageResponse findContestImages() {
+        List<ContestImageDTO> images = imageRepository.findImageByVisibleTrue()
+                .stream()
+                .map(image -> {
+                    String uuid = image.getStoredFilename().split(image.getOriginalFilename())[0];
+                    String fileKey = "contest/"+ uuid + image.getOriginalFilename();
+
+                    return ContestImageDTO.builder()
+                            .imageId(image.getId())
+                            .presignedUrl(s3Service.generatePresignedUrlForDownload(fileKey))
+                            .memberId(image.getMember().getId())
+                            .username(image.getMember().getUsername())
+                            .build();
+                }).toList();
+
+        return ContestImageResponse.builder()
+                .images(images)
+                .build();
     }
 }

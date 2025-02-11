@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.image.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.image.dto.ContestImageResponse;
 import com.ssafy.solvedpick.image.dto.ImageSaveRequest;
 import com.ssafy.solvedpick.image.service.ImageService;
 import com.ssafy.solvedpick.members.domain.Member;
@@ -36,5 +37,11 @@ public class ImageController {
 
         imageService.saveImage(imageSaveRequest, member);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/contest")
+    public ResponseEntity<ContestImageResponse> getContestImages() {
+        ContestImageResponse images = imageService.findContestImages();
+        return ResponseEntity.ok(images);
     }
 }
