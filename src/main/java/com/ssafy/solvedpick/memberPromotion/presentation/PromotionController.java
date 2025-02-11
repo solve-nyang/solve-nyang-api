@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.memberPromotion.presentation;
 
 import com.ssafy.solvedpick.memberPromotion.dto.CoinResponseDTO;
+import com.ssafy.solvedpick.memberPromotion.dto.PromotionDrawResponseDTO;
 import com.ssafy.solvedpick.memberPromotion.facade.PromotionFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,8 @@ public class PromotionController {
 
     @PostMapping("/draw")
     public ResponseEntity<?> drawPromotionAvatar() {
+        PromotionDrawResponseDTO result = promotionFacade.drawPromotionAvatar();
 
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(result);
     }
 }
