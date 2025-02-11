@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -73,8 +74,9 @@ public class ImageService {
         List<ContestImageDTO> images = imageRepository.findImageByVisibleTrue()
                 .stream()
                 .map(image -> {
-                    String uuid = image.getStoredFilename().split(image.getOriginalFilename())[0];
-                    String fileKey = "contest/"+ uuid + image.getOriginalFilename();
+                    String[] parts = image.getStoredFilename().split("-", 6);
+                    String uuid = String.join("-", Arrays.copyOfRange(parts, 0, 5));
+                    String fileKey = "contest/"+ uuid + "-" + image.getOriginalFilename();
 
                     return ContestImageDTO.builder()
                             .imageId(image.getId())
