@@ -41,8 +41,9 @@ public class OwnedAvatarController {
 
     @PatchMapping("/avatar/reset")
     public ResponseEntity<?> setAllVisibilityFalse() {
+        Member member = authService.getCurrentMember();
         ownedAvatarService.setAllVisibilityFalse();
-
+        compositionService.invalidateImageCache(member.getUsername());
         return ResponseEntity.noContent().build();
     }
 
