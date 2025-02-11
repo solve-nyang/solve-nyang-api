@@ -2,6 +2,7 @@ package com.ssafy.solvedpick.image.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
 import com.ssafy.solvedpick.image.dto.ContestImageResponse;
+import com.ssafy.solvedpick.image.dto.ImageCountResponse;
 import com.ssafy.solvedpick.image.dto.ImageSaveRequest;
 import com.ssafy.solvedpick.image.service.ImageService;
 import com.ssafy.solvedpick.members.domain.Member;
@@ -44,4 +45,18 @@ public class ImageController {
         ContestImageResponse images = imageService.findContestImages();
         return ResponseEntity.ok(images);
     }
+
+    @PatchMapping("/vote/{imageId}")
+    public ResponseEntity<?> voteImage(@PathVariable Long imageId) {
+        Member member =  authService.getCurrentMember();
+        imageService.voteImage(member, imageId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/votes")
+    public ResponseEntity<ImageCountResponse> getVoteCount() {
+        ImageCountResponse votes = imageService.getVoteCount();
+        return ResponseEntity.ok(votes);
+    }
+
 }
