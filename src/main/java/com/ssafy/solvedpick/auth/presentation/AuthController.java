@@ -40,7 +40,7 @@ public class AuthController {
     	}
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ResponseMessageDTO.builder()
-                        .message("solved.ac 인증을 확인하세요")
+                        .message("solved.ac에 암호화 키를 잘 저장하였는지 확인하세요.")
                         .build());
     }
     
@@ -67,7 +67,7 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.builder()
-                        .message("Invalid user"));
+                        .message("존재하지 않는 유저입니다."));
     }
     
     @PostMapping("/password/change")

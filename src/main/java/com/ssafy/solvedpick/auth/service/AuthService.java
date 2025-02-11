@@ -54,10 +54,10 @@ public class AuthService {
 
     public TokenResponse signIn(UserDataDTO userDataDTO) {
         Member member = memberRepository.findByUsername(userDataDTO.getUsername())
-                .orElseThrow(() -> new UserInfoErrorException("Login Error"));
+                .orElseThrow(() -> new UserInfoErrorException("아이디가 잘못되었습니다. 다시 확인해주세요."));
 
         if (!passwordEncoder.matches(userDataDTO.getPassword(), member.getPassword())) {
-            throw new UserInfoErrorException("Login Error");
+            throw new UserInfoErrorException("비밀번호가 잘못되었습니다. 다시 확인해주세요.");
         }
 
         String accessToken = jwtUtil.generateAccessToken(userDataDTO.getUsername());
@@ -151,7 +151,7 @@ public class AuthService {
             return false;
         } catch (Exception e) {
             log.error("{}", e.getMessage());
-            throw new RuntimeException("Failed to verify user");
+            return false;
         }
     }
 
@@ -170,7 +170,7 @@ public class AuthService {
         String newPassword = changePasswordDTO.getNewPassword();
 
         if (!passwordEncoder.matches(currentPassword, member.getPassword())) {
-            throw new InvalidPasswordException("Incorrect current password");
+            throw new InvalidPasswordException("현재 비밀번호가 잘못되었습니다.");
         }
 
         String encodedNewPassword = passwordEncoder.encode(newPassword);
@@ -180,13 +180,13 @@ public class AuthService {
     @Transactional
     public void findPassword(UserDataDTO userDataDTO) {
         Member member = memberRepository.findByUsername(userDataDTO.getUsername())
-            .orElseThrow(() -> new UserInfoErrorException("Member not found"));
+            .orElseThrow(() -> new UserInfoErrorException("존재하지 않는 유저입니다."));
         boolean verified = verifyUser(userDataDTO);
         if (verified) {
             String newPassword = passwordEncoder.encode(userDataDTO.getPassword());
             member.updatePassword(newPassword);
         } else {
-            throw new VerificationNotFoundException("solved.ac 인증을 확인하세요");
+            throw new VerificationNotFoundException("solved.ac에 암호화 키를 잘 저장하였는지 확인하세요.");
         }
     }
     
