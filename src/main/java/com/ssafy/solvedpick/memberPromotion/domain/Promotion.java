@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.memberPromotion.domain;
 
+import com.ssafy.solvedpick.memberPromotion.exception.InsufficientCoinException;
 import com.ssafy.solvedpick.members.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,4 +32,12 @@ public class Promotion {
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    public void useCoin() {
+        if (this.coin == 0) {
+            throw new InsufficientCoinException("초콜릿 코인이 부족합니다.");
+        }
+
+        this.coin--;
+    }
 }
