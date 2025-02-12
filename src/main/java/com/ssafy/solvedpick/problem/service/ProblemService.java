@@ -2,7 +2,7 @@ package com.ssafy.solvedpick.problem.service;
 
 import com.ssafy.solvedpick.api.dto.ProblemData;
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
-import com.ssafy.solvedpick.common.utils.point.Point;
+import com.ssafy.solvedpick.common.utils.point.Tier;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.problem.domain.Problem;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +69,7 @@ public class ProblemService {
 
         if (currentCount != newSolvedCount) {
             problem.updateProblemCount(level, newSolvedCount);
-            return (newSolvedCount - currentCount) * Point.getPointFromLevel(level);
+            return (newSolvedCount - currentCount) * Tier.getPointFromLevel(level);
         }
 
         return 0;
