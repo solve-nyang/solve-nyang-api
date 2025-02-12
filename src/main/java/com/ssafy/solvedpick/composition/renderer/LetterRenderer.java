@@ -45,7 +45,7 @@ public class LetterRenderer {
             LetterType type = LetterType.fromName(c);
             content.append(String.format("<g transform=\"translate(%d, %d) scale(1)\">",
                     startX + totalGap, startY + type.getHgap()));
-            content.append(isText ? svgResources.getLetters().get(c) : svgResources.getNumbers().get(c));
+            content.append(type.getSvgContent(svgResources));
             content.append("</g>");
             totalGap += type.getGap();
         }

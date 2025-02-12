@@ -38,4 +38,10 @@ public enum LetterType {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid LetterType: " + name));
     }
 
+    public String getSvgContent(SvgResources svgResources) {
+        if(Character.isDigit(name)) {
+            return svgResources.getNumbers().get(name);
+        }
+        return svgResources.getLetters().get(name);
+    }
 }
