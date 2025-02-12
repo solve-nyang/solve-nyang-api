@@ -3,6 +3,7 @@ package com.ssafy.solvedpick.common.error.handler;
 import com.ssafy.solvedpick.common.error.exception.jwt.JwtExpiredException;
 import com.ssafy.solvedpick.common.error.exception.jwt.JwtInvalidException;
 
+import com.ssafy.solvedpick.memberPromotion.exception.InsufficientCoinException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,11 +33,12 @@ public class GlobalExceptionHandler {
     }
     
     @ExceptionHandler({
-        UserInfoErrorException.class,
-        VerificationNotFoundException.class,
-        ApiResponseException.class,
-        InvalidPasswordException.class,
-        AttendanceException.class
+            UserInfoErrorException.class,
+            VerificationNotFoundException.class,
+            ApiResponseException.class,
+            InvalidPasswordException.class,
+            InsufficientCoinException.class,
+            AttendanceException.class
     })
     public ResponseEntity<ErrorResponse> handleBadRequestExceptions(RuntimeException ex) {
         
@@ -66,7 +68,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(e.getStatusCode())
                 .body(ErrorResponse.builder()
-                        .message(e.getMessage())
+                        .message(e.getStatusText())
                         .build());
     }
 }

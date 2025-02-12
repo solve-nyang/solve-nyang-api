@@ -5,6 +5,7 @@ import com.ssafy.solvedpick.members.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
@@ -42,7 +43,7 @@ public class MemberDisplay {
     private Integer solvedCount;
 
     @Builder.Default
-    private Boolean solvedVisible = false;
+    private Boolean solvedCountVisible = false;
 
     @Column(columnDefinition = "Integer unsigned")
     private Integer streak;
@@ -59,6 +60,11 @@ public class MemberDisplay {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Builder.Default
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
     public static MemberDisplay initMemberDisplay(Member member) {
         return MemberDisplay.builder()
                 .member(member)
@@ -70,5 +76,29 @@ public class MemberDisplay {
         this.memberClass = userData.getMemberClass();
         this.solvedCount = userData.getSolvedCount();
         this.streak = userData.getMaxStreak();
+    }
+
+    public void updateTitle(String title){
+        this.title = title;
+    }
+
+    public void toggleTierVisibility() {
+        this.tierVisible = !this.tierVisible;
+    }
+
+    public void toggleSolvedCountVisibility() {
+        this.solvedCountVisible = !this.solvedCountVisible;
+    }
+
+    public void toggleStreakVisibility() {
+        this.streakVisible = !this.streakVisible;
+    }
+
+    public void toggleTitleVisibility() {
+        this.titleVisible = !this.titleVisible;
+    }
+
+    public void toggleMemberClassVisibility() {
+        this.memberClassVisible = !this.memberClassVisible;
     }
 }

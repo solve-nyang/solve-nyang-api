@@ -12,6 +12,7 @@ spring:
       - api.properties
       - jwt.properties
       - s3.properties
+      - redis.properties
 
   datasource:
     url: ${DB.URL}
@@ -38,6 +39,18 @@ spring:
         bucket: ${S3.BUCKET}
       stack:
         auto: false
+  data:
+    redis:
+      host: ${REDIS.HOST}
+      port: ${REDIS.PORT}
+      timeout: ${REDIS.TIMEOUT}
+      lettuce:
+        pool:
+          max-active: ${REDIS.MAX_ACTIVE}
+          max-idle: ${REDIS.MAX_IDLE}
+          min-idle: ${REDIS.MIN_IDLE}
+          max-wait: ${REDIS.MAX_WAIT}
+        shutdown-timeout: ${REDIS.SHUTDOWN_TIMEOUT}
 
 logging:
   level:

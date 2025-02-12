@@ -152,6 +152,6 @@ public class AuctionFacade {
 
         memberService.sellAvatar(seller, auction.getPrice());
         memberService.buyAvatar(buyer, auction.getPrice());
-        ownedAvatarService.buyAvatar(buyer, auction.getOwnedAvatar().getAvatar());
+        ownedAvatarService.saveAvatar(buyer, auction.getOwnedAvatar().getAvatar());
     }
 }

@@ -1,6 +1,8 @@
 package com.ssafy.solvedpick.ownedavatar.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.composition.service.CompositionService;
+import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.dto.*;
 import com.ssafy.solvedpick.ownedavatar.service.OwnedAvatarService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ public class OwnedAvatarController {
 
     private final OwnedAvatarService ownedAvatarService;
     private final AuthService authService;
+    private final CompositionService compositionService;
 
     @GetMapping("/avatar")
     public ResponseEntity<?> getMemberAvatar() {
@@ -30,15 +33,17 @@ public class OwnedAvatarController {
 
     @PatchMapping("/avatar/{ownedAvatarId}")
     public ResponseEntity<?> updateAvatarVisibility(@PathVariable Long ownedAvatarId) {
+        Member member = authService.getCurrentMember();
         ownedAvatarService.updateAvatarVisibility(ownedAvatarId);
-
+        compositionService.invalidateImageCache(member.getUsername());
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/avatar/reset")
     public ResponseEntity<?> setAllVisibilityFalse() {
+        Member member = authService.getCurrentMember();
         ownedAvatarService.setAllVisibilityFalse();
-
+        compositionService.invalidateImageCache(member.getUsername());
         return ResponseEntity.noContent().build();
     }
 
@@ -47,6 +52,14 @@ public class OwnedAvatarController {
         ExtensionAvatarResponseDTO result = ownedAvatarService.getExtensionAvatars(username);
 
         return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/extension/reset")
+    public ResponseEntity<?> resetExtension() {
+        Member member = authService.getCurrentMember();
+        ownedAvatarService.resetExtensionVisibility(member);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/extension/{ownedAvatarId}")

@@ -4,6 +4,7 @@ import com.ssafy.solvedpick.avatars.domain.Avatar;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -38,4 +39,12 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
     Boolean existsByMemberAndAvatar(Member member, Avatar avatar);
 
     Optional<OwnedAvatar> findByIdAndMemberAndSoldFalse(Long id, Member member);
+
+    @Query("UPDATE OwnedAvatar o " +
+            "SET o.visibleExtension = false " +
+            "WHERE o.member.id = :memberId " +
+            "AND o.visibleExtension = true " +
+            "AND o.sold = false")
+    @Modifying(clearAutomatically = true)
+    void setVisibleExtensionFalse(@Param("memberId")Long memberId);
 }
