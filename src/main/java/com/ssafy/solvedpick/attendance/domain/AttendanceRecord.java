@@ -31,10 +31,6 @@ public class AttendanceRecord {
     @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
 
-    @CreatedDate
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
     private AttendanceRecord(Member member) {
         this.member = member;
         this.attendanceDate = LocalDate.now();

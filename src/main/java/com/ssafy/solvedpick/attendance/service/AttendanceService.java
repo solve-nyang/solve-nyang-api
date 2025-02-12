@@ -31,21 +31,20 @@ public class AttendanceService {
         Member member = authService.getCurrentMember();
         MemberDisplay display = member.getMemberDisplay();
         int previousSolvedCount = display.getSolvedCount();
-        
-      
-        userFacade.syncUserInfo(member);
-        
-        
-        if (display.getSolvedCount() <= previousSolvedCount) {
-            throw new AttendanceException(AttendanceErrorCode.NO_NEW_SOLVED_PROBLEM);
-        }
-
         LocalDate today = LocalDate.now();
         
       
         if (attendanceRepository.existsByMemberAndAttendanceDateBetween(
                 member, today, today)) {
             throw new AttendanceException(AttendanceErrorCode.ALREADY_ATTENDED);
+        }
+        
+       
+        int currentSolvedCount = userFacade.getCurrentSolvedCount(member.getUsername());
+        
+        // 새로운 문제를 풀었는지 확인
+        if (currentSolvedCount <= previousSolvedCount) {
+            throw new AttendanceException(AttendanceErrorCode.NO_NEW_SOLVED_PROBLEM);
         }
 
        
