@@ -1,6 +1,5 @@
 package com.ssafy.solvedpick.common.error.handler;
 
-import com.ssafy.solvedpick.common.error.exception.UserInfoErrorException;
 import com.ssafy.solvedpick.common.error.exception.jwt.JwtExpiredException;
 import com.ssafy.solvedpick.common.error.exception.jwt.JwtInvalidException;
 
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ssafy.solvedpick.common.error.exception.*;
+import com.ssafy.solvedpick.common.error.exception.attendance.AttendanceException;
 import com.ssafy.solvedpick.common.error.dto.ErrorResponse;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -38,6 +38,7 @@ public class GlobalExceptionHandler {
             ApiResponseException.class,
             InvalidPasswordException.class,
             InsufficientCoinException.class,
+            AttendanceException.class
     })
     public ResponseEntity<ErrorResponse> handleBadRequestExceptions(RuntimeException ex) {
         
