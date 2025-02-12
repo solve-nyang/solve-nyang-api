@@ -17,4 +17,11 @@ public class AttendanceController {
         attendanceService.checkAttendance(); 
         return ResponseEntity.ok().build(); 
     }
+
+    @GetMapping("/weekly-status")
+    public ResponseEntity<?> weeklyAttendance() {
+        String message = attendanceService.countWeeklyAttendance();
+        return ResponseEntity.ok()
+                .body(message);
+    }
 }

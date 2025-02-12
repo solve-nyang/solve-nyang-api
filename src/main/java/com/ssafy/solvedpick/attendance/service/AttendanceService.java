@@ -32,7 +32,6 @@ public class AttendanceService {
         MemberDisplay display = member.getMemberDisplay();
         int previousSolvedCount = display.getSolvedCount();
         
-      
         userFacade.syncUserInfo(member);
         
         
@@ -43,7 +42,7 @@ public class AttendanceService {
         LocalDate today = LocalDate.now();
         
       
-        if (attendanceRepository.existsByUserIdAndAttendanceDateBetween(
+        if (attendanceRepository.existsByMemberAndAttendanceDateBetween(
                 member, today, today)) {
             throw new AttendanceException(AttendanceErrorCode.ALREADY_ATTENDED);
         }
@@ -61,14 +60,69 @@ public class AttendanceService {
     }
 
 
+    public String countWeeklyAttendance() {
+        Member member = authService.getCurrentMember();
+        
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate twoWeeksAgo = today.minusDays(14);
+        
+        List<LocalDate> twoWeeksAttendance =  attendanceRepository.findContinuousAttendanceDates(member, twoWeeksAgo, yesterday);
+        int continuousDays = checkContinuousAttendance(twoWeeksAttendance) % STREAK_DAYS;
+        
+        if (attendanceRepository.existsByMemberAndAttendanceDateEquals(member, today)) {
+            continuousDays += 1;
+            if (continuousDays >= 5) {
+                return "고지가 눈앞입니다! 내일도 꼭 문제를 풀어봐요!";
+            } else if (continuousDays >= 3) {
+                return "오늘도 하루 추가! 잘하셨어요!";
+            } else if (continuousDays == 2) {
+                return "연속 출석을 달성했습니다!";
+            }
+            return "연속 출석을 달성해봅시다!";
+        }
+        
+        if (continuousDays >= 4) {
+            return "당신은 성실왕! 기다리고있었어요!";
+        } else if (continuousDays >= 2) {
+            return "잘하고있어요! 오늘도 문제를 풀어봅시다!";
+        } else if (continuousDays == 1) {
+            return "연속 출석을 달성해봅시다!";
+        }
+        return "문제를 풀어주세요!";
+    }
+    
+
     private boolean checkStreak(Member member) {
         LocalDate today = LocalDate.now();
         LocalDate weekAgo = today.minusDays(STREAK_DAYS - 1);
         
         List<AttendanceRecord> records = attendanceRepository
-                .findByUserIdAndAttendanceDateBetweenOrderByAttendanceDateDesc(
+                .findByMemberAndAttendanceDateBetweenOrderByAttendanceDateDesc(
                         member, weekAgo, today);
 
         return records.size() == STREAK_DAYS;
+    }
+
+    private int checkContinuousAttendance(List<LocalDate> dates) {
+        if (dates.isEmpty()) return 0;
+        
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        
+        if (!dates.get(0).equals(yesterday)) return 0;
+        
+        int continuousDays = 1;
+        LocalDate previousDate = yesterday;
+        
+        for (int i = 1; i < dates.size(); i++) {
+            if (previousDate.minusDays(1).equals(dates.get(i))) {
+                continuousDays++;
+                previousDate = dates.get(i);
+            } else {
+                break;
+            }
+        }
+        
+        return continuousDays;
     }
 } 
