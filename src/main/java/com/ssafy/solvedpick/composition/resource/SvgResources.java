@@ -140,6 +140,39 @@ public class SvgResources {
     private final String crouchedCat;
     private final String flippedCat;
 
+    private final String master;
+    private final String ruby1;
+    private final String ruby2;
+    private final String ruby3;
+    private final String ruby4;
+    private final String ruby5;
+    private final String diamond1;
+    private final String diamond2;
+    private final String diamond3;
+    private final String diamond4;
+    private final String diamond5;
+    private final String platinum1;
+    private final String platinum2;
+    private final String platinum3;
+    private final String platinum4;
+    private final String platinum5;
+    private final String gold1;
+    private final String gold2;
+    private final String gold3;
+    private final String gold4;
+    private final String gold5;
+    private final String silver1;
+    private final String silver2;
+    private final String silver3;
+    private final String silver4;
+    private final String silver5;
+    private final String bronze1;
+    private final String bronze2;
+    private final String bronze3;
+    private final String bronze4;
+    private final String bronze5;
+    private final String unrated;
+
     public SvgResources(ResourceLoader resourceLoader) throws IOException {
         log.debug("Initializing SVG resources");
         this.letters = new HashMap<>();
@@ -275,6 +308,39 @@ public class SvgResources {
         this.groomingCat = loadSvg(resourceLoader, "static/avatars/GroomingCat.svg");
         this.crouchedCat = loadSvg(resourceLoader, "static/avatars/CrouchedCat.svg");
         this.flippedCat = loadSvg(resourceLoader, "static/avatars/FlippedCat.svg");
+
+        this.master = loadSvg(resourceLoader, "static/tiers/Master.svg");
+        this.ruby1 = loadSvg(resourceLoader, "static/tiers/Ruby1.svg");
+        this.ruby2 = loadSvg(resourceLoader, "static/tiers/Ruby2.svg");
+        this.ruby3 = loadSvg(resourceLoader, "static/tiers/Ruby3.svg");
+        this.ruby4 = loadSvg(resourceLoader, "static/tiers/Ruby4.svg");
+        this.ruby5 = loadSvg(resourceLoader, "static/tiers/Ruby5.svg");
+        this.diamond1 = loadSvg(resourceLoader, "static/tiers/Diamond1.svg");
+        this.diamond2 = loadSvg(resourceLoader, "static/tiers/Diamond2.svg");
+        this.diamond3 = loadSvg(resourceLoader, "static/tiers/Diamond3.svg");
+        this.diamond4 = loadSvg(resourceLoader, "static/tiers/Diamond4.svg");
+        this.diamond5 = loadSvg(resourceLoader, "static/tiers/Diamond5.svg");
+        this.platinum1 = loadSvg(resourceLoader, "static/tiers/Platinum1.svg");
+        this.platinum2 = loadSvg(resourceLoader, "static/tiers/Platinum2.svg");
+        this.platinum3 = loadSvg(resourceLoader, "static/tiers/Platinum3.svg");
+        this.platinum4 = loadSvg(resourceLoader, "static/tiers/Platinum4.svg");
+        this.platinum5 = loadSvg(resourceLoader, "static/tiers/Platinum5.svg");
+        this.gold1 = loadSvg(resourceLoader, "static/tiers/Gold1.svg");
+        this.gold2 = loadSvg(resourceLoader, "static/tiers/Gold2.svg");
+        this.gold3 = loadSvg(resourceLoader, "static/tiers/Gold3.svg");
+        this.gold4 = loadSvg(resourceLoader, "static/tiers/Gold4.svg");
+        this.gold5 = loadSvg(resourceLoader, "static/tiers/Gold5.svg");
+        this.silver1 = loadSvg(resourceLoader, "static/tiers/Silver1.svg");
+        this.silver2 = loadSvg(resourceLoader, "static/tiers/Silver2.svg");
+        this.silver3 = loadSvg(resourceLoader, "static/tiers/Silver3.svg");
+        this.silver4 = loadSvg(resourceLoader, "static/tiers/Silver4.svg");
+        this.silver5 = loadSvg(resourceLoader, "static/tiers/Silver5.svg");
+        this.bronze1 = loadSvg(resourceLoader, "static/tiers/Bronze1.svg");
+        this.bronze2 = loadSvg(resourceLoader, "static/tiers/Bronze2.svg");
+        this.bronze3 = loadSvg(resourceLoader, "static/tiers/Bronze3.svg");
+        this.bronze4 = loadSvg(resourceLoader, "static/tiers/Bronze4.svg");
+        this.bronze5 = loadSvg(resourceLoader, "static/tiers/Bronze5.svg");
+        this.unrated = loadSvg(resourceLoader, "static/tiers/Unrated.svg");
 
         log.debug("Svg resources initialized successfully");
     }
