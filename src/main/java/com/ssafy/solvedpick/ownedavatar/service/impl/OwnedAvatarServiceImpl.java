@@ -149,7 +149,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
 
     @Override
     public void resetExtensionVisibility(Member member) {
-        ownedAvatarRepository.updateVisibleExtensionFalseByMemberAndVisibleExtensionTrueAndSoldFalse(member);
+        ownedAvatarRepository.setVisibleExtensionFalse(member.getId());
     }
 
     @Override
