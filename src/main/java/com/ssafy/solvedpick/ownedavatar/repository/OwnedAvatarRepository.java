@@ -40,6 +40,11 @@ public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> 
 
     Optional<OwnedAvatar> findByIdAndMemberAndSoldFalse(Long id, Member member);
 
+    @Query("UPDATE OwnedAvatar o " +
+            "SET o.visibleExtension = false " +
+            "WHERE o.member.id = :memberId " +
+            "AND o.visibleExtension = true " +
+            "AND o.sold = false")
     @Modifying(clearAutomatically = true)
-    int updateVisibleExtensionFalseByMemberAndVisibleExtensionTrueAndSoldFalse(Member member);
+    void setVisibleExtensionFalse(@Param("memberId")Long memberId);
 }
