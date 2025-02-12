@@ -22,7 +22,7 @@ public class AttendanceRecord {
     @Column(columnDefinition = "Integer unsigned")
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, columnDefinition = "Integer unsigned")
     private Long userId; 
 
     @Column(name = "attendance_date", nullable = false)
