@@ -28,4 +28,6 @@ public interface OwnedAvatarService {
     void cancelSold(OwnedAvatar ownedAvatar);
 
     void saveAvatar(Member member, Avatar avatar);
+
+    void resetExtensionVisibility(Member member);
 }
