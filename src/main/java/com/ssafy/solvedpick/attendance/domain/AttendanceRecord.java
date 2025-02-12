@@ -20,7 +20,6 @@ public class AttendanceRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "Integer unsigned")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,16 +35,16 @@ public class AttendanceRecord {
     @Column(name = "continious_attendance", columnDefinition = "INT DEFAULT 1")
     private int continiousAttendance;
 
-    private AttendanceRecord(Member member) {
+    private AttendanceRecord(Member member, int continiousAttendance) {
         this.member = member;
         this.attendanceMonth = YearMonth.from(LocalDate.now()).toString();
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
         this.attendanceDays =  0 | (1 << zeroBasedDay);
-        this.continiousAttendance = 1;
+        this.continiousAttendance = continiousAttendance;
     }
 
-    public static AttendanceRecord create(Member member) {
-        return new AttendanceRecord(member);
+    public static AttendanceRecord create(Member member, int continiousAttendance) {
+        return new AttendanceRecord(member, continiousAttendance);
     }
 
     public void updateAttendance (int updatedAttendance) {

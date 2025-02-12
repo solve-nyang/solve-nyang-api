@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final AuthService authService;
     private final UserFacade userFacade;
-
+    
     public void checkAttendance() {
         Member member = authService.getCurrentMember();
         MemberDisplay display = member.getMemberDisplay();
@@ -52,12 +53,40 @@ public class AttendanceService {
         if (currentSolvedCount <= previousSolvedCount) {
             throw new AttendanceException("새로 해결한 문제가 없습니다.");
         }
-
-        if (!attendanceRepository.existsByMemberAndMonth(member, yearMonth)){
-            AttendanceRecord record = AttendanceRecord.create(member);
-            attendanceRepository.save(record);
-            return;
+        
+        if (!attendanceRepository.existsByMemberAndMonth(member, yearMonth)) {
+            if (zeroBasedDay != 0) {
+                AttendanceRecord record = AttendanceRecord.create(member, 1);
+                attendanceRepository.save(record);
+                return;
+            } else {
+                String lastMonth = YearMonth.from(LocalDate.now().minusMonths(1)).toString();
+                AttendanceRecord lastMonthRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, lastMonth)
+                        .orElse(null);
+                        
+                int continiousAttendance = 1;
+                if (lastMonthRecord != null && lastMonthRecord.getContiniousAttendance() != 0) {
+                    YearMonth lastYearMonth = YearMonth.from(LocalDate.now().minusMonths(1));
+                    int lastDayOfMonth = lastYearMonth.lengthOfMonth() - 1;
+                    int lastAttendanceDays = lastMonthRecord.getAttendanceDays();
+                    int lastContinious = lastMonthRecord.getContiniousAttendance();
+                    
+                    for (int i = 0; i < lastContinious && lastDayOfMonth >= 0; i++) {
+                        if ((lastAttendanceDays & (1 << lastDayOfMonth)) != 0) {
+                            continiousAttendance++;
+                            lastDayOfMonth--;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                
+                AttendanceRecord newRecord = AttendanceRecord.create(member, continiousAttendance);
+                attendanceRepository.save(newRecord);
+                return;
+            }
         }
+
         AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth)
                 .orElseThrow(() -> new AttendanceException("이번 달에 출석하지 않았습니다."));
         boolean hasStreak = checkStreak(attendanceRecord);
@@ -134,7 +163,6 @@ public class AttendanceService {
     }
 
 
-    @Transactional
     private void updateAttendance(AttendanceRecord attendanceRecord) {
         int attendanceDays = attendanceRecord.getAttendanceDays();
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
