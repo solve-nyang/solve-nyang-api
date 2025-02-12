@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.ssafy.solvedpick.members.domain.Member;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -22,8 +24,9 @@ public class AttendanceRecord {
     @Column(columnDefinition = "Integer unsigned")
     private Long id;
 
-    @Column(name = "user_id", nullable = false, columnDefinition = "Integer unsigned")
-    private Long userId; 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "INT UNSIGNED")
+    private Member member;
 
     @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
@@ -32,12 +35,12 @@ public class AttendanceRecord {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public AttendanceRecord(Long userId) {
-        this.userId = userId;
+    private AttendanceRecord(Member member) {
+        this.member = member;
         this.attendanceDate = LocalDate.now();
     }
 
-    public static AttendanceRecord create(Long userId) {
-        return new AttendanceRecord(userId);
+    public static AttendanceRecord create(Member member) {
+        return new AttendanceRecord(member);
     }
-} 
+}

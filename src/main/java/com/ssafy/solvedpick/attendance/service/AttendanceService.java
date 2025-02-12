@@ -44,16 +44,16 @@ public class AttendanceService {
         
       
         if (attendanceRepository.existsByUserIdAndAttendanceDateBetween(
-                member.getId(), today, today)) {
+                member, today, today)) {
             throw new AttendanceException(AttendanceErrorCode.ALREADY_ATTENDED);
         }
 
        
-        AttendanceRecord record = AttendanceRecord.create(member.getId());
+        AttendanceRecord record = AttendanceRecord.create(member);
         attendanceRepository.save(record);
 
        
-        boolean hasStreak = checkStreak(member.getId());
+        boolean hasStreak = checkStreak(member);
         int totalPoint = ATTENDANCE_POINT + (hasStreak ? STREAK_BONUS : 0);
 
     
@@ -61,13 +61,13 @@ public class AttendanceService {
     }
 
 
-    private boolean checkStreak(Long userId) {
+    private boolean checkStreak(Member member) {
         LocalDate today = LocalDate.now();
         LocalDate weekAgo = today.minusDays(STREAK_DAYS - 1);
         
         List<AttendanceRecord> records = attendanceRepository
                 .findByUserIdAndAttendanceDateBetweenOrderByAttendanceDateDesc(
-                        userId, weekAgo, today);
+                        member, weekAgo, today);
 
         return records.size() == STREAK_DAYS;
     }
