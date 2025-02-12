@@ -3,14 +3,17 @@ package com.ssafy.solvedpick.attendance.dto;
 import java.util.List;
 import java.util.Map;
 
-public class HalfYearResponse {
-    private final List<Map> attendance;
+import lombok.Getter;
 
-    private HalfYearResponse(List<Map> attendance) {
+@Getter
+public class HalfYearResponse {
+    private final List<Map<String, String>> attendance;
+
+    private HalfYearResponse(List<Map<String, String>> attendance) {
         this.attendance = attendance;
     }
 
-    public static HalfYearResponse of(List<Map> attendance) {
+    public static HalfYearResponse of(List<Map<String, String>> attendance) {
         return new HalfYearResponse(attendance);
     }
 }

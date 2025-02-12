@@ -3,6 +3,8 @@ package com.ssafy.solvedpick.attendance.repository;
 import com.ssafy.solvedpick.attendance.domain.AttendanceRecord;
 import com.ssafy.solvedpick.members.domain.Member;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +18,7 @@ public interface AttendanceRepository extends JpaRepository<AttendanceRecord, Lo
         WHERE ar.member = :member
         AND ar.attendanceMonth = :yearMonth
     """)
-    Integer findAttendanceDaysByMemberAndMonth(@Param("member") Member member, 
+    Optional<Integer> findAttendanceDaysByMemberAndMonth(@Param("member") Member member, 
                                                 @Param("yearMonth") String yearMonth);
 
     @Query("""
@@ -28,5 +30,5 @@ public interface AttendanceRepository extends JpaRepository<AttendanceRecord, Lo
     boolean existsByMemberAndMonth(@Param("member") Member member,
                                 @Param("yearMonth") String yearMonth);
     
-    AttendanceRecord findByMemberAndAttendanceMonth(Member member, String yearMonth);
+    Optional<AttendanceRecord> findByMemberAndAttendanceMonth(Member member, String yearMonth);
 }

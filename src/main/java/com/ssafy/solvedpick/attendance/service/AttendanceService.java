@@ -4,6 +4,7 @@ import com.ssafy.solvedpick.attendance.domain.AttendanceRecord;
 import com.ssafy.solvedpick.attendance.dto.HalfYearResponse;
 import com.ssafy.solvedpick.attendance.repository.AttendanceRepository;
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
 import com.ssafy.solvedpick.common.error.exception.attendance.AttendanceException;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
@@ -18,6 +19,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +38,8 @@ public class AttendanceService {
         int previousSolvedCount = display.getSolvedCount();
         String yearMonth = YearMonth.from(LocalDate.now()).toString();
         
-        int attendanceDays = attendanceRepository.findAttendanceDaysByMemberAndMonth(member, yearMonth);
+        int attendanceDays = attendanceRepository.findAttendanceDaysByMemberAndMonth(member, yearMonth)
+                .orElse(0);
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
         
         if ((attendanceDays & (1 << zeroBasedDay)) != 0) {
@@ -55,7 +58,8 @@ public class AttendanceService {
             attendanceRepository.save(record);
             return;
         }
-        AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth);
+        AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth)
+                .orElseThrow(() -> new AttendanceException("이번 달에 출석하지 않았습니다."));
         boolean hasStreak = checkStreak(attendanceRecord);
         updateAttendance(attendanceRecord);
 
@@ -69,7 +73,8 @@ public class AttendanceService {
         Member member = authService.getCurrentMember();
         String yearMonth = YearMonth.from(LocalDate.now()).toString();
         
-        AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth);
+        AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth)
+                .orElseThrow(() -> new AttendanceException("이번 달에 출석하지 않았습니다."));
 
         int attendanceDays = attendanceRecord.getAttendanceDays();
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
@@ -98,24 +103,34 @@ public class AttendanceService {
 
 
     public HalfYearResponse getHalfYearAttendance() {
-        Member member = authService.getCurrentMember();
-        LocalDate today = LocalDate.now();
-        
-        List<Map> attendances = new ArrayList<>();
+        try {
+            Member member = authService.getCurrentMember();
+            LocalDate today = LocalDate.now();
+            
+            List<Map<String, String>> attendances = new ArrayList<>();
+    
+            for (int i = 5; i >= 0; i--) {
+                String yearMonth = YearMonth.from(today.minusMonths(i)).toString();
+                Optional<Integer> monthDataOptional = attendanceRepository.findAttendanceDaysByMemberAndMonth(member, yearMonth);
+                if (monthDataOptional.isEmpty()) {
+                    continue;
+                }
+                int currentMonthData = monthDataOptional.get();
 
-        for (int i = 5; i >= 0; i--) {
-            String yearMonth = YearMonth.from(today.minusMonths(i)).toString();
-            int currentMonthData = attendanceRepository.findAttendanceDaysByMemberAndMonth(member, yearMonth);
-            for (int j = 0; j < 31; j++) {
-                if ((currentMonthData & (1 << j)) == 1) {
-                    if (j < 9) {
-                        attendances.add(Map.of("data", yearMonth + "-0" + (j + 1)));
-                    } else attendances.add(Map.of("data", yearMonth + "-" + (j + 1)));
+                for (int j = 0; j < 31; j++) {
+                    if ((currentMonthData & (1 << j)) != 0) {
+                        if (j < 9) {
+                            attendances.add(Map.<String, String>of("data", yearMonth + "-0" + (j + 1)));
+                        } else attendances.add(Map.of("data", yearMonth + "-" + (j + 1)));
+                    }
                 }
             }
+            
+            return HalfYearResponse.of(attendances);
+            
+        } catch (Exception e) {
+            throw new AttendanceException("출석 기록 조회 중 오류가 발생했습니다: " + e.getMessage());
         }
-        
-        return HalfYearResponse.of(attendances);
     }
 
 

@@ -40,7 +40,8 @@ public class AttendanceRecord {
         this.member = member;
         this.attendanceMonth = YearMonth.from(LocalDate.now()).toString();
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
-        this.attendanceDays =  0 & (1 << zeroBasedDay);
+        this.attendanceDays =  0 | (1 << zeroBasedDay);
+        this.continiousAttendance = 1;
     }
 
     public static AttendanceRecord create(Member member) {

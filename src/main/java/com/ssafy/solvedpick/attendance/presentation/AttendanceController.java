@@ -2,6 +2,8 @@ package com.ssafy.solvedpick.attendance.presentation;
 
 import com.ssafy.solvedpick.attendance.dto.HalfYearResponse;
 import com.ssafy.solvedpick.attendance.service.AttendanceService;
+import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +16,21 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
 
     @PostMapping("/reward")
-    public ResponseEntity<Void> checkAttendance() {
+    public ResponseEntity<?> checkAttendance() {
         attendanceService.checkAttendance();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+    	        .body(ResponseMessageDTO.builder()
+                        .message("success")
+                        .build());
     }
 
     @GetMapping("/weekly-status")
     public ResponseEntity<?> weeklyAttendance() {
         String message = attendanceService.countWeeklyAttendance();
         return ResponseEntity.ok()
-                .body(message);
+        .body(ResponseMessageDTO.builder()
+                .message(message)
+                .build());
     }
 
     @GetMapping("/records")
