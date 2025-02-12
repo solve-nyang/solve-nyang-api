@@ -46,15 +46,11 @@ public class CompositionService {
         List<AvatarType> avatars = getAvatarTypes(member);
         MemberDisplay memberDisplay = member.getMemberDisplay();
 
-        String titleToDisplay = memberDisplay.getTitleVisible()
-                ? (memberDisplay.getTitle() != null ? memberDisplay.getTitle() : member.getUsername())
-                : null;
-
         return compositeRenderer.render(
                 background,
                 avatars,
-                titleToDisplay,
-                Tier.getTierfromLevel(memberDisplay.getTier()),
+                getDisplayTitle(memberDisplay, member.getUsername()),
+                memberDisplay.getTierVisible() ? Tier.getTierfromLevel(memberDisplay.getTier()) : null,
                 memberDisplay.getMemberClassVisible() ? memberDisplay.getMemberClass() : null,
                 memberDisplay.getSolvedCountVisible() ? memberDisplay.getSolvedCount() : null,
                 memberDisplay.getStreakVisible() ? memberDisplay.getStreak() : null
@@ -73,6 +69,13 @@ public class CompositionService {
 
     private void cacheImage(String username, String image) {
         redisTemplate.opsForValue().set(username, image, cacheDuration, TimeUnit.SECONDS);
+    }
+
+    private String getDisplayTitle(MemberDisplay memberDisplay, String username) {
+        if(!memberDisplay.getTitleVisible()){
+            return null;
+        }
+        return memberDisplay.getTitle() != null ? memberDisplay.getTitle() : username;
     }
 
     private BackgroundType getBackgroundType(Member member) {
