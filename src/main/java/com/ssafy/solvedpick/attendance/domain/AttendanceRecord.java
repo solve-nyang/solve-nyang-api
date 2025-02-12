@@ -33,16 +33,22 @@ public class AttendanceRecord {
     @Column(name = "attendance_days", columnDefinition = "BIT(32)")
     private int attendanceDays;
 
-    @Column(name = "continious_attendance")
+    @Column(name = "continious_attendance", columnDefinition = "INT DEFAULT 1")
     private int continiousAttendance;
 
     private AttendanceRecord(Member member) {
         this.member = member;
         this.attendanceMonth = YearMonth.from(LocalDate.now()).toString();
-        // attendanceDays 초기값 설정 필요
+        int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
+        this.attendanceDays =  0 & (1 << zeroBasedDay);
     }
 
     public static AttendanceRecord create(Member member) {
         return new AttendanceRecord(member);
+    }
+
+    public void updateAttendance (int updatedAttendance) {
+        this.attendanceDays = updatedAttendance;
+        this.continiousAttendance = (this.continiousAttendance + 1) % 7;
     }
 }

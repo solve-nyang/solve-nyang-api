@@ -47,5 +47,16 @@ public class UserFacade {
         MemberDisplay memberDisplay = member.getMemberDisplay();
         memberDisplayService.updateMemberDisplay(memberDisplay, userData);
     }
+
+    public int getCurrentSolvedCount(String username) {
+        UserInfoApiResponse response = apiService.getUserInfo(username);
+        if (response.getItems() == null || response.getItems().isEmpty()) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        
+        UserData userData = response.getItems().get(0);
+        return userData.getSolvedCount();
+    }
+
 }
 
