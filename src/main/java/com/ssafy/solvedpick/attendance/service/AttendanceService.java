@@ -43,7 +43,7 @@ public class AttendanceService {
         LocalDate today = LocalDate.now();
         
       
-        if (attendanceRepository.existsByUserIdAndAttendanceDateBetween(
+        if (attendanceRepository.existsByMemberAndAttendanceDateBetween(
                 member, today, today)) {
             throw new AttendanceException(AttendanceErrorCode.ALREADY_ATTENDED);
         }
@@ -66,7 +66,7 @@ public class AttendanceService {
         LocalDate weekAgo = today.minusDays(STREAK_DAYS - 1);
         
         List<AttendanceRecord> records = attendanceRepository
-                .findByUserIdAndAttendanceDateBetweenOrderByAttendanceDateDesc(
+                .findByMemberAndAttendanceDateBetweenOrderByAttendanceDateDesc(
                         member, weekAgo, today);
 
         return records.size() == STREAK_DAYS;

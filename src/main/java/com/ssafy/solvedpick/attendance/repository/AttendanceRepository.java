@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public interface AttendanceRepository extends JpaRepository<AttendanceRecord, Long> {
-    boolean existsByUserIdAndAttendanceDateBetween(Member member, LocalDate start, LocalDate end);
+    boolean existsByMemberAndAttendanceDateBetween(Member member, LocalDate start, LocalDate end);
     
-    List<AttendanceRecord> findByUserIdAndAttendanceDateBetweenOrderByAttendanceDateDesc(
+    List<AttendanceRecord> findByMemberAndAttendanceDateBetweenOrderByAttendanceDateDesc(
         Member member, LocalDate start, LocalDate end);
 } 
