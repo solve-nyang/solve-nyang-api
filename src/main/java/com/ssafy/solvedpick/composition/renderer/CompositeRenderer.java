@@ -2,12 +2,15 @@ package com.ssafy.solvedpick.composition.renderer;
 
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
+import com.ssafy.solvedpick.common.utils.point.Tier;
 import com.ssafy.solvedpick.composition.renderer.types.SvgDimensions;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CompositeRenderer {
@@ -18,8 +21,8 @@ public class CompositeRenderer {
     private static final int BASE_AVATAR_SIZE = 100;
     private static final int SCALED_AVATAR_SIZE = (int)(BASE_AVATAR_SIZE * AVATAR_SCALE);
 
-    private static final int TITLE_START_X = 40;
-    private static final int TITLE_START_Y = 30;
+    private static final int TITLE_START_X = 45;
+    private static final int TITLE_START_Y = 20;
     private static final int INFO_END_X = 580;
     private static final int INFO_GAP = 10;
 
@@ -28,13 +31,15 @@ public class CompositeRenderer {
     private final AvatarRenderer avatarRenderer;
     private final LetterRenderer letterRenderer;
     private final InfoRenderer infoRenderer;
+    private final TierRenderer tierRenderer;
 
-    public String render(BackgroundType background, List<AvatarType> avatars, String title,  Integer classNum, Integer solvedCount, Integer streakCount) {
+    public String render(BackgroundType background, List<AvatarType> avatars, String title, Tier tier, Integer classNum, Integer solvedCount, Integer streakCount) {
         StringBuilder content = openFile();
         backgroundRenderer.renderBackground(content, background);
+        avatarRenderer.renderAvatars(content, avatars, getSvgDimensions());
         letterRenderer.renderTitle(content, title, TITLE_START_X, TITLE_START_Y);
         infoRenderer.renderInfo(content, classNum, solvedCount, streakCount, INFO_END_X, INFO_GAP);
-        avatarRenderer.renderAvatars(content, avatars, getSvgDimensions());
+        tierRenderer.renderTier(content, tier);
         return closeFile(content).toString();
     }
 

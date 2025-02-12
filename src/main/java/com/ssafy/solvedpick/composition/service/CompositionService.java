@@ -2,9 +2,9 @@ package com.ssafy.solvedpick.composition.service;
 
 import com.ssafy.solvedpick.common.enums.AvatarType;
 import com.ssafy.solvedpick.common.enums.BackgroundType;
+import com.ssafy.solvedpick.common.utils.point.Tier;
 import com.ssafy.solvedpick.composition.renderer.CompositeRenderer;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
-import com.ssafy.solvedpick.memberdisplay.repository.MemberDisplayRepository;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
@@ -54,6 +54,7 @@ public class CompositionService {
                 background,
                 avatars,
                 titleToDisplay,
+                Tier.getTierfromLevel(memberDisplay.getTier()),
                 memberDisplay.getMemberClassVisible() ? memberDisplay.getMemberClass() : null,
                 memberDisplay.getSolvedCountVisible() ? memberDisplay.getSolvedCount() : null,
                 memberDisplay.getStreakVisible() ? memberDisplay.getStreak() : null
