@@ -148,6 +148,11 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
+    public void resetExtensionVisibility(Member member) {
+        ownedAvatarRepository.setVisibleExtensionFalse(member.getId());
+    }
+
+    @Override
     public AvatarSaleResponseDTO sellAvatars(AvatarSaleRequestDTO request) {
         Member currentMember = authService.getCurrentMember();
         List<Long> idList = request.getSoldAvatars()

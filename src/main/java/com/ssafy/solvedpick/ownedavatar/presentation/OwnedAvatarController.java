@@ -54,6 +54,14 @@ public class OwnedAvatarController {
         return ResponseEntity.ok().body(result);
     }
 
+    @PatchMapping("/extension/reset")
+    public ResponseEntity<?> resetExtension() {
+        Member member = authService.getCurrentMember();
+        ownedAvatarService.resetExtensionVisibility(member);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("/extension/{ownedAvatarId}")
     public ResponseEntity<?> updateAvatarExtensionVisibility(@PathVariable Long ownedAvatarId) {
         ownedAvatarService.updateAvatarExtensionVisibility(ownedAvatarId);
