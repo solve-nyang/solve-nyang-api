@@ -12,20 +12,22 @@ import java.util.Optional;
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_KoreanNameContainingAndCancelledFalse(
-            String keyword, Pageable pageable
+    Page<Auction> findAllByOwnedAvatar_Avatar_KoreanNameContainingAndSoldAndCancelledFalse(
+            String keyword, Boolean sold, Pageable pageable
     );
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByCancelledFalse(Pageable pageable);
+    Page<Auction> findAllBySoldAndCancelledFalse(Boolean sold, Pageable pageable);
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_KoreanNameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
-            String keyword, Integer grade, Pageable pageable
+    Page<Auction> findAllByOwnedAvatar_Avatar_KoreanNameContainingAndSoldAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
+            String keyword, Boolean sold, Integer grade, Pageable pageable
     );
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
-    Page<Auction> findAllByOwnedAvatar_Avatar_GradeAndCancelledFalse(Integer grade, Pageable pageable);
+    Page<Auction> findAllByOwnedAvatar_Avatar_GradeAndSoldAndCancelledFalse(
+            Integer grade, Boolean sold, Pageable pageable
+    );
 
     @EntityGraph(attributePaths = {"ownedAvatar", "ownedAvatar.avatar", "ownedAvatar.member"})
     Optional<Auction> findByIdAndSoldFalseAndCancelledFalse(Long id);

@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.solvedpick.attendance.domain.AttendanceRecord;
 import com.ssafy.solvedpick.image.domain.Image;
+import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.ownedbackgrounds.domain.OwnedBackground;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -28,6 +31,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Slf4j
 @Entity
 @Getter
 @Builder
@@ -41,7 +45,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "Integer unsigned")
     private Long id;
-	
+
     @Column(nullable = false, unique = true, length = 30)
     private String username;
     
@@ -53,18 +57,6 @@ public class Member {
     
     @Builder.Default
     private Long point = 10000L;
-
-    @Builder.Default
-    @Column(columnDefinition = "tinyint")
-    private int tier = 0;
-
-    @Builder.Default
-    @Column(columnDefinition = "Integer unsigned")
-    private int solvedCount = 0;
-
-    @Builder.Default
-    @Column(columnDefinition = "Integer unsigned")
-    private int streak = 0;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -81,16 +73,23 @@ public class Member {
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedBackground> backgrounds = new ArrayList<>();
+    
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AttendanceRecord> attendanceRecords = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
+    @Builder.Default
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private MemberDisplay memberDisplay = null;
+
     public void addPoint(long amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
         }
-
         this.point += amount;
     }
 
@@ -102,13 +101,11 @@ public class Member {
     	this.password = encodedNewPassword;
     }
 
-    public void updateInfo(int tier, int solvedCount, int streak) {
-        this.tier = tier;
-        this.solvedCount = solvedCount;
-        this.streak = streak;
-    }
-
     public void initSolvedProblem(Problem problem) {
         this.solvedProblems = problem;
+    }
+
+    public void initMemberDisplay(MemberDisplay memberDisplay){
+        this.memberDisplay = memberDisplay;
     }
 }

@@ -1,9 +1,11 @@
-package com.ssafy.solvedpick.problem.facade;
+package com.ssafy.solvedpick.facade;
 
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.api.dto.UserData;
 import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
+import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
+import com.ssafy.solvedpick.memberdisplay.service.MemberDisplayService;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.problem.domain.Problem;
 import com.ssafy.solvedpick.problem.service.ProblemService;
@@ -15,20 +17,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProblemFacade {
+public class UserFacade {
     private final ProblemService problemService;
     private final ApiService apiService;
+    private final MemberDisplayService memberDisplayService;
 
     @Transactional
-    public void initializeNewUserProblem(Member member) {
-
+    public void initializeNewUserInfo(Member member) {
         Problem problem = Problem.initSolvedProblems(member);
         member.initSolvedProblem(problem);
-        syncUserProblemInfo(member);
+
+        MemberDisplay memberDisplay = MemberDisplay.initMemberDisplay(member);
+        member.initMemberDisplay(memberDisplay);
+
+        syncUserInfo(member);
     }
 
     @Transactional
-    public void syncUserProblemInfo(Member member) {
+    public void syncUserInfo(Member member) {
 
         UserInfoApiResponse apiResponse = apiService.getUserInfo(member.getUsername());
         UserData userData = apiResponse.getItems().get(0);
@@ -37,7 +43,20 @@ public class ProblemFacade {
         Problem problem = member.getSolvedProblems();
 
         problemService.updateSolvedProblems(problem, newProblems);
-        member.updateInfo(userData.getTier(), userData.getSolvedCount(), userData.getMaxStreak());
+
+        MemberDisplay memberDisplay = member.getMemberDisplay();
+        memberDisplayService.updateMemberDisplay(memberDisplay, userData);
     }
+
+    public int getCurrentSolvedCount(String username) {
+        UserInfoApiResponse response = apiService.getUserInfo(username);
+        if (response.getItems() == null || response.getItems().isEmpty()) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        
+        UserData userData = response.getItems().get(0);
+        return userData.getSolvedCount();
+    }
+
 }
 

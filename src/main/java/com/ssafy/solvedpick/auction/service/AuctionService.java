@@ -3,6 +3,7 @@ package com.ssafy.solvedpick.auction.service;
 import com.ssafy.solvedpick.auction.domain.Auction;
 import com.ssafy.solvedpick.auction.repository.AuctionRepository;
 import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.ownedavatar.domain.OwnedAvatar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,32 +20,30 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
 
     @Transactional(readOnly = true)
-    public Page<Auction> findMerchandiseWithKeyword(String keyword, Pageable pageable) {
-        return auctionRepository.findAllByOwnedAvatar_Avatar_KoreanNameContainingAndCancelledFalse(
-                keyword, pageable
+    public Page<Auction> findMerchandiseWithKeyword(String keyword, Boolean sold, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_Avatar_KoreanNameContainingAndSoldAndCancelledFalse(
+                keyword, sold, pageable
         );
     }
 
     @Transactional(readOnly = true)
-    public Page<Auction> findMerchandise(Pageable pageable) {
-        return auctionRepository.findAllByCancelledFalse(pageable);
+    public Page<Auction> findMerchandise(Boolean sold, Pageable pageable) {
+        return auctionRepository.findAllBySoldAndCancelledFalse(sold, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Auction> findMerchandiseWithKeywordAndGrade(String keyword, int grade, Pageable pageable) {
+    public Page<Auction> findMerchandiseWithKeywordAndGrade(
+            String keyword, Boolean sold, int grade, Pageable pageable
+    ) {
         return auctionRepository
-                .findAllByOwnedAvatar_Avatar_KoreanNameContainingAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
-                        keyword, grade, pageable
+                .findAllByOwnedAvatar_Avatar_KoreanNameContainingAndSoldAndOwnedAvatar_Avatar_GradeAndCancelledFalse(
+                        keyword, sold, grade, pageable
                 );
     }
 
     @Transactional(readOnly = true)
-    public Page<Auction> findMerchandiseWithGrade(int grade, Pageable pageable) {
-        return auctionRepository.findAllByOwnedAvatar_Avatar_GradeAndCancelledFalse(grade, pageable);
-    }
-
-    public void save(Auction auction) {
-        auctionRepository.save(auction);
+    public Page<Auction> findMerchandiseWithGrade(int grade, Boolean sold, Pageable pageable) {
+        return auctionRepository.findAllByOwnedAvatar_Avatar_GradeAndSoldAndCancelledFalse(grade, sold, pageable);
     }
 
     public Auction cancelAuction(Long auctionId, Member member) {
@@ -83,5 +82,14 @@ public class AuctionService {
     @Transactional(readOnly = true)
     public Page<Auction> findMemberHistoryOnStatus(Member member, Pageable pageable) {
         return auctionRepository.findAllByOwnedAvatar_MemberAndSoldFalseAndCancelledFalse(member, pageable);
+    }
+
+    public void createAuction(OwnedAvatar ownedAvatar, Long price) {
+        Auction auction = Auction.builder()
+                .price(price)
+                .ownedAvatar(ownedAvatar)
+                .build();
+
+        auctionRepository.save(auction);
     }
 }

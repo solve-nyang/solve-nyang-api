@@ -80,32 +80,6 @@ public class GachaService {
                 .build();
     }
 
-    @Transactional
-    public boolean getEventAvatar(String avatarName) {
-        Member member = authService.getCurrentMember();
-        Avatar eventAvatar = avatarRepository.findByName(avatarName);
-
-        if (ownedAvatarRepository.existsByMemberAndAvatar(member, eventAvatar)) {
-            return false;
-        }
-
-        OwnedAvatar ownedAvatar = OwnedAvatar.builder()
-                .member(member)
-                .avatar(eventAvatar)
-                .build();
-
-        ownedAvatarRepository.save(ownedAvatar);
-        return true;
-    }
-
-    @Transactional
-    public boolean hasEventAvatar(String avatarName) {
-        Member member = authService.getCurrentMember();
-        Avatar eventAvatar = avatarRepository.findByName(avatarName);
-
-        return ownedAvatarRepository.existsByMemberAndAvatar(member, eventAvatar);
-    }
-
     private Grade selectGradeByRandom() {
         double randomValue = random.nextDouble() * 100;
         double accumulatedProbability = 0.0;

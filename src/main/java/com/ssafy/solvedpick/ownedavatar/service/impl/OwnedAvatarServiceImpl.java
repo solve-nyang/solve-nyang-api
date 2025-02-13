@@ -138,13 +138,18 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
     }
 
     @Override
-    public void buyAvatar(Member buyer, Avatar avatar) {
+    public void saveAvatar(Member member, Avatar avatar) {
         OwnedAvatar ownedAvatar = OwnedAvatar.builder()
-                .member(buyer)
+                .member(member)
                 .avatar(avatar)
                 .build();
 
         ownedAvatarRepository.save(ownedAvatar);
+    }
+
+    @Override
+    public void resetExtensionVisibility(Member member) {
+        ownedAvatarRepository.setVisibleExtensionFalse(member.getId());
     }
 
     @Override

@@ -1,8 +1,5 @@
 package com.ssafy.solvedpick.problem.domain;
 
-import com.ssafy.solvedpick.api.dto.ProblemData;
-import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
-import com.ssafy.solvedpick.common.utils.point.Point;
 import com.ssafy.solvedpick.members.domain.Member;
 
 import jakarta.persistence.Column;

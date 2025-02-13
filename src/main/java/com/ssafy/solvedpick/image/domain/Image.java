@@ -27,6 +27,14 @@ public class Image {
     @Column(name = "stored_filename")
     private String storedFilename;
 
+    @Builder.Default
+    @Column(name = "visible")
+    private Boolean visible=false;
+
+    @Builder.Default
+    @Column(name = "vote_count")
+    private Integer voteCount=0;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -35,5 +43,7 @@ public class Image {
     @JoinColumn(name = "member_id")
     private Member member;
 
-
+    public void updateVoteCount() {
+        this.voteCount++;
+    }
 }

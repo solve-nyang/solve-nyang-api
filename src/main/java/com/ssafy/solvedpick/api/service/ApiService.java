@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,26 +15,31 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class ApiService {
 
-    private static final String USER_QUERY_PATH = "/search/user?query=";
-    private static final String USER_SOLVED_PATH = "/user/problem_stats?handle=";
-
     private final RestTemplate restTemplate;
-
     @Value("${API.BASEURL}")
     private String baseUrl;
 
     public UserInfoApiResponse getUserInfo(String username) {
-        String url = baseUrl + USER_QUERY_PATH + username;
+        String url = baseUrl + "/search/user?query=" + username;
         log.debug("Calling API: {}", url);
-        
-        return restTemplate.getForObject(url, UserInfoApiResponse.class);
-    }
-    
-    
-    public SolvedProblemsApiResponse getSolvedProblems(String username) {
-    	String url = baseUrl + USER_SOLVED_PATH + username;
-    	log.debug("Calling API: {}", url);
 
-        return restTemplate.getForObject(url, SolvedProblemsApiResponse.class);
+        ResponseEntity<String> rawResponse = restTemplate.getForEntity(url, String.class);
+        log.debug("Raw API Response: {}", rawResponse.getBody());
+        
+        UserInfoApiResponse response = restTemplate.getForObject(url, UserInfoApiResponse.class);
+        log.debug("Parsed Response: {}", response);
+        return response;
+    }
+
+    public SolvedProblemsApiResponse getSolvedProblems(String username) {
+    	String url = baseUrl + "/user/problem_stats?handle=" + username;
+    	log.debug("Calling API: {}", url);
+    	
+    	ResponseEntity<String> rawResponse = restTemplate.getForEntity(url, String.class);
+        log.debug("Raw API Response: {}", rawResponse.getBody());
+        
+        SolvedProblemsApiResponse response = restTemplate.getForObject(url, SolvedProblemsApiResponse.class);
+        log.debug("Parsed Response: {}", response);
+        return response;
     }
 }

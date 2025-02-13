@@ -28,6 +28,10 @@ jobs:
         run: |
           echo '${{ secrets.S3_PROPERTIES }}' > ./src/main/resources/s3.properties
 
+      - name: Create redis.properties
+        run: |
+          echo '${{ secrets.REDIS_DEV_PROPERTIES }}' > ./src/main/resources/redis.properties
+
       - name: Create application-dev.yml
         run: |
           echo '${{ secrets.APPLICATION_DEV_PROPERTIES }}' > ./src/main/resources/application-dev.yml
