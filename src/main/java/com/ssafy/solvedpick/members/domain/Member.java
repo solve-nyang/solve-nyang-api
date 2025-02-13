@@ -56,7 +56,7 @@ public class Member {
     private boolean verified = false;
     
     @Builder.Default
-    private Long point = 5000L;
+    private Long point = 10000L;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
