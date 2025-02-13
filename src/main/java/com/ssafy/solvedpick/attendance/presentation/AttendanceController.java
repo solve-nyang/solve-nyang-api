@@ -1,9 +1,9 @@
 package com.ssafy.solvedpick.attendance.presentation;
 
 import com.ssafy.solvedpick.attendance.dto.HalfYearResponse;
+import com.ssafy.solvedpick.attendance.dto.TodayAttendanceDTO;
 import com.ssafy.solvedpick.attendance.service.AttendanceService;
 import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
-import com.ssafy.solvedpick.common.dto.TodayAttendanceDTO;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.common.dto;
+package com.ssafy.solvedpick.attendance.dto;
 
 import lombok.*;
 
@@ -7,5 +7,5 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class TodayAttendanceDTO {
-    private boolean isAttended;
+    private Boolean isAttended;
 }
