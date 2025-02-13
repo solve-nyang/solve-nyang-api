@@ -1,6 +1,6 @@
 package com.ssafy.solvedpick.members.service;
 
-import com.ssafy.solvedpick.common.utils.point.Point;
+import com.ssafy.solvedpick.common.utils.point.Tier;
 import com.ssafy.solvedpick.facade.UserFacade;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.members.dto.BasicUsernameResponse;
@@ -41,7 +41,7 @@ public class MemberService {
                 .username(member.getUsername())
                 .point(member.getPoint())
                 .memberClass(memberDisplay.getMemberClass())
-                .tier(Point.getPointName(memberDisplay.getTier()))
+                .tier(Tier.getTierName(memberDisplay.getTier()))
                 .solvedCount(memberDisplay.getSolvedCount())
                 .streak(memberDisplay.getStreak())
                 .build();
