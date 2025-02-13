@@ -10,6 +10,7 @@ import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.facade.UserFacade;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -41,22 +43,22 @@ public class AttendanceService {
                 .orElse(0);
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
         
-        if ((attendanceDays & (1 << zeroBasedDay)) != 0) {
-            throw new AttendanceException("이미 오늘 출석체크를 완료했습니다.");
-        }
+//        if ((attendanceDays & (1 << zeroBasedDay)) != 0) {
+//            throw new AttendanceException("이미 오늘 출석체크를 완료했습니다.");
+//        }
         
         int currentSolvedCount = userFacade.getCurrentSolvedCount(member.getUsername());
         
         // 새로운 문제를 풀었는지 확인
-        if (currentSolvedCount <= previousSolvedCount) {
-            throw new AttendanceException("새로 해결한 문제가 없습니다.");
-        }
+//        if (currentSolvedCount <= previousSolvedCount) {
+//            throw new AttendanceException("새로 해결한 문제가 없습니다.");
+//        }
         
         if (!attendanceRepository.existsByMemberAndMonth(member, yearMonth)) {
             if (zeroBasedDay != 0) {
                 AttendanceRecord record = AttendanceRecord.create(member, 1);
                 attendanceRepository.save(record);
-                return;
+
             } else {
                 String lastMonth = YearMonth.from(LocalDate.now().minusMonths(1)).toString();
                 AttendanceRecord lastMonthRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, lastMonth)
@@ -77,11 +79,9 @@ public class AttendanceService {
                             break;
                         }
                     }
+                    AttendanceRecord newRecord = AttendanceRecord.create(member, continiousAttendance);
+                    attendanceRepository.save(newRecord);
                 }
-                
-                AttendanceRecord newRecord = AttendanceRecord.create(member, continiousAttendance);
-                attendanceRepository.save(newRecord);
-                return;
             }
         }
 
@@ -98,10 +98,9 @@ public class AttendanceService {
         updateAttendance(attendanceRecord);
 
         int totalPoint = ATTENDANCE_POINT + (hasStreak ? STREAK_BONUS : 0);
-        
-        if (totalPoint != 0) member.addPoint(totalPoint);
+        log.info("member add point:{}", totalPoint);
+        member.addPoint(totalPoint);
     }
-
 
     public String countWeeklyAttendance() {
         Member member = authService.getCurrentMember();
