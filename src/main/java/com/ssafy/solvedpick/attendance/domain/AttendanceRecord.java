@@ -47,8 +47,14 @@ public class AttendanceRecord {
         return new AttendanceRecord(member, continiousAttendance);
     }
 
-    public void updateAttendance (int updatedAttendance) {
+    public void updateAttendance (int updatedAttendance, boolean isAttendYesterday) {
         this.attendanceDays = updatedAttendance;
-        this.continiousAttendance = (this.continiousAttendance + 1) % 7;
+        if (isAttendYesterday) {
+            this.continiousAttendance = (this.continiousAttendance + 1) % 7;
+        } else this.continiousAttendance = 1;
+    }
+
+    public void resetContinious () {
+        this.continiousAttendance = 0;
     }
 }
