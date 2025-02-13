@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TierRenderer {
 
-    private SvgResources svgResources;
+    private final SvgResources svgResources;
 
     public void renderTier(StringBuilder content, Tier tier) {
         if(tier == null) {
