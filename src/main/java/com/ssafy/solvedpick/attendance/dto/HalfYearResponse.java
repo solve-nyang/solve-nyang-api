@@ -7,10 +7,10 @@ import lombok.Getter;
 
 @Getter
 public class HalfYearResponse {
-    private final List<Map<String, String>> attendance;
+    private final List<Map<String, String>> attendances;
 
     private HalfYearResponse(List<Map<String, String>> attendance) {
-        this.attendance = attendance;
+        this.attendances = attendance;
     }
 
     public static HalfYearResponse of(List<Map<String, String>> attendance) {

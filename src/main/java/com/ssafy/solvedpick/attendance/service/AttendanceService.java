@@ -121,11 +121,11 @@ public class AttendanceService {
         }
 
         if (continuousDays >= 4) {
-            return "당신은 성실왕! 기다리고있었어요!";
+            return "당신은 성실왕! 기다리고 있었어요!";
         } else if (continuousDays >= 2) {
-            return "잘하고있어요! 오늘도 문제를 풀어봅시다!";
+            return "잘하고 있어요! 오늘도 문제를 풀어봅시다!";
         } else if (continuousDays == 1) {
-            return "연속 출석을 달성해봅시다!";
+            return "연속 출석을 달성해 봅시다!";
         }
         return "문제를 풀어주세요!";
     }
@@ -149,8 +149,8 @@ public class AttendanceService {
                 for (int j = 0; j < 31; j++) {
                     if ((currentMonthData & (1 << j)) != 0) {
                         if (j < 9) {
-                            attendances.add(Map.<String, String>of("data", yearMonth + "-0" + (j + 1)));
-                        } else attendances.add(Map.of("data", yearMonth + "-" + (j + 1)));
+                            attendances.add(Map.<String, String>of("date", yearMonth + "-0" + (j + 1)));
+                        } else attendances.add(Map.of("date", yearMonth + "-" + (j + 1)));
                     }
                 }
             }
