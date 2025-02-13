@@ -87,13 +87,10 @@ public class Member {
     private MemberDisplay memberDisplay = null;
 
     public void addPoint(long amount) {
-        log.info("Member Entity addPoint:{}", amount);
         if (amount < 0) {
             throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
         }
-        log.info("Member Entity Before Point:{}", point);
         this.point += amount;
-        log.info("Member Entity After Point:{}", point);
     }
 
     public void usePoint(long point) {
