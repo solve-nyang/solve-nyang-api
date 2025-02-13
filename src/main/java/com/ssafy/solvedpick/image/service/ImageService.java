@@ -29,7 +29,7 @@ public class ImageService {
     private final S3Service s3Service;
     private final ImageRepository imageRepository;
     private final RedisTemplate<String, String> redisTemplate;
-    private static final boolean IS_TEST_MODE = true;
+    private static final boolean IS_TEST_MODE = false;
     private static final int TEST_EXPIRATION_MINUTES = 5;
 
     private static final String VOTE_KEY_PREFIX = "vote:";
