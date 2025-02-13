@@ -30,7 +30,7 @@ jobs:
 
       - name: Create redis.properties
         run: |
-          echo '${{ secrets.REDIS_PROPERTIES }}' > ./src/main/resources/redis.properties
+          echo '${{ secrets.REDIS_DEV_PROPERTIES }}' > ./src/main/resources/redis.properties
 
       - name: Create application-dev.yml
         run: |
