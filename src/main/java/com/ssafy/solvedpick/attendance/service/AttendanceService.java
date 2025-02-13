@@ -4,7 +4,6 @@ import com.ssafy.solvedpick.attendance.domain.AttendanceRecord;
 import com.ssafy.solvedpick.attendance.dto.HalfYearResponse;
 import com.ssafy.solvedpick.attendance.repository.AttendanceRepository;
 import com.ssafy.solvedpick.auth.service.AuthService;
-import com.ssafy.solvedpick.common.error.exception.VerificationNotFoundException;
 import com.ssafy.solvedpick.common.error.exception.attendance.AttendanceException;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -89,6 +87,13 @@ public class AttendanceService {
 
         AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth)
                 .orElseThrow(() -> new AttendanceException("이번 달에 출석하지 않았습니다."));
+        
+        int newAttendanceDays = attendanceRecord.getAttendanceDays();
+        int yesterday = zeroBasedDay - 1;
+        if ((newAttendanceDays & (1 << yesterday)) == 0) {
+            attendanceRecord.resetContinious();
+        }
+
         boolean hasStreak = checkStreak(attendanceRecord);
         updateAttendance(attendanceRecord);
 
@@ -103,8 +108,10 @@ public class AttendanceService {
         String yearMonth = YearMonth.from(LocalDate.now()).toString();
         
         AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth)
-                .orElseThrow(() -> new AttendanceException("이번 달에 출석하지 않았습니다."));
-
+                .orElse(null);
+        if (attendanceRecord == null) {
+            return "문제를 풀어주세요!";
+        }
         int attendanceDays = attendanceRecord.getAttendanceDays();
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
         int continuousDays = attendanceRecord.getContiniousAttendance();
@@ -118,6 +125,11 @@ public class AttendanceService {
                 return "연속 출석을 달성했습니다!";
             }
             return "연속 출석을 달성해봅시다!";
+        }
+
+        int yesterday = zeroBasedDay - 1;
+        if ((attendanceDays & (1 << yesterday)) == 0) {
+            attendanceRecord.resetContinious();
         }
 
         if (continuousDays >= 4) {
@@ -166,10 +178,12 @@ public class AttendanceService {
     private void updateAttendance(AttendanceRecord attendanceRecord) {
         int attendanceDays = attendanceRecord.getAttendanceDays();
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
+        int yesterday = zeroBasedDay - 1;
 
+        boolean isAttendYesterday = ((attendanceDays & (1 << yesterday)) != 0);
         int newAttendanceDays = attendanceDays | (1 << zeroBasedDay);
         
-        attendanceRecord.updateAttendance(newAttendanceDays);
+        attendanceRecord.updateAttendance(newAttendanceDays, isAttendYesterday);
     }
 
     private boolean checkStreak(AttendanceRecord attendanceRecord) {
