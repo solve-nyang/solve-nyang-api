@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.attendance.presentation;
 
 import com.ssafy.solvedpick.attendance.dto.HalfYearResponse;
+import com.ssafy.solvedpick.attendance.dto.TodayAttendanceDTO;
 import com.ssafy.solvedpick.attendance.service.AttendanceService;
 import com.ssafy.solvedpick.common.dto.ResponseMessageDTO;
 
@@ -38,5 +39,14 @@ public class AttendanceController {
         HalfYearResponse message = attendanceService.getHalfYearAttendance();
         return ResponseEntity.ok()
                 .body(message);
+    }
+    
+    @GetMapping("/today")
+    public ResponseEntity<?> checkTodayAttendance() {
+        boolean isAttended = attendanceService.checkToday();
+        return ResponseEntity.ok()
+        .body(TodayAttendanceDTO.builder()
+                .isAttended(isAttended)
+                .build());
     }
 }
