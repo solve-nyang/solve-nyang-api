@@ -8,6 +8,7 @@ import com.ssafy.solvedpick.attendance.domain.AttendanceRecord;
 import com.ssafy.solvedpick.image.domain.Image;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.ownedbackgrounds.domain.OwnedBackground;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,6 +31,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Slf4j
 @Entity
 @Getter
 @Builder
@@ -85,11 +87,13 @@ public class Member {
     private MemberDisplay memberDisplay = null;
 
     public void addPoint(long amount) {
+        log.info("Member Entity addPoint:{}", amount);
         if (amount < 0) {
             throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
         }
-
+        log.info("Member Entity Before Point:{}", point);
         this.point += amount;
+        log.info("Member Entity After Point:{}", point);
     }
 
     public void usePoint(long point) {
