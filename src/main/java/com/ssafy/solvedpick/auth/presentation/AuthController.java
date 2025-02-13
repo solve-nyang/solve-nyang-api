@@ -36,8 +36,8 @@ public class AuthController {
                 .build());
         }
         boolean verified = authService.verifyUser(userDataDTO);
-                
-    	if (verified) {
+
+      if (verified) {
     		authService.create(userDataDTO);
     		return ResponseEntity.ok()
                     .body(ResponseMessageDTO.builder()

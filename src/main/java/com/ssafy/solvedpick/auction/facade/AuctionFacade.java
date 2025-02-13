@@ -95,7 +95,8 @@ public class AuctionFacade {
     }
 
     public void cancelSale(AuctionCancelRequestDTO requestDTO) {
-        Auction auction = auctionService.cancelAuction(requestDTO.getId());
+        Member member = authService.getCurrentMember();
+        Auction auction = auctionService.cancelAuction(requestDTO.getId(), member);
         ownedAvatarService.cancelSold(auction.getOwnedAvatar());
     }
 

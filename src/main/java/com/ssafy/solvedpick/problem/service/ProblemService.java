@@ -6,9 +6,13 @@ import com.ssafy.solvedpick.common.utils.point.Tier;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.problem.domain.Problem;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProblemService {
 
