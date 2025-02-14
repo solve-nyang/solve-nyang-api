@@ -12,26 +12,21 @@ public class WebConfig implements WebMvcConfigurer {
     private String FRONT_URL;
     @Value("${FRONT.DEV}")
     private String DEV_URL;
+    @Value("${CORS.ALLOWED_ORIGINS}")
+    private String[] allowedOrigins;
+    @Value("${CORS.EXTENSION_PATH}")
+    private String extensionPath;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/user/me/extension")
+        registry.addMapping(extensionPath)
                 .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
 
         registry.addMapping("/**")
-                .allowedOrigins(
-                        "http://localhost:5173",
-                        "https://github.com",
-                        "https://raw.githubusercontent.com",
-                        "https://user-images.githubusercontent.com",
-                        "https://camo.githubusercontent.com",
-                        "https://www.acmicpc.net/",
-                        FRONT_URL,
-                        DEV_URL
-                )
+                .allowedOrigins(allowedOrigins)
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

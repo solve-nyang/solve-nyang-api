@@ -9,7 +9,7 @@ spring:
   config:
     import:
       - database.properties
-      - api.properties
+      - external.properties
       - jwt.properties
       - s3.properties
       - redis.properties
