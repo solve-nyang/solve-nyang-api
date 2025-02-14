@@ -20,9 +20,9 @@ jobs:
         run: |
           echo '${{ secrets.JWT_PROPERTIES }}' > ./src/main/resources/jwt.properties
 
-      - name: Create api.properties
+      - name: Create external.properties
         run: |
-          echo '${{ secrets.API_PROPERTIES }}' > ./src/main/resources/api.properties
+          echo '${{ secrets.EXTERNAL_DEV_PROPERTIES }}' > ./src/main/resources/external.properties
 
       - name: Create s3.properties
         run: |
