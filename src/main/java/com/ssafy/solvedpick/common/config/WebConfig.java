@@ -8,10 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${FRONT.URL}")
-    private String FRONT_URL;
-    @Value("${FRONT.DEV}")
-    private String DEV_URL;
     @Value("${CORS.ALLOWED_ORIGINS}")
     private String[] allowedOrigins;
     @Value("${CORS.EXTENSION_PATH}")
