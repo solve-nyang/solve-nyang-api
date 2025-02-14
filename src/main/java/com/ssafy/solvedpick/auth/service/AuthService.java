@@ -82,12 +82,12 @@ public class AuthService {
         ownedBackgroundFacade.addDefaultBackground(user);
 
         userFacade.initializeNewUserInfo(user);
-
+        addDefaultAvatar(user);
         return user;
     }
 
     private void addDefaultAvatar(Member member) {
-        Avatar defaultAvatar = avatarRepository.findByName("SSAFY");
+        Avatar defaultAvatar = avatarRepository.findByName("MVPCat");
 
         OwnedAvatar ownedAvatar = OwnedAvatar.builder()
                 .member(member)
