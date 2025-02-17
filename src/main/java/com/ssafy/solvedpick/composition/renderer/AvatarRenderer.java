@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -21,6 +22,8 @@ public class AvatarRenderer {
     private final SvgResources svgResources;
 
     public void renderAvatars(StringBuilder content, List<AvatarType> avatars, SvgDimensions dimensions) {
+        appendAvatarDefinitions(content, avatars);
+
         for (AvatarType avatar : avatars) {
             SecureRandom random = new SecureRandom();
             int startX = random.nextInt(dimensions.width() - dimensions.scaledAvatarSize());
@@ -96,8 +99,10 @@ public class AvatarRenderer {
 
     private void appendSvgContent(StringBuilder content, AvatarType avatar, int startX, int startY, Path path, double scale) {
         SecureRandom random = new SecureRandom();
+        String avatarId = "avatar-" + avatar.getName();
+
         content.append(String.format("<g transform=\"translate(%d, %d) scale(%.1f)\">", startX, startY, scale));
-        content.append(avatar.getSvgContent(svgResources));
+        content.append("<use href=\"#").append(avatarId).append("\"/>");
         content.append(AnimationType.FLOAT.format(
                 0, 0,
                 path.midX1(), path.midY1(),
@@ -106,5 +111,20 @@ public class AvatarRenderer {
                 0, 0,
                 random.nextInt(50) + 10));
         content.append("</g>");
+    }
+
+    private void appendAvatarDefinitions(StringBuilder content, List<AvatarType> avatars) {
+        content.append("<defs>");
+        List<AvatarType> distinctAvatars = avatars.stream()
+                .distinct()
+                .toList();
+
+        for (AvatarType distinctAvatar : distinctAvatars) {
+            String avatarId = "avatar-" + distinctAvatar.getName();
+            content.append("<g id=\"").append(avatarId).append("\">");
+            content.append(distinctAvatar.getSvgContent(svgResources));
+            content.append("</g>");
+        }
+        content.append("</defs>");
     }
 }
