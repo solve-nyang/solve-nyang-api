@@ -24,7 +24,7 @@ public class UserFacade {
     @Transactional
     public void initializeNewUserInfo(Member member) {
         Problem problem = Problem.initSolvedProblems(member);
-        member.initSolvedProblem(problem);
+        problemService.save(problem);
 
         MemberDisplay memberDisplay = MemberDisplay.initMemberDisplay(member);
         member.initMemberDisplay(memberDisplay);
@@ -39,7 +39,7 @@ public class UserFacade {
 
         log.info("syncUserInfo getUserData:{}", userData);
         SolvedProblemsApiResponse newProblems = apiService.getSolvedProblems(member.getUsername());
-        Problem problem = member.getSolvedProblems();
+        Problem problem = problemService.findByMember(member);
 
         log.info("syncUserInfo Problem:{}, newProblem:{}", problem, newProblems.size());
         problemService.updateSolvedProblems(problem, newProblems);
