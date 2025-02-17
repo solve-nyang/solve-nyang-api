@@ -128,7 +128,7 @@ public class AuthService {
     public boolean checkUser(String username) {
         try {
             log.debug("check user");
-            restTemplate.getForEntity(url + username, UsernameResponse.class);
+                restTemplate.getForEntity(url + username, UsernameResponse.class);
             return true;
         } catch (Exception e) {
             log.error("{}", e.getMessage());

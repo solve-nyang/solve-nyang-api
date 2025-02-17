@@ -61,10 +61,6 @@ public class Member {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
-    @Builder.Default
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Problem solvedProblems = null;
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -99,10 +95,6 @@ public class Member {
     
     public void updatePassword(String encodedNewPassword) {
     	this.password = encodedNewPassword;
-    }
-
-    public void initSolvedProblem(Problem problem) {
-        this.solvedProblems = problem;
     }
 
     public void initMemberDisplay(MemberDisplay memberDisplay){
