@@ -1,7 +1,7 @@
 package com.ssafy.solvedpick.api.service;
 
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
-import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
+import com.ssafy.solvedpick.api.dto.UserData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,14 +19,14 @@ public class ApiService {
     @Value("${API.BASEURL}")
     private String baseUrl;
 
-    public UserInfoApiResponse getUserInfo(String username) {
-        String url = baseUrl + "/search/user?query=" + username;
+    public UserData getUserInfo(String username) {
+        String url = baseUrl + "/user/show?handle=" + username;
         log.debug("Calling API: {}", url);
 
         ResponseEntity<String> rawResponse = restTemplate.getForEntity(url, String.class);
         log.debug("Raw API Response: {}", rawResponse.getBody());
         
-        UserInfoApiResponse response = restTemplate.getForObject(url, UserInfoApiResponse.class);
+        UserData response = restTemplate.getForObject(url, UserData.class);
         log.debug("Parsed Response: {}", response);
         return response;
     }
