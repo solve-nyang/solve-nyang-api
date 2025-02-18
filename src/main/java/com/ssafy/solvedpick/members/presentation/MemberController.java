@@ -1,6 +1,7 @@
 package com.ssafy.solvedpick.members.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
+import com.ssafy.solvedpick.facade.UserFacade;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.dto.BasicUsernameResponse;
 import com.ssafy.solvedpick.members.dto.UserPointResponse;
@@ -20,6 +21,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final AuthService authService;
+    private final UserFacade userFacade;
 
     @GetMapping()
     public ResponseEntity<BasicUsernameResponse> getUsername(){
@@ -31,7 +33,7 @@ public class MemberController {
     @GetMapping("/profile")
     public ResponseEntity<UserProfileResponse> getUserProfile(){
         Member member = authService.getCurrentMember();
-        UserProfileResponse response = memberService.getUserProfile(member);
+        UserProfileResponse response = userFacade.getUserProfile(member);
         return ResponseEntity.ok(response);
     }
 

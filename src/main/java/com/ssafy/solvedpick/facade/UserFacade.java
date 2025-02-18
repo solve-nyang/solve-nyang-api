@@ -4,9 +4,11 @@ import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.api.dto.UserData;
 import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
 import com.ssafy.solvedpick.api.service.ApiService;
+import com.ssafy.solvedpick.common.utils.point.Tier;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.memberdisplay.service.MemberDisplayService;
 import com.ssafy.solvedpick.members.domain.Member;
+import com.ssafy.solvedpick.members.dto.UserProfileResponse;
 import com.ssafy.solvedpick.problem.domain.Problem;
 import com.ssafy.solvedpick.problem.service.ProblemService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class UserFacade {
         problemService.save(problem);
 
         MemberDisplay memberDisplay = MemberDisplay.initMemberDisplay(member);
-        member.initMemberDisplay(memberDisplay);
+        memberDisplayService.save(memberDisplay);
 
         syncUserInfo(member);
     }
@@ -44,19 +46,21 @@ public class UserFacade {
 
         problemService.updateSolvedProblems(problem, newProblems);
 
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = memberDisplayService.findByMember(member);
         memberDisplayService.updateMemberDisplay(memberDisplay, userData);
     }
 
-    public int getCurrentSolvedCount(String username) {
-        UserInfoApiResponse response = apiService.getUserInfo(username);
-        if (response.getItems() == null || response.getItems().isEmpty()) {
-            throw new RuntimeException("User not found: " + username);
-        }
-        
-        UserData userData = response.getItems().get(0);
-        return userData.getSolvedCount();
-    }
+    public UserProfileResponse getUserProfile(Member member) {
+        MemberDisplay memberDisplay = memberDisplayService.findByMember(member);
 
+        return UserProfileResponse.builder()
+                .username(member.getUsername())
+                .point(member.getPoint())
+                .memberClass(memberDisplay.getMemberClass())
+                .tier(Tier.getTierName(memberDisplay.getTier()))
+                .solvedCount(memberDisplay.getSolvedCount())
+                .streak(memberDisplay.getStreak())
+                .build();
+    }
 }
 

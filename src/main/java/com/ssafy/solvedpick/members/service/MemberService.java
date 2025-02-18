@@ -33,20 +33,7 @@ public class MemberService {
     public void updateUserProcess(Member member) {
         userFacade.syncUserInfo(member);
     }
-
-    public UserProfileResponse getUserProfile(Member member) {
-        MemberDisplay memberDisplay = member.getMemberDisplay();
-
-        return UserProfileResponse.builder()
-                .username(member.getUsername())
-                .point(member.getPoint())
-                .memberClass(memberDisplay.getMemberClass())
-                .tier(Tier.getTierName(memberDisplay.getTier()))
-                .solvedCount(memberDisplay.getSolvedCount())
-                .streak(memberDisplay.getStreak())
-                .build();
-    }
-
+    
     public UserPointResponse getUserPoint(Member member){
         return UserPointResponse.builder()
                 .point(member.getPoint())

@@ -78,10 +78,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
-    @Builder.Default
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private MemberDisplay memberDisplay = null;
-
     public void addPoint(long amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
@@ -97,7 +93,4 @@ public class Member {
     	this.password = encodedNewPassword;
     }
 
-    public void initMemberDisplay(MemberDisplay memberDisplay){
-        this.memberDisplay = memberDisplay;
-    }
 }

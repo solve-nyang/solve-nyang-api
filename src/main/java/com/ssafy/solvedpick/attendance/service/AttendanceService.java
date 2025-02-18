@@ -1,5 +1,6 @@
 package com.ssafy.solvedpick.attendance.service;
 
+import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.attendance.domain.AttendanceRecord;
 import com.ssafy.solvedpick.attendance.dto.HalfYearResponse;
 import com.ssafy.solvedpick.attendance.repository.AttendanceRepository;
@@ -30,84 +31,79 @@ public class AttendanceService {
     private static final int STREAK_BONUS = 300;
 
     private final AttendanceRepository attendanceRepository;
-    private final AuthService authService;
-    private final UserFacade userFacade;
-    
-    
-    public void checkAttendance() {
-        Member member = authService.getCurrentMember();
-        MemberDisplay display = member.getMemberDisplay();
-        int previousSolvedCount = display.getSolvedCount();
+
+    public void processAttendance(Member member) {
         String yearMonth = YearMonth.from(LocalDate.now()).toString();
-        
-        int attendanceDays = attendanceRepository.findAttendanceDaysByMemberAndMonth(member, yearMonth)
-        .orElse(0);
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
-        
+
+        int attendanceDays = attendanceRepository.findAttendanceDaysByMemberAndMonth(member, yearMonth)
+                .orElse(0);
+
         if ((attendanceDays & (1 << zeroBasedDay)) != 0) {
             throw new AttendanceException("이미 오늘 출석체크를 완료했습니다.");
         }
-        
-        int currentSolvedCount = userFacade.getCurrentSolvedCount(member.getUsername());
-        if (currentSolvedCount <= previousSolvedCount) {
-            throw new AttendanceException("새로 해결한 문제가 없습니다.");
-        }
-        
+
         if (!attendanceRepository.existsByMemberAndMonth(member, yearMonth)) {
-            createAttendance();
+            createNewMonthAttendance(member);
         }
-        
+
         AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth)
-        .orElseThrow(() -> new AttendanceException("이번 달에 출석하지 않았습니다."));
+                .orElseThrow(() -> new AttendanceException("이번 달에 출석하지 않았습니다."));
+
         int yesterday = zeroBasedDay - 1;
         checkYesterday(attendanceRecord, yesterday);
-        
+
         boolean hasStreak = checkStreak(attendanceRecord);
         updateAttendance(attendanceRecord);
-        
+
         int totalPoint = ATTENDANCE_POINT + (hasStreak ? STREAK_BONUS : 0);
-        
         member.addPoint(totalPoint);
     }
 
-    
-    private void createAttendance() {
-        Member member = authService.getCurrentMember();
+    private void createNewMonthAttendance(Member member) {
         int zeroBasedDay = LocalDate.now().getDayOfMonth() - 1;
-        
+
         if (zeroBasedDay != 0) {
             AttendanceRecord record = AttendanceRecord.create(member, 1);
             attendanceRepository.save(record);
-            
         } else {
-            String lastMonth = YearMonth.from(LocalDate.now().minusMonths(1)).toString();
-            AttendanceRecord lastMonthRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, lastMonth)
-            .orElse(null);
-            
-            int continiousAttendance = 1;
-            if (lastMonthRecord != null && lastMonthRecord.getContiniousAttendance() != 0) {
-                YearMonth lastYearMonth = YearMonth.from(LocalDate.now().minusMonths(1));
-                int lastDayOfMonth = lastYearMonth.lengthOfMonth() - 1;
-                int lastAttendanceDays = lastMonthRecord.getAttendanceDays();
-                int lastContinious = lastMonthRecord.getContiniousAttendance();
-                
-                for (int i = 0; i < lastContinious && lastDayOfMonth >= 0; i++) {
-                    if ((lastAttendanceDays & (1 << lastDayOfMonth)) != 0) {
-                        continiousAttendance++;
-                        lastDayOfMonth--;
-                    } else {
-                        break;
-                    }
-                }
-                AttendanceRecord newRecord = AttendanceRecord.create(member, continiousAttendance);
-                attendanceRepository.save(newRecord);
-            }
+            processFirstDayOfMonth(member);
         }
     }
-    
-    
-    public String countWeeklyAttendance() {
-        Member member = authService.getCurrentMember();
+
+    private void processFirstDayOfMonth(Member member) {
+        String lastMonth = YearMonth.from(LocalDate.now().minusMonths(1)).toString();
+        AttendanceRecord lastMonthRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, lastMonth)
+                .orElse(null);
+
+        int continiousAttendance = 1;
+        if (lastMonthRecord != null && lastMonthRecord.getContiniousAttendance() != 0) {
+            continiousAttendance = calculateContinuousAttendance(lastMonthRecord);
+        }
+
+        AttendanceRecord newRecord = AttendanceRecord.create(member, continiousAttendance);
+        attendanceRepository.save(newRecord);
+    }
+
+    private int calculateContinuousAttendance(AttendanceRecord lastMonthRecord) {
+        YearMonth lastYearMonth = YearMonth.from(LocalDate.now().minusMonths(1));
+        int lastDayOfMonth = lastYearMonth.lengthOfMonth() - 1;
+        int lastAttendanceDays = lastMonthRecord.getAttendanceDays();
+        int lastContinious = lastMonthRecord.getContiniousAttendance();
+
+        int continiousAttendance = 1;
+        for (int i = 0; i < lastContinious && lastDayOfMonth >= 0; i++) {
+            if ((lastAttendanceDays & (1 << lastDayOfMonth)) != 0) {
+                continiousAttendance++;
+                lastDayOfMonth--;
+            } else {
+                break;
+            }
+        }
+        return continiousAttendance;
+    }
+
+    public String countWeeklyAttendance(Member member) {
         String yearMonth = YearMonth.from(LocalDate.now()).toString();
         
         AttendanceRecord attendanceRecord = attendanceRepository.findByMemberAndAttendanceMonth(member, yearMonth)
@@ -144,9 +140,8 @@ public class AttendanceService {
     }
     
     
-    public HalfYearResponse getHalfYearAttendance() {
+    public HalfYearResponse getHalfYearAttendance(Member member) {
         try {
-            Member member = authService.getCurrentMember();
             LocalDate today = LocalDate.now();
             
             List<Map<String, String>> attendances = new ArrayList<>();
@@ -176,8 +171,7 @@ public class AttendanceService {
     }
     
 
-    public boolean checkToday() {
-        Member member = authService.getCurrentMember();
+    public boolean checkToday(Member member) {
         String yearMonth = YearMonth.from(LocalDate.now()).toString();
         int attendanceDays = attendanceRepository.findAttendanceDaysByMemberAndMonth(member, yearMonth)
                 .orElse(0);
