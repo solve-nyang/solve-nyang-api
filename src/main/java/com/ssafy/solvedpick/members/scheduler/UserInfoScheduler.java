@@ -20,7 +20,7 @@ public class UserInfoScheduler {
     private final MemberService memberService;
 
     @Transactional
-    @Scheduled(cron = "0 20 2 * * *", zone="Asia/Seoul")
+    @Scheduled(cron = "0 10 11 * * *", zone="Asia/Seoul")
     public void updateUserInfo() {
         List<Member> members = memberRepository.findAll();
         log.info("scheduled update start, size: {}", members.size());
