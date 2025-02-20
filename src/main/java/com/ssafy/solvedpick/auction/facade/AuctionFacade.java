@@ -90,7 +90,7 @@ public class AuctionFacade {
         auctionService.createAuction(ownedAvatar, requestDTO.getPrice());
 
         return ResponseMessageDTO.builder()
-                .message("success")
+                .message("판매 성공하였습니다.")
                 .build();
     }
 
@@ -139,7 +139,7 @@ public class AuctionFacade {
             return auctionService.findMemberHistoryCancelled(member, pageable);
         }
 
-        throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "옳바르지 않은 검색 조건입니다.");
     }
 
     public void buyAvatar(AuctionBuyRequestDTO requestDTO) {
@@ -148,7 +148,7 @@ public class AuctionFacade {
         Member seller = auction.getOwnedAvatar().getMember();
 
         if (seller.getId().equals(buyer.getId())) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "자신이 올린 상품은 구매할 수 없습니다.");
         }
 
         memberService.sellAvatar(seller, auction.getPrice());
