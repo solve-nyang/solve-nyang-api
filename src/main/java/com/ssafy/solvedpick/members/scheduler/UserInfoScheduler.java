@@ -19,7 +19,7 @@ public class UserInfoScheduler {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    @Scheduled(cron = "0 40 13 * * *", zone="Asia/Seoul")
+    @Scheduled(cron = "0 0 1 * * *", zone="Asia/Seoul")
     public void updateUserInfo() {
         List<Long> memberIds = memberRepository.findAllIds();  // ID만 조회
         log.info("scheduled update start, size: {}", memberIds.size());
