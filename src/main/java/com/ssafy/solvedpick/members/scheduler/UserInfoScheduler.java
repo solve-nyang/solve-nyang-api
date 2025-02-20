@@ -19,19 +19,33 @@ public class UserInfoScheduler {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    @Scheduled(cron = "0 45 12 * * *", zone="Asia/Seoul")
+    @Scheduled(cron = "0 40 13 * * *", zone="Asia/Seoul")
     public void updateUserInfo() {
-        List<Member> members = memberRepository.findAll();
-        log.info("scheduled update start, size: {}", members.size());
+        List<Long> memberIds = memberRepository.findAllIds();  // ID만 조회
+        log.info("scheduled update start, size: {}", memberIds.size());
 
-        for (Member member : members) {
+        int batchSize = 100;
+        for (int i = 0; i < memberIds.size(); i += batchSize) {
+            int end = Math.min(i + batchSize, memberIds.size());
+            List<Long> batchIds = memberIds.subList(i, end);
+
+            for (Long memberId : batchIds) {
+                try {
+                    memberService.updateUserProcess(memberId);
+                    Thread.sleep(200);
+                } catch (Exception e) {
+                    log.error("Failed to update user: {}", memberId, e);
+                }
+            }
+
+            log.info("Processed batch from {} to {}", i, end);
             try {
-                memberService.updateUserProcess(member);
-            } catch (Exception e) {
-                log.info("stopped at {}", member.getId());
+                Thread.sleep(60000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
             }
         }
-
-        log.info("updateUser End(List size)");
+        log.info("updateUser End");
     }
 }
