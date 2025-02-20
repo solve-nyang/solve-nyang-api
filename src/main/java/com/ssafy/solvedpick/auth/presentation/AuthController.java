@@ -80,7 +80,7 @@ public class AuthController {
     public ResponseEntity<?> getVerificationCode(@RequestBody MemberNameDTO membernameDTO) {
     	String username = membernameDTO.getUsername();
     	boolean check = authService.checkUser(username);
-    	
+
     	if (check) {
     		String code = authService.generateVerificationCode(username);
             VerificationResponseDTO result = new VerificationResponseDTO(code);
@@ -90,7 +90,8 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.builder()
-                        .message("존재하지 않는 유저입니다."));
+                        .message("존재하지 않는 유저입니다.")
+                        .build());
     }
     
     @PostMapping("/password/change")
