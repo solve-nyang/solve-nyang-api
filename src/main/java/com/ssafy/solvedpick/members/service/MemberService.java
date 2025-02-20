@@ -6,6 +6,7 @@ import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.members.dto.BasicUsernameResponse;
 import com.ssafy.solvedpick.members.dto.UserPointResponse;
 import com.ssafy.solvedpick.members.dto.UserProfileResponse;
+import com.ssafy.solvedpick.members.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class MemberService {
     private static final double FEE = 0.95;
 
     private final UserFacade userFacade;
+    private final MemberRepository memberRepository;
 
     public BasicUsernameResponse getUsername(Member member) {
 
@@ -32,7 +34,9 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateUserProcess(Member member) {
+    public void updateUserProcess(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalStateException("Member not found: " + memberId));
         log.info("update user process: {}", member.getUsername());
         userFacade.syncUserInfo(member);
     }
