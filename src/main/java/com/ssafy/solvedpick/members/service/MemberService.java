@@ -67,7 +67,7 @@ public class MemberService {
 
     public void buyAvatar(Member buyer, Long point) {
         if (buyer.getPoint() < point) {
-            throw new HttpClientErrorException(HttpStatus.PAYMENT_REQUIRED);
+            throw new HttpClientErrorException(HttpStatus.PAYMENT_REQUIRED, "남은 포인트가 부족합니다.");
         }
 
         buyer.usePoint(point);

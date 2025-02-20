@@ -114,7 +114,7 @@ public class OwnedAvatarServiceImpl implements OwnedAvatarService {
 
             return ownedAvatar;
         } catch (IllegalAccessException e) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "판매중인 아바타입니다.");
         }
     }
 

@@ -47,21 +47,39 @@ public class AuctionService {
     }
 
     public Auction cancelAuction(Long auctionId, Member member) {
-        Auction auction = auctionRepository.findByIdAndOwnedAvatar_MemberAndSoldFalseAndCancelledFalse(
+        Auction auction = auctionRepository.findByIdAndOwnedAvatar_Member(
                         auctionId, member
                 )
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
-
+                .orElseThrow(() -> new HttpClientErrorException(
+                        HttpStatus.BAD_REQUEST,
+                        "존재하지 않는 아바타입니다."
+                ));
+        validateAuctionAvailable(auction);
         auction.cancel();
+
         return auction;
     }
 
     public Auction buyAvatar(Long id) {
-        Auction auction = auctionRepository.findByIdAndSoldFalseAndCancelledFalse(id)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+        Auction auction = auctionRepository.findById(id)
+                .orElseThrow(() -> new HttpClientErrorException(
+                        HttpStatus.BAD_REQUEST,
+                        "존재하지 않는 아바타입니다."
+                ));
+        validateAuctionAvailable(auction);
         auction.sold();
 
         return auction;
+    }
+
+    private void validateAuctionAvailable(Auction auction) {
+        if (auction.getSold()) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "이미 판매된 아바타입니다.");
+        }
+
+        if (auction.getCancelled()) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "이미 취소된 아바타입니다.");
+        }
     }
 
     @Transactional(readOnly = true)
