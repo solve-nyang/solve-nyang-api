@@ -6,6 +6,7 @@ import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.members.dto.BasicUsernameResponse;
 import com.ssafy.solvedpick.members.dto.UserPointResponse;
 import com.ssafy.solvedpick.members.dto.UserProfileResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.ssafy.solvedpick.members.domain.Member;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -31,6 +33,7 @@ public class MemberService {
 
     @Transactional
     public void updateUserProcess(Member member) {
+        log.info("update user process: {}", member.getUsername());
         userFacade.syncUserInfo(member);
     }
 

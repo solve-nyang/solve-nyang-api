@@ -34,16 +34,20 @@ public class UserFacade {
 
     @Transactional
     public void syncUserInfo(Member member) {
-
+        log.info("syncUserInfo start");
         UserData userData = apiService.getUserInfo(member.getUsername());
 
+        log.info("syncUserInfo getUserData:{}", userData);
         SolvedProblemsApiResponse newProblems = apiService.getSolvedProblems(member.getUsername());
         Problem problem = member.getSolvedProblems();
 
+        log.info("syncUserInfo Problem:{}, newProblem:{}", problem, newProblems.size());
         problemService.updateSolvedProblems(problem, newProblems);
 
+        log.info("syncUserInfo updaeSolvedProblems");
         MemberDisplay memberDisplay = member.getMemberDisplay();
         memberDisplayService.updateMemberDisplay(memberDisplay, userData);
+        log.info("syncUserInfo end(update memberDisplay)");
     }
 
     public int getCurrentSolvedCount(String username) {
