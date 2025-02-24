@@ -28,6 +28,7 @@ public enum AvatarType {
     WORK_CAT("WorkCat"),
     DIVER_CAT("DiverCat"),
     ANGRY_CAT("AngryCat"),
+    CHILL_CAT("ChillCat"),
 
     FISHBOWL_CAT("FishbowlCat"),
     EATING_CAT("EatingCat"),
@@ -142,6 +143,7 @@ public enum AvatarType {
             case WORK_CAT -> svgResources.getWorkCat();
             case DIVER_CAT -> svgResources.getDiverCat();
             case ANGRY_CAT -> svgResources.getAngryCat();
+            case CHILL_CAT -> svgResources.getChillCat();
 
             case FISHBOWL_CAT -> svgResources.getFishbowlCat();
             case EATING_CAT -> svgResources.getEatingCat();
