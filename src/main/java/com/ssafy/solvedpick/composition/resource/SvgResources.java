@@ -48,6 +48,7 @@ public class SvgResources {
     private final String workCat;
     private final String diverCat;
     private final String angryCat;
+    private final String chillCat;
 
     private final String fishbowlCat;
     private final String eatingCat;
@@ -219,6 +220,7 @@ public class SvgResources {
         this.workCat = loadSvg(resourceLoader, "static/avatars/WorkCat.svg");
         this.diverCat = loadSvg(resourceLoader, "static/avatars/DiverCat.svg");
         this.angryCat = loadSvg(resourceLoader, "static/avatars/AngryCat.svg");
+        this.chillCat = loadSvg(resourceLoader, "static/avatars/ChillCat.svg");
 
         this.fishbowlCat = loadSvg(resourceLoader, "static/avatars/FishbowlCat.svg");
         this.eatingCat = loadSvg(resourceLoader, "static/avatars/EatingCat.svg");
