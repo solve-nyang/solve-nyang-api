@@ -25,7 +25,9 @@ public enum LetterType {
     z('z', 10, 3),
 
     ONE('1', 8, 0), TWO('2', 13, 0), THREE('3', 13, 0), FOUR('4', 13, 0), FIVE('5', 13, 0),
-    SIX('6', 13, 0), SEVEN('7', 13, 0), EIGHT('8', 13, 0), NINE('9', 13, 0), ZERO('0', 13, 0);
+    SIX('6', 13, 0), SEVEN('7', 13, 0), EIGHT('8', 13, 0), NINE('9', 13, 0), ZERO('0', 13, 0),
+
+    UNDER_SCORE('_', 12, 12);
 
     private final char name;
     private final int gap;

@@ -183,6 +183,8 @@ public class SvgResources {
             this.letters.put(c, loadSvg(resourceLoader, String.format("static/letters/_%c.svg", c)));
         }
 
+        this.letters.put('_', loadSvg(resourceLoader, "static/letters/underscore.svg"));
+
         this.numbers = new HashMap<>();
         for (char n = '0'; n <= '9'; n++) {
             this.numbers.put(n, loadSvg(resourceLoader, String.format("static/numbers/%c.svg", n)));
