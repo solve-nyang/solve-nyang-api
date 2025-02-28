@@ -1,6 +1,6 @@
 package com.ssafy.solvedpick.attendance.facade;
 
-import com.ssafy.solvedpick.api.dto.UserInfoApiResponse;
+import com.ssafy.solvedpick.api.dto.UserData;
 import com.ssafy.solvedpick.api.service.ApiService;
 import com.ssafy.solvedpick.attendance.dto.HalfYearResponse;
 import com.ssafy.solvedpick.attendance.service.AttendanceService;
@@ -9,8 +9,11 @@ import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
 import com.ssafy.solvedpick.memberdisplay.service.MemberDisplayService;
 import com.ssafy.solvedpick.members.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 
 @Service
 @RequiredArgsConstructor
@@ -49,11 +52,16 @@ public class AttendanceFacade {
 
 
     private int getCurrentSolvedCount(String username) {
-        UserInfoApiResponse response = apiService.getUserInfo(username);
-        if (response.getItems() == null || response.getItems().isEmpty()) {
-            throw new AttendanceException("User not found: " + username);
+        try {
+            UserData response = apiService.getUserInfo(username);
+            if (response == null) {
+                throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 가져올 수 없습니다: " + username);
+            }
+            return response.getSolvedCount();
+        } catch (HttpClientErrorException.NotFound e) {
+            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다: " + username);
+        } catch (RestClientException e) {
+            throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "API 호출 중 오류가 발생했습니다: " + e.getMessage());
         }
-        return response.getItems().get(0).getSolvedCount();
     }
-
 }
