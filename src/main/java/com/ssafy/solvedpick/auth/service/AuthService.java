@@ -82,7 +82,7 @@ public class AuthService {
         ownedBackgroundFacade.addDefaultBackground(user);
 
         userFacade.initializeNewUserInfo(user);
-        addDefaultAvatar(user);
+
         return user;
     }
 
