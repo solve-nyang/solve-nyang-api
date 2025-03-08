@@ -24,7 +24,7 @@ public class UserInfoScheduler {
         List<Long> memberIds = memberRepository.findAllIds();  // ID만 조회
         log.info("scheduled update start, size: {}", memberIds.size());
 
-        int batchSize = 100;
+        int batchSize = 50;
         for (int i = 0; i < memberIds.size(); i += batchSize) {
             int end = Math.min(i + batchSize, memberIds.size());
             List<Long> batchIds = memberIds.subList(i, end);
@@ -32,7 +32,7 @@ public class UserInfoScheduler {
             for (Long memberId : batchIds) {
                 try {
                     memberService.updateUserProcess(memberId);
-                    Thread.sleep(200);
+                    Thread.sleep(5000);
                 } catch (Exception e) {
                     log.error("Failed to update user: {}", memberId, e);
                 }
