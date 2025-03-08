@@ -5,6 +5,7 @@ import com.ssafy.solvedpick.common.enums.BackgroundType;
 import com.ssafy.solvedpick.common.utils.point.Tier;
 import com.ssafy.solvedpick.composition.renderer.CompositeRenderer;
 import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
+import com.ssafy.solvedpick.memberdisplay.repository.MemberDisplayRepository;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.ownedavatar.repository.OwnedAvatarRepository;
 import com.ssafy.solvedpick.ownedbackgrounds.repository.OwnedBackgroundRepository;
@@ -12,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +29,7 @@ public class CompositionService {
     private final OwnedBackgroundRepository ownedBackgroundRepository;
     private final CompositeRenderer compositeRenderer;
     private final RedisTemplate<String, String> redisTemplate;
+    private final MemberDisplayRepository memberDisplayRepository;
 
     @Value("${REDIS.CACHE_DURATION}")
     private long cacheDuration;
@@ -44,7 +48,11 @@ public class CompositionService {
     private String createNewImage(Member member) {
         BackgroundType background = getBackgroundType(member);
         List<AvatarType> avatars = getAvatarTypes(member);
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = memberDisplayRepository.findByMember(member)
+                .orElseThrow(() -> new HttpClientErrorException(
+                        HttpStatus.NOT_FOUND,
+                        "해당 사용자의 세부 정보를 찾을 수 없습니다."
+                ));
 
         return compositeRenderer.render(
                 background,

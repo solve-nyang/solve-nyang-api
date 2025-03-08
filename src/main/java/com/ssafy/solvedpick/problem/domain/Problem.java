@@ -2,14 +2,7 @@ package com.ssafy.solvedpick.problem.domain;
 
 import com.ssafy.solvedpick.members.domain.Member;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -92,7 +85,7 @@ public class Problem {
 	@Builder.Default
 	private Integer unrated_solved = 0;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", unique = true)
 	private Member member;
 

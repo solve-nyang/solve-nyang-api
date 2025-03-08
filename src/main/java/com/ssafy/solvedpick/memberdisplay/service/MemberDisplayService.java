@@ -25,7 +25,7 @@ public class MemberDisplayService {
 
     @Transactional(readOnly = true)
     public DisplayVisibilityResponse getDisplaySetting(Member member) {
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = findByMember(member);
 
         return DisplayVisibilityResponse.builder()
                 .title(memberDisplay.getTitle()!=null ? memberDisplay.getTitle() : member.getUsername())
@@ -39,7 +39,7 @@ public class MemberDisplayService {
 
     @Transactional
     public void setDisplayTitle(Member member,DisplayTitleRequest displayTitleRequest) {
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = findByMember(member);
         String title = displayTitleRequest.getTitle();
         validateTitle(title);
         memberDisplay.updateTitle(title);
@@ -59,31 +59,43 @@ public class MemberDisplayService {
 
     @Transactional
     public void toggleTier(Member member) {
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = findByMember(member);
         memberDisplay.toggleTierVisibility();
     }
 
     @Transactional
     public void toggleMemberClass(Member member) {
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = findByMember(member);
         memberDisplay.toggleMemberClassVisibility();
     }
 
     @Transactional
     public void toggleTitle(Member member) {
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = findByMember(member);
         memberDisplay.toggleTitleVisibility();
     }
 
     @Transactional
     public void toggleSolvedCount(Member member) {
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = findByMember(member);
         memberDisplay.toggleSolvedCountVisibility();
     }
 
     @Transactional
     public void toggleStreak(Member member) {
-        MemberDisplay memberDisplay = member.getMemberDisplay();
+        MemberDisplay memberDisplay = findByMember(member);
         memberDisplay.toggleStreakVisibility();
+    }
+
+    public MemberDisplay findByMember(Member member){
+        return memberDisplayRepository.findByMember(member)
+                .orElseThrow(() -> new HttpClientErrorException(
+                        HttpStatus.NOT_FOUND,
+                        "해당 사용자의 세부 정보를 찾을 수 없습니다."
+                ));
+    }
+
+    public void save(MemberDisplay memberDisplay) {
+        memberDisplayRepository.save(memberDisplay);
     }
 }

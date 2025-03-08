@@ -45,7 +45,7 @@ public class CompositeRenderer {
 
     private StringBuilder openFile() {
         return new StringBuilder().append(
-                String.format("<svg width=\"%d\" height=\"%d\" viewBox=\"0 0 %d %d\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">",
+                String.format("<svg width=\"%d\" height=\"%d\" viewBox=\"0 0 %d %d\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" >",
                         SVG_WIDTH, SVG_HEIGHT, SVG_WIDTH, SVG_HEIGHT));
     }
 

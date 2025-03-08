@@ -5,12 +5,17 @@ import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.common.utils.point.Tier;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.problem.domain.Problem;
+import com.ssafy.solvedpick.problem.repository.ProblemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 @RequiredArgsConstructor
 public class ProblemService {
+
+    private final ProblemRepository problemRepository;
 
     public void updateSolvedProblems(Problem problem, SolvedProblemsApiResponse newProblems) {
         int totalPointDiff = calculateTotalPointDiff(problem, newProblems);
@@ -73,5 +78,17 @@ public class ProblemService {
         }
 
         return 0;
+    }
+
+    public Problem findByMember(Member member) {
+        return problemRepository.findByMember(member)
+                .orElseThrow(() -> new HttpClientErrorException(
+                        HttpStatus.NOT_FOUND,
+                        "해당 사용자의 문제 데이터를 찾을 수 없습니다."
+                ));
+    }
+
+    public void save(Problem problem){
+        problemRepository.save(problem);
     }
 }

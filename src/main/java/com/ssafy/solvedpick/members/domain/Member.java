@@ -61,10 +61,6 @@ public class Member {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
-    @Builder.Default
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Problem solvedProblems = null;
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -82,10 +78,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
-    @Builder.Default
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private MemberDisplay memberDisplay = null;
-
     public void addPoint(long amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("포인트는 음수일 수 없습니다");
@@ -101,11 +93,4 @@ public class Member {
     	this.password = encodedNewPassword;
     }
 
-    public void initSolvedProblem(Problem problem) {
-        this.solvedProblems = problem;
-    }
-
-    public void initMemberDisplay(MemberDisplay memberDisplay){
-        this.memberDisplay = memberDisplay;
-    }
 }
