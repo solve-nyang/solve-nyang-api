@@ -1,3 +1,4 @@
+
 name: solve-nyang-deploy-dev.yml
 on:
   push:
@@ -11,13 +12,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create properties and yml
+      - name: Create database-dev.properties
         run: |
           echo '${{ secrets.DATABASE_DEV_PROPERTIES }}' > ./src/main/resources/database.properties
+
+      - name: Create jwt.properties
+        run: |
           echo '${{ secrets.JWT_PROPERTIES }}' > ./src/main/resources/jwt.properties
+
+      - name: Create external.properties
+        run: |
           echo '${{ secrets.EXTERNAL_DEV_PROPERTIES }}' > ./src/main/resources/external.properties
+
+      - name: Create s3.properties
+        run: |
           echo '${{ secrets.S3_PROPERTIES }}' > ./src/main/resources/s3.properties
+
+      - name: Create redis.properties
+        run: |
           echo '${{ secrets.REDIS_DEV_PROPERTIES }}' > ./src/main/resources/redis.properties
+
+      - name: Create application-dev.yml
+        run: |
           echo '${{ secrets.APPLICATION_DEV_PROPERTIES }}' > ./src/main/resources/application-dev.yml
 
       - name: Set up JDK 17
@@ -26,7 +42,7 @@ jobs:
           java-version: '17'
           distribution: 'liberica'
 
-      - name: Gradle caching
+      - name: Gradle Caching
         uses: actions/cache@v3
         with:
           path: |
