@@ -1,4 +1,3 @@
-
 name: solve-nyang-deploy-dev.yml
 on:
   push:
@@ -12,28 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create database-dev.properties
+      - name: Create properties and yml
         run: |
           echo '${{ secrets.DATABASE_DEV_PROPERTIES }}' > ./src/main/resources/database.properties
-
-      - name: Create jwt.properties
-        run: |
           echo '${{ secrets.JWT_PROPERTIES }}' > ./src/main/resources/jwt.properties
-
-      - name: Create external.properties
-        run: |
           echo '${{ secrets.EXTERNAL_DEV_PROPERTIES }}' > ./src/main/resources/external.properties
-
-      - name: Create s3.properties
-        run: |
           echo '${{ secrets.S3_PROPERTIES }}' > ./src/main/resources/s3.properties
-
-      - name: Create redis.properties
-        run: |
           echo '${{ secrets.REDIS_DEV_PROPERTIES }}' > ./src/main/resources/redis.properties
-
-      - name: Create application-dev.yml
-        run: |
           echo '${{ secrets.APPLICATION_DEV_PROPERTIES }}' > ./src/main/resources/application-dev.yml
 
       - name: Set up JDK 17
@@ -42,7 +26,7 @@ jobs:
           java-version: '17'
           distribution: 'liberica'
 
-      - name: Gradle Caching
+      - name: Gradle caching
         uses: actions/cache@v3
         with:
           path: |
@@ -52,28 +36,35 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Grant execute permission for gradlew
+      - name: Grant permission to gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
-      - name: Deploy to EC2
+      - name: Build Docker image
+        run: docker build -t solve-nyang:latest .
+
+      - name: Save Docker image as tar
+        run: docker save solve-nyang:latest -o solve-nyang.tar
+
+      - name: Send image + script to EC2
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.DEV_EC2_HOST }}
           username: ${{ secrets.DEV_EC2_USERNAME }}
           key: ${{ secrets.DEV_EC2_PRIVATE_KEY }}
-          source: "build/libs/*.jar,Dockerfile"
+          source: |
+            solve-nyang.tar
+            deploy.sh
           target: "/home/ubuntu/solve-nyang"
 
-      - name: Execute deploy script
+      - name: Execute deploy.sh on EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEV_EC2_HOST }}
           username: ${{ secrets.DEV_EC2_USERNAME }}
           key: ${{ secrets.DEV_EC2_PRIVATE_KEY }}
           script: |
-            export SPRING_ENV=dev
-            cd solve-nyang/
-            ./deploy.sh
+            chmod +x /home/ubuntu/solve-nyang/deploy.sh
+            /home/ubuntu/solve-nyang/deploy.sh
