@@ -46,8 +46,9 @@ jobs:
         run: docker build -t solve-nyang:latest .
 
       - name: Save Docker image as tar
-        run: docker save solve-nyang:latest -o solve-nyang.tar
-
+        run: |
+          docker save solve-nyang:latest -o solve-nyang.tar
+          chmod 644 solve-nyang.tar
       - name: Send image + script to EC2
         uses: appleboy/scp-action@master
         with:
