@@ -55,9 +55,7 @@ jobs:
           host: ${{ secrets.DEV_EC2_HOST }}
           username: ${{ secrets.DEV_EC2_USERNAME }}
           key: ${{ secrets.DEV_EC2_PRIVATE_KEY }}
-          source:
-            - solve-nyang.tar
-            - deploy.sh
+          source: solve-nyang.tar deploy.sh
           target: "/home/ubuntu/solve-nyang"
           tar_tmp_path: ""
           tar_exec: ""
