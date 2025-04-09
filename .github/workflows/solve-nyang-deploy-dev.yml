@@ -42,33 +42,35 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
-      - name: Build Docker image
-        run: docker build -t solve-nyang:latest .
-
-      - name: Save Docker image as tar
-        run: |
-          docker save solve-nyang:latest -o solve-nyang.tar
-          chmod 644 solve-nyang.tar
-      - name: Send image + script to EC2
-        uses: appleboy/scp-action@master
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
-          host: ${{ secrets.DEV_EC2_HOST }}
-          username: ${{ secrets.DEV_EC2_USERNAME }}
-          key: ${{ secrets.DEV_EC2_PRIVATE_KEY }}
-          source: "solve-nyang.tar,deploy.sh"
-          target: "/home/ubuntu/solve-nyang"
-          strip_components: 0
-          overwrite: true
-          timeout: 1200s
-          command_timeout: 1200s
-          debug: true
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Execute deploy.sh on EC2
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/solve-nyang:latest .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solve-nyang:latest
+
+      - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEV_EC2_HOST }}
           username: ${{ secrets.DEV_EC2_USERNAME }}
           key: ${{ secrets.DEV_EC2_PRIVATE_KEY }}
           script: |
-            chmod +x /home/ubuntu/solve-nyang/deploy.sh
-            /home/ubuntu/solve-nyang/deploy.sh
+            cd /home/ubuntu/solve-nyang
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] Stopping old container..."
+            docker stop solve-nyang || true
+            docker rm solve-nyang || true
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] Pulling new image..."
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/solve-nyang:latest
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] Running container..."
+            docker run -d \
+              --name solve-nyang \
+              -p 8080:8080 \
+              -v /home/ubuntu/solve-nyang/logs:/logs \
+              --restart unless-stopped \
+              ${{ secrets.DOCKERHUB_USERNAME }}/solve-nyang:latest
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] Deployment completed!"
