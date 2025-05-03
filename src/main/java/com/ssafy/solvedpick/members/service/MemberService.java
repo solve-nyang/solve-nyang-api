@@ -1,11 +1,8 @@
 package com.ssafy.solvedpick.members.service;
 
-import com.ssafy.solvedpick.common.utils.point.Tier;
-import com.ssafy.solvedpick.facade.UserFacade;
-import com.ssafy.solvedpick.memberdisplay.domain.MemberDisplay;
+import com.ssafy.solvedpick.members.facade.UserFacade;
 import com.ssafy.solvedpick.members.dto.BasicUsernameResponse;
 import com.ssafy.solvedpick.members.dto.UserPointResponse;
-import com.ssafy.solvedpick.members.dto.UserProfileResponse;
 import com.ssafy.solvedpick.members.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

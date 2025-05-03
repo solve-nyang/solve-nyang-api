@@ -1,7 +1,7 @@
 package com.ssafy.solvedpick.members.presentation;
 
 import com.ssafy.solvedpick.auth.service.AuthService;
-import com.ssafy.solvedpick.facade.UserFacade;
+import com.ssafy.solvedpick.members.facade.UserFacade;
 import com.ssafy.solvedpick.members.domain.Member;
 import com.ssafy.solvedpick.members.dto.BasicUsernameResponse;
 import com.ssafy.solvedpick.members.dto.UserPointResponse;

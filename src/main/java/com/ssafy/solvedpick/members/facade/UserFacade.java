@@ -1,4 +1,4 @@
-package com.ssafy.solvedpick.facade;
+package com.ssafy.solvedpick.members.facade;
 
 import com.ssafy.solvedpick.api.dto.SolvedProblemsApiResponse;
 import com.ssafy.solvedpick.api.dto.UserData;
