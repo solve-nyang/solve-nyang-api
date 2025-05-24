@@ -1,0 +1,73 @@
+package com.solvenyang.auction.presentation;
+
+import com.solvenyang.auction.dto.*;
+import com.solvenyang.auction.facade.AuctionFacade;
+import com.solvenyang.common.dto.ResponseMessageDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/auction")
+public class AuctionController {
+
+    private final AuctionFacade auctionFacade;
+
+    // TODO: Use Converter
+    @GetMapping()
+    public ResponseEntity<?> searchMerchandise(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "sort", defaultValue = "0") int sort,
+            @RequestParam(value = "rarity", required = false) String rarity,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        final Boolean sold = false;
+        SearchMerchandiseResponseDTO result = auctionFacade.searchMerchandise(keyword, rarity, sort, page, sold);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/sold")
+    public ResponseEntity<?> searchSoldMerchandise(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "sort", defaultValue = "0") int sort,
+            @RequestParam(value = "rarity", required = false) String rarity,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        final Boolean sold = true;
+        SearchMerchandiseResponseDTO result = auctionFacade.searchMerchandise(keyword, rarity, sort, page, sold);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/sale")
+    public ResponseEntity<?> sellAvatar(@RequestBody SellAvatarRequestDTO requestDTO) {
+        ResponseMessageDTO result = auctionFacade.sellAvatar(requestDTO);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/sale")
+    public ResponseEntity<?> cancelSale(@RequestBody AuctionCancelRequestDTO requestDTO) {
+        auctionFacade.cancelSale(requestDTO);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMemberSalesHistory(
+            @RequestParam(value = "filter", defaultValue = "0") int filter,
+            @RequestParam(value = "page", defaultValue = "1") int page
+    ) {
+        SalesHistoryResponseDTO result = auctionFacade.getSalesHistory(filter, page);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/buy")
+    public ResponseEntity<?> buyAvatar(@RequestBody AuctionBuyRequestDTO requestDTO) {
+        auctionFacade.buyAvatar(requestDTO);
+
+        return ResponseEntity.noContent().build();
+    }
+}

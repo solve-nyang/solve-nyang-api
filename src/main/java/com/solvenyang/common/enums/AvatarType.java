@@ -1,0 +1,249 @@
+package com.solvenyang.common.enums;
+
+import com.solvenyang.composition.resource.SvgResources;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.Arrays;
+
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public enum AvatarType {
+    SSAFY("SSAFY"),
+    NEW_YEAR_LUCK_CAT("NewYearLuckCat"),
+    IDEA_CAT("IdeaCat"),
+    MVP_CAT("MVPCat"),
+    CUPID_CAT("CupidCat"),
+    CHOCO_FONDUE_CAT("ChocoFondueCat"),
+    LIKE_CAT("LikeCat"),
+
+    CODING_CAT("CodingCat"),
+    YARN_BALL_CAT("YarnBallCat"),
+    UFO_CAT("UFOCat"),
+    TTEOKGUK_CAT("TteokGukCat"),
+    MAGPIE_CAT("MagpieCat"),
+    CAFFEINE_CAT("CaffeineCat"),
+    SINGING_CAT("SingingCat"),
+    WORK_CAT("WorkCat"),
+    DIVER_CAT("DiverCat"),
+    ANGRY_CAT("AngryCat"),
+    CHILL_CAT("ChillCat"),
+
+    FISHBOWL_CAT("FishbowlCat"),
+    EATING_CAT("EatingCat"),
+    FLEX_CAT("FlexCat"),
+    BOX_CAT("BoxCat"),
+    FISHING_CAT("FishingCat"),
+    TOY_CAT("ToyCat"),
+    LOAF_CAT("LoafCat"),
+    COLD_CAT("ColdCat"),
+    INVISIBLE_CAT("InvisibleCat"),
+    ANONYMOUS_CAT("AnonymousCat"),
+    COMFORTABLE_CAT("ComfortableCat"),
+    SPLASH_CAT("SplashCat"),
+    FARMER_CAT("FarmerCat"),
+    BOOK_CAT("BookCat"),
+    PHONE_CAT("PhoneCat"),
+    BIRTHDAY_CAT("BirthdayCat"),
+    JUMP_CAT("JumpCat"),
+    SICK_CAT("SickCat"),
+    GYM_CAT("GymCat"),
+
+    SPRING_CAT("SpringCat"),
+    PYTHON_CAT("PythonCat"),
+    TS_CAT("TSCat"),
+    C_SHARP_CAT("CSharpCat"),
+    C_CAT("CCat"),
+    C_PLUS_PLUS_CAT("CPlusPlusCat"),
+    JAVA_CAT("JavaCat"),
+    CSS_CAT("CSSCat"),
+    JS_CAT("JSCat"),
+    HTML_CAT("HTMLCat"),
+    REACT_CAT("ReactCat"),
+    NODE_CAT("NodeCat"),
+    DJANGO_CAT("DjangoCat"),
+    KOTLIN_CAT("KotlinCat"),
+    SWIFT_CAT("SwiftCat"),
+    VUE_CAT("VueCat"),
+    RUST_CAT("RustCat"),
+
+    PUMPKIN("Pumpkin"),
+    NERO("Nero"),
+    GRAYBAO("Graybao"),
+    PUBAO("Pubao"),
+    NINJA("Ninja"),
+    NAVY("Navy"),
+    APRICOT("Apricot"),
+    LEMON("Lemon"),
+    SIAM("Siam"),
+    CHEESE("Cheese"),
+    BARCODE("Barcode"),
+    VANILLA("Vanilla"),
+    FOX("Fox"),
+    HUSKY("Husky"),
+    RACCOON("Raccoon"),
+    NIGHT("Night"),
+    CALICO("Calico"),
+    DARK_CLOUD("DarkCloud"),
+    GRAY("Gray"),
+    BANANA("Banana"),
+    OREO("Oreo"),
+    PENGUIN("Penguin"),
+    GRASS("Grass"),
+    CLOUD("Cloud"),
+    CHERRY("Cherry"),
+    SKUNK("Skunk"),
+    MACKEREL("Mackerel"),
+    TIGER("Tiger"),
+    BLACKIE("Blackie"),
+    CHOCO("Choco"),
+    CREAM("Cream"),
+
+    SQUASHED_CAT("SquashedCat"),
+    WHIRLWIND_CAT("WhirlwindCat"),
+    MELTING_CAT("MeltingCat"),
+    SLIME_CAT("SlimeCat"),
+    MELTING_SLIME_CAT("MeltingSlimeCat"),
+    SLEEPY_CAT("SleepyCat"),
+    JUMPING_CAT("JumpingCat"),
+    TAIL_ZAP_CAT("TailZapCat"),
+    SPRAWLED_CAT("SprawledCat"),
+    ERROR_CAT("ErrorCat"),
+    NECK_PILLOW_CAT("NeckPillowCat"),
+    HILL_CAT("HillCat"),
+    QUESTION_CAT("QuestionCat"),
+    EXCLAMATION_CAT("ExclamationCat"),
+    HISSING_CAT("HissingCat"),
+    BUTT_CAT("ButtCat"),
+    ROLLING_OVER_CAT("RollingOverCat"),
+    GROOMING_CAT("GroomingCat"),
+    CROUCHED_CAT("CrouchedCat"),
+    FLIPPED_CAT("FlippedCat");
+
+    private final String name;
+
+    public String getSvgContent(SvgResources svgResources){
+        return switch (this) {
+            case SSAFY -> svgResources.getSSAFY();
+            case NEW_YEAR_LUCK_CAT -> svgResources.getNewYearLuckCat();
+            case IDEA_CAT -> svgResources.getIdeaCat();
+            case MVP_CAT -> svgResources.getMvpCat();
+            case CUPID_CAT -> svgResources.getCupidCat();
+            case CHOCO_FONDUE_CAT -> svgResources.getChocoFondueCat();
+            case LIKE_CAT -> svgResources.getLikeCat();
+
+            case CODING_CAT -> svgResources.getCodingCat();
+            case YARN_BALL_CAT -> svgResources.getYarnBallCat();
+            case UFO_CAT -> svgResources.getUfoCat();
+            case TTEOKGUK_CAT -> svgResources.getTteokgukCat();
+            case MAGPIE_CAT -> svgResources.getMagpieCat();
+            case CAFFEINE_CAT -> svgResources.getCaffeineCat();
+            case SINGING_CAT -> svgResources.getSingingCat();
+            case WORK_CAT -> svgResources.getWorkCat();
+            case DIVER_CAT -> svgResources.getDiverCat();
+            case ANGRY_CAT -> svgResources.getAngryCat();
+            case CHILL_CAT -> svgResources.getChillCat();
+
+            case FISHBOWL_CAT -> svgResources.getFishbowlCat();
+            case EATING_CAT -> svgResources.getEatingCat();
+            case FLEX_CAT -> svgResources.getFlexCat();
+            case BOX_CAT -> svgResources.getBoxCat();
+            case FISHING_CAT -> svgResources.getFishingCat();
+            case TOY_CAT -> svgResources.getToyCat();
+            case LOAF_CAT -> svgResources.getLoafCat();
+            case COLD_CAT -> svgResources.getColdCat();
+            case INVISIBLE_CAT -> svgResources.getInvisibleCat();
+            case ANONYMOUS_CAT -> svgResources.getAnonymousCat();
+            case COMFORTABLE_CAT -> svgResources.getComfortableCat();
+            case SPLASH_CAT -> svgResources.getSplashCat();
+            case FARMER_CAT -> svgResources.getFarmerCat();
+            case BOOK_CAT -> svgResources.getBookCat();
+            case PHONE_CAT -> svgResources.getPhoneCat();
+            case BIRTHDAY_CAT -> svgResources.getBirthdayCat();
+            case JUMP_CAT -> svgResources.getJumpCat();
+            case SICK_CAT -> svgResources.getSickCat();
+            case GYM_CAT -> svgResources.getGymCat();
+
+            case SPRING_CAT -> svgResources.getSpringCat();
+            case PYTHON_CAT -> svgResources.getPythonCat();
+            case TS_CAT -> svgResources.getTsCat();
+            case C_SHARP_CAT -> svgResources.getCSharpCat();
+            case C_CAT -> svgResources.getCCat();
+            case C_PLUS_PLUS_CAT -> svgResources.getCPlusPlusCat();
+            case JAVA_CAT -> svgResources.getJavaCat();
+            case CSS_CAT -> svgResources.getCssCat();
+            case JS_CAT -> svgResources.getJsCat();
+            case HTML_CAT -> svgResources.getHtmlCat();
+            case REACT_CAT -> svgResources.getReactCat();
+            case NODE_CAT -> svgResources.getNodeCat();
+            case DJANGO_CAT -> svgResources.getDjangoCat();
+            case KOTLIN_CAT -> svgResources.getKotlinCat();
+            case SWIFT_CAT -> svgResources.getSwiftCat();
+            case VUE_CAT -> svgResources.getVueCat();
+            case RUST_CAT -> svgResources.getRustCat();
+
+            case PUMPKIN -> svgResources.getPumpkin();
+            case NERO -> svgResources.getNero();
+            case GRAYBAO -> svgResources.getGraybao();
+            case PUBAO -> svgResources.getPubao();
+            case NINJA -> svgResources.getNinja();
+            case NAVY -> svgResources.getNavy();
+            case APRICOT -> svgResources.getApricot();
+            case LEMON -> svgResources.getLemon();
+            case SIAM -> svgResources.getSiam();
+            case CHEESE -> svgResources.getCheese();
+            case BARCODE -> svgResources.getBarcode();
+            case VANILLA -> svgResources.getVanilla();
+            case FOX -> svgResources.getFox();
+            case HUSKY -> svgResources.getHusky();
+            case RACCOON -> svgResources.getRaccoon();
+            case NIGHT -> svgResources.getNight();
+            case CALICO -> svgResources.getCalico();
+            case DARK_CLOUD -> svgResources.getDarkCloud();
+            case GRAY -> svgResources.getGray();
+            case BANANA -> svgResources.getBanana();
+            case OREO -> svgResources.getOreo();
+            case PENGUIN -> svgResources.getPenguin();
+            case GRASS -> svgResources.getGrass();
+            case CLOUD -> svgResources.getCloud();
+            case CHERRY -> svgResources.getCherry();
+            case SKUNK -> svgResources.getSkunk();
+            case MACKEREL -> svgResources.getMackerel();
+            case TIGER -> svgResources.getTiger();
+            case BLACKIE -> svgResources.getBlackie();
+            case CHOCO -> svgResources.getChoco();
+            case CREAM -> svgResources.getCream();
+
+            case SQUASHED_CAT -> svgResources.getSquashedCat();
+            case WHIRLWIND_CAT -> svgResources.getWhirlwindCat();
+            case MELTING_CAT -> svgResources.getMeltingCat();
+            case SLIME_CAT -> svgResources.getSlimeCat();
+            case MELTING_SLIME_CAT -> svgResources.getMeltingSlimeCat();
+            case SLEEPY_CAT -> svgResources.getSleepyCat();
+            case JUMPING_CAT -> svgResources.getJumpingCat();
+            case TAIL_ZAP_CAT -> svgResources.getTailZapCat();
+            case SPRAWLED_CAT -> svgResources.getSprawledCat();
+            case ERROR_CAT -> svgResources.getErrorCat();
+            case NECK_PILLOW_CAT -> svgResources.getNeckPillowCat();
+            case HILL_CAT -> svgResources.getHillCat();
+            case QUESTION_CAT -> svgResources.getQuestionCat();
+            case EXCLAMATION_CAT -> svgResources.getExclamationCat();
+            case HISSING_CAT -> svgResources.getHissingCat();
+            case BUTT_CAT -> svgResources.getButtCat();
+            case ROLLING_OVER_CAT -> svgResources.getRollingOverCat();
+            case GROOMING_CAT -> svgResources.getGroomingCat();
+            case CROUCHED_CAT -> svgResources.getCrouchedCat();
+            case FLIPPED_CAT -> svgResources.getFlippedCat();
+        };
+    }
+
+    public static AvatarType fromName(String name) {
+        return Arrays.stream(values())
+                .filter(type -> type.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid AvatarType: " + name));
+    }
+
+
+}

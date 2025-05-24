@@ -1,0 +1,16 @@
+package com.solvenyang.ownedavatar.dto;
+
+import lombok.*;
+
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class OwnedAvatarDTO {
+
+    private Long ownedAvatarId;
+    private String name;
+    private String rarity;
+    private boolean visible;
+    private boolean visibleExtension;
+}

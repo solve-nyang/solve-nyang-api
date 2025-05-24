@@ -1,0 +1,104 @@
+package com.solvenyang.memberdisplay.domain;
+
+import com.solvenyang.api.dto.UserData;
+import com.solvenyang.members.domain.Member;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Builder
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "member_display")
+public class MemberDisplay {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "Integer unsigned")
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "member_id", nullable = false, unique = true)
+    private Member member;
+
+    @Column(columnDefinition = "tinyint")
+    private Integer tier;
+
+    @Builder.Default
+    private Boolean tierVisible = false;
+
+    @Column(columnDefinition = "tinyint")
+    private Integer memberClass;
+
+    @Builder.Default
+    private Boolean memberClassVisible = false;
+
+    @Column(columnDefinition = "Integer unsigned")
+    private Integer solvedCount;
+
+    @Builder.Default
+    private Boolean solvedCountVisible = false;
+
+    @Column(columnDefinition = "Integer unsigned")
+    private Integer streak;
+
+    @Builder.Default
+    private Boolean streakVisible = false;
+
+    private String title;
+
+    @Builder.Default
+    private Boolean titleVisible = false;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Builder.Default
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public static MemberDisplay initMemberDisplay(Member member) {
+        return MemberDisplay.builder()
+                .member(member)
+                .build();
+    }
+
+    public void updateInfo(UserData userData) {
+        this.tier = userData.getTier();
+        this.memberClass = userData.getMemberClass();
+        this.solvedCount = userData.getSolvedCount();
+        this.streak = userData.getMaxStreak();
+    }
+
+    public void updateTitle(String title){
+        this.title = title;
+    }
+
+    public void toggleTierVisibility() {
+        this.tierVisible = !this.tierVisible;
+    }
+
+    public void toggleSolvedCountVisibility() {
+        this.solvedCountVisible = !this.solvedCountVisible;
+    }
+
+    public void toggleStreakVisibility() {
+        this.streakVisible = !this.streakVisible;
+    }
+
+    public void toggleTitleVisibility() {
+        this.titleVisible = !this.titleVisible;
+    }
+
+    public void toggleMemberClassVisibility() {
+        this.memberClassVisible = !this.memberClassVisible;
+    }
+}

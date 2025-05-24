@@ -1,0 +1,50 @@
+package com.solvenyang.ownedavatar.repository;
+
+import com.solvenyang.avatars.domain.Avatar;
+import com.solvenyang.members.domain.Member;
+import com.solvenyang.ownedavatar.domain.OwnedAvatar;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface OwnedAvatarRepository extends JpaRepository<OwnedAvatar, Long> {
+
+    Optional<OwnedAvatar> findById(@Param("ownedAvatarId") Long ownedAvatarId);
+
+    @Query("SELECT oa " +
+            "FROM OwnedAvatar oa " +
+            "LEFT JOIN FETCH oa.avatar " +
+            "WHERE oa.member.id = :memberId " +
+            "AND oa.sold = false " +
+            "ORDER BY oa.avatar.grade DESC")
+    List<OwnedAvatar> findAllByMemberIdAndSoldFalse(@Param("memberId") Long memberId);
+
+    List<OwnedAvatar> findAllByMemberAndVisibleTrueAndSoldFalse(Member member);
+
+    @Query("SELECT oa " +
+            "FROM OwnedAvatar oa " +
+            "LEFT JOIN FETCH oa.avatar " +
+            "WHERE oa.member.id = :memberId " +
+            "AND oa.visibleExtension = true " +
+            "AND oa.sold = false " +
+            "ORDER BY oa.avatar.grade DESC")
+    List<OwnedAvatar> findAllByMemberAndVisibleExtensionTrueAndSoldFalse(Long memberId);
+
+    List<OwnedAvatar> findAllByIdInAndMemberAndSoldFalse(List<Long> id, Member currentMember);
+
+    Boolean existsByMemberAndAvatar(Member member, Avatar avatar);
+
+    Optional<OwnedAvatar> findByIdAndMemberAndSoldFalse(Long id, Member member);
+
+    @Query("UPDATE OwnedAvatar o " +
+            "SET o.visibleExtension = false " +
+            "WHERE o.member.id = :memberId " +
+            "AND o.visibleExtension = true " +
+            "AND o.sold = false")
+    @Modifying(clearAutomatically = true)
+    void setVisibleExtensionFalse(@Param("memberId")Long memberId);
+}

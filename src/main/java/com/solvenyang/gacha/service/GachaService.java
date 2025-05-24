@@ -1,0 +1,96 @@
+package com.solvenyang.gacha.service;
+
+import com.solvenyang.auth.service.AuthService;
+import com.solvenyang.avatars.domain.Avatar;
+import com.solvenyang.common.utils.grade.Grade;
+import com.solvenyang.ownedavatar.domain.OwnedAvatar;
+import com.solvenyang.avatars.dto.DrawAvatarDto;
+import com.solvenyang.avatars.repository.AvatarRepository;
+import com.solvenyang.ownedavatar.repository.OwnedAvatarRepository;
+import com.solvenyang.gacha.dto.DrawResponse;
+import com.solvenyang.members.domain.Member;
+import com.solvenyang.members.repository.MemberRepository;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+@Service
+@RequiredArgsConstructor
+public class GachaService {
+
+    private static final int DRAW_COST = 100;
+
+    private final MemberRepository memberRepository;
+    private final AvatarRepository avatarRepository;
+    private final OwnedAvatarRepository ownedAvatarRepository;
+    private final Random random = new Random();
+    private final AuthService authService;
+
+    @Transactional
+    public DrawResponse drawAvatars(int count){
+
+        Member member = authService.getCurrentMember();
+
+        if (count != 1 && count != 10) {
+            throw new IllegalArgumentException("가챠는 1회 또는 10회만 가능합니다.");
+        }
+
+        int totalCost = count * DRAW_COST;
+        if (member.getPoint() < totalCost) {
+            throw new IllegalArgumentException("포인트가 부족합니다. 필요 포인트: " + totalCost + ", 보유 포인트: " + member.getPoint());
+        }
+
+        member.usePoint(totalCost);
+        this.memberRepository.save(member);
+        List<DrawAvatarDto> results = new ArrayList<>();
+
+        for(int i=0; i<count; i++){
+            Grade selectedGrade = selectGradeByRandom();
+
+            List<Avatar> avatarsOfGrade = avatarRepository.findAllByGrade(selectedGrade.getValue());
+            if (avatarsOfGrade.isEmpty()){
+                continue;
+            }
+            Avatar selectedAvatar = avatarsOfGrade.get(random.nextInt(avatarsOfGrade.size()));
+
+            OwnedAvatar ownedAvatar = OwnedAvatar.builder()
+                    .member(member)
+                    .avatar(selectedAvatar)
+                    .visible(false)
+                    .build();
+
+            ownedAvatarRepository.save(ownedAvatar);
+
+            results.add(DrawAvatarDto.builder()
+                    .ownedAvatarId(ownedAvatar.getId())
+                    .avatarId(selectedAvatar.getId())
+                    .name(selectedAvatar.getName())
+                    .rarity(Grade.fromValue(selectedAvatar.getGrade()).name())
+                    .dropRate(Grade.fromValue(selectedAvatar.getGrade()).getProbability())
+                    .build());
+        }
+
+        return DrawResponse.builder()
+                .avatars(results)
+                .build();
+    }
+
+    private Grade selectGradeByRandom() {
+        double randomValue = random.nextDouble() * 100;
+        double accumulatedProbability = 0.0;
+
+        for (Grade grade : Grade.values()) {
+            accumulatedProbability += grade.getProbability();
+            if (randomValue <= accumulatedProbability) {
+                return grade;
+            }
+        }
+
+        return Grade.D;
+    }
+}
