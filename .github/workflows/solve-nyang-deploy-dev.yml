@@ -86,6 +86,7 @@ jobs:
             docker run -d \
               --name solve-nyang \
               -p 8080:8080 \
+              --add-host host.docker.internal:host-gateway \
               -v /home/ubuntu/solve-nyang/logs:/logs \
               --restart unless-stopped \
               ${{ secrets.DOCKERHUB_USERNAME }}/solve-nyang:latest
