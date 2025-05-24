@@ -54,4 +54,4 @@ spring:
 
 logging:
   level:
-    com.ssafy.solvedpick: ${LOG_LEVEL:DEBUG}
+    com.solvenyang: ${LOG_LEVEL:DEBUG}
